@@ -1,13 +1,17 @@
 'use server';
 
-import { summarizeEvent, SummarizeEventInput, SummarizeEventOutput } from '@/ai/flows/ai-summarize-events';
+import { chat } from '@/ai/flows/ai-chat-flow';
+import { type Message } from '@/lib/types';
 
-export async function handleSummarize(input: SummarizeEventInput): Promise<SummarizeEventOutput> {
+export async function handleChat(messages: Message[]): Promise<Message> {
   try {
-    const output = await summarizeEvent(input);
+    const output = await chat(messages);
     return output;
   } catch (error) {
-    console.error('Error summarizing event:', error);
-    throw new Error('Failed to summarize event. Please try again.');
+    console.error('Error handling chat:', error);
+    return {
+      role: 'assistant',
+      content: 'Sorry, I encountered an error. Please try again.',
+    };
   }
 }

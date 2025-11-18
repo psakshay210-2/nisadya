@@ -1,4 +1,4 @@
 import { config } from 'dotenv';
 config();
 
-import '@/ai/flows/ai-summarize-events.ts';
+import '@/ai/flows/ai-chat-flow.ts';
