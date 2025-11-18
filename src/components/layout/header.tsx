@@ -33,7 +33,7 @@ export function Header() {
     <>
       <div
         className={cn(
-          'fixed inset-0 z-[100] flex items-center justify-center bg-background transition-opacity duration-1000',
+          'fixed inset-0 z-[100] flex items-center justify-center bg-background/50 backdrop-blur-sm transition-opacity duration-1000',
           loading ? 'opacity-100' : 'opacity-0 pointer-events-none'
         )}
       >
