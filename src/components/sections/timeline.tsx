@@ -1,10 +1,5 @@
 import { schedule } from '@/lib/data';
 import { cn } from '@/lib/utils';
-import { Button } from '../ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
-import { RegistrationForm } from '../registration-form';
-import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 type TimelineProps = {
   condensed?: boolean;
@@ -28,46 +23,16 @@ export function Timeline({ condensed = false }: TimelineProps) {
         <div className={cn("relative mx-auto max-w-4xl", condensed && "max-w-none")}>
           <div className={cn("absolute left-1/2 top-0 h-full w-0.5 -translate-x-1/2 bg-border/50", condensed && "left-6")}></div>
           {schedule.map((item, index) => {
-            const placeholder = item.event ? PlaceHolderImages.find((p) => p.id === item.event?.imageId) : undefined;
             
             const timelineCard = (
                 <div className="w-full rounded-lg border bg-card/50 p-4 shadow-lg backdrop-blur-sm group">
-                    {condensed && placeholder && (
-                         <div className="aspect-[3/2] w-full overflow-hidden rounded-md mb-4">
-                         <Image
-                           src={placeholder.imageUrl}
-                           alt={placeholder.description}
-                           width={600}
-                           height={400}
-                           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                           data-ai-hint={placeholder.imageHint}
-                         />
-                       </div>
-                    )}
                     <div className="flex justify-between items-center">
                         <p className="font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.title}</p>
                         <p className={cn("font-mono text-xs text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] shrink-0 ml-2", !condensed && "hidden")}>{item.time}</p>
                     </div>
                     <p className={cn("text-sm text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]", condensed ? "text-xs mt-1" : "text-sm")}>
-                      {item.event?.description || item.description}
+                      {item.description}
                     </p>
-                    {item.event && (
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <Button className={cn("mt-4 w-full", condensed ? "w-auto h-8" : "")}>Register</Button>
-                            </DialogTrigger>
-                             <DialogContent>
-                                <DialogHeader>
-                                <DialogTitle className="font-headline text-2xl">{item.title}</DialogTitle>
-                                <DialogDescription>
-                                    Fill out the form below to register for this event. Deadline: 2 days
-                                    before event.
-                                </DialogDescription>
-                                </DialogHeader>
-                                <RegistrationForm eventName={item.title} />
-                            </DialogContent>
-                        </Dialog>
-                    )}
                   </div>
             )
 
