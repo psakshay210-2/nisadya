@@ -33,12 +33,6 @@
   }
   body {
     @apply bg-background text-foreground;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
-
-  body::-webkit-scrollbar {
-    display: none; /* Chrome, Safari and Opera */
   }
 
   .light {
@@ -68,5 +62,14 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: transparent;
   }
 }
