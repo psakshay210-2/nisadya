@@ -48,13 +48,13 @@ export function Header() {
           : 'border-b border-transparent'
       )}
     >
-      <div className="container flex h-16 items-center">
+      <div className="container flex h-20 items-center">
         <Link href="/" className="mr-6 flex items-center gap-2">
           <Image
             src="/logo.png"
             alt="Nisadya Logo"
-            width={64}
-            height={32}
+            width={96}
+            height={48}
             className={cn(hasScrolled ? '' : 'invert')}
           />
         </Link>
@@ -64,7 +64,7 @@ export function Header() {
               key={link.href}
               href={link.href}
               className={cn(
-                'text-sm font-medium transition-colors hover:text-primary',
+                'text-lg font-medium transition-colors hover:text-primary',
                 hasScrolled ? 'text-foreground' : 'text-white'
               )}
             >
@@ -100,15 +100,15 @@ export function Header() {
                   <Image
                     src="/logo.png"
                     alt="Nisadya Logo"
-                    width={64}
-                    height={32}
+                    width={96}
+                    height={48}
                   />
                 </Link>
                 {navLinks.map((link) => (
                   <a
                     key={link.href}
                     href={link.href}
-                    className="text-sm font-medium text-foreground transition-colors hover:text-primary"
+                    className="text-lg font-medium text-foreground transition-colors hover:text-primary"
                   >
                     {link.label}
                   </a>
