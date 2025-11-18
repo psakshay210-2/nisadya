@@ -2,7 +2,7 @@ import { schedule } from '@/lib/data';
 
 export function Timeline() {
   return (
-    <section id="schedule" className="py-16 md:py-24 bg-card">
+    <section id="schedule" className="py-16 md:py-24">
       <div className="container">
         <div className="mb-12 text-center">
           <h2 className="font-headline text-4xl font-bold md:text-5xl">
