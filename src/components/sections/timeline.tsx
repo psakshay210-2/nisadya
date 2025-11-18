@@ -1,11 +1,14 @@
 import { schedule } from '@/lib/data';
 import { cn } from '@/lib/utils';
-
+import { Button } from '../ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { RegistrationForm } from '../registration-form';
+import Image from 'next/image';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 type TimelineProps = {
   condensed?: boolean;
 };
-
 
 export function Timeline({ condensed = false }: TimelineProps) {
   return (
@@ -24,63 +27,83 @@ export function Timeline({ condensed = false }: TimelineProps) {
 
         <div className={cn("relative mx-auto max-w-4xl", condensed && "max-w-none")}>
           <div className={cn("absolute left-1/2 top-0 h-full w-0.5 -translate-x-1/2 bg-border/50", condensed && "left-6")}></div>
-          {schedule.map((item, index) => (
-            <div
-              key={index}
-              className={cn("relative mb-8 flex w-full items-center", condensed && "mb-4")}
-            >
-              <div
-                className={cn(`flex w-1/2 items-center ${
-                  index % 2 === 0 ? 'justify-end pr-12' : 'justify-start pl-12'
-                }`, condensed && `w-full ${index % 2 === 0 ? 'justify-start pl-16' : 'justify-start pl-16'}`)}
-              >
-                {(!condensed && index % 2 !== 0) && (
-                  <div className="w-full rounded-lg border bg-card/50 p-4 shadow-lg backdrop-blur-sm">
-                    <p className="font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.title}</p>
-                    <p className="text-sm text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
-                      {item.description}
-                    </p>
-                  </div>
-                )}
-                 {(condensed) && (
-                  <div className="w-full rounded-lg border bg-card/50 p-3 shadow-lg backdrop-blur-sm">
+          {schedule.map((item, index) => {
+            const placeholder = item.event ? PlaceHolderImages.find((p) => p.id === item.event?.imageId) : undefined;
+            
+            const timelineCard = (
+                <div className="w-full rounded-lg border bg-card/50 p-4 shadow-lg backdrop-blur-sm group">
+                    {condensed && placeholder && (
+                         <div className="aspect-[3/2] w-full overflow-hidden rounded-md mb-4">
+                         <Image
+                           src={placeholder.imageUrl}
+                           alt={placeholder.description}
+                           width={600}
+                           height={400}
+                           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                           data-ai-hint={placeholder.imageHint}
+                         />
+                       </div>
+                    )}
                     <div className="flex justify-between items-center">
                         <p className="font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.title}</p>
-                        <p className="font-mono text-xs text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] shrink-0 ml-2">{item.time}</p>
+                        <p className={cn("font-mono text-xs text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] shrink-0 ml-2", !condensed && "hidden")}>{item.time}</p>
                     </div>
-                    <p className="text-xs text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] mt-1">
-                      {item.description}
+                    <p className={cn("text-sm text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]", condensed ? "text-xs mt-1" : "text-sm")}>
+                      {item.event?.description || item.description}
                     </p>
+                    {item.event && (
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <Button className={cn("mt-4 w-full", condensed ? "w-auto h-8" : "")}>Register</Button>
+                            </DialogTrigger>
+                             <DialogContent>
+                                <DialogHeader>
+                                <DialogTitle className="font-headline text-2xl">{item.title}</DialogTitle>
+                                <DialogDescription>
+                                    Fill out the form below to register for this event. Deadline: 2 days
+                                    before event.
+                                </DialogDescription>
+                                </DialogHeader>
+                                <RegistrationForm eventName={item.title} />
+                            </DialogContent>
+                        </Dialog>
+                    )}
                   </div>
-                )}
-              </div>
+            )
 
-              <div className={cn("absolute left-1/2 z-10 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full bg-background/80 backdrop-blur-sm", condensed && "left-6 h-10 w-10")}>
-                <div className={cn("flex h-10 w-10 items-center justify-center rounded-full bg-card ring-2 ring-primary", condensed && "h-8 w-8")}>
-                  <item.icon className={cn("h-5 w-5 text-primary", condensed && "h-4 w-4")} />
+            return (
+                <div
+                key={index}
+                className={cn("relative mb-8 flex w-full items-center", condensed && "mb-4")}
+                >
+                <div
+                    className={cn(`flex w-1/2 items-center ${
+                    index % 2 === 0 ? 'justify-end pr-12' : 'justify-start pl-12'
+                    }`, condensed && `w-full ${index % 2 === 0 ? 'justify-start pl-16' : 'justify-start pl-16'}`)}
+                >
+                    {(!condensed && index % 2 !== 0) && timelineCard}
+                    {(condensed) && timelineCard}
                 </div>
-              </div>
 
-              <div
-                className={cn(`flex w-1/2 items-center ${
-                  index % 2 === 0 ? 'justify-start pl-12' : 'justify-end pr-12'
-                }`, condensed && 'hidden')}
-              >
-                {index % 2 === 0 ? (
-                  <div className="w-full rounded-lg border bg-card/50 p-4 shadow-lg backdrop-blur-sm">
-                    <p className="font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.title}</p>
+                <div className={cn("absolute left-1/2 z-10 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full bg-background/80 backdrop-blur-sm", condensed && "left-6 h-10 w-10")}>
+                    <div className={cn("flex h-10 w-10 items-center justify-center rounded-full bg-card ring-2 ring-primary", condensed && "h-8 w-8")}>
+                    <item.icon className={cn("h-5 w-5 text-primary", condensed && "h-4 w-4")} />
+                    </div>
+                </div>
 
-                    <p className="text-sm text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
-                      {item.description}
-                    </p>
-                  </div>
-                ) : (
-                    <p className="w-full text-right font-mono text-sm text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.time}</p>
-                )}
-              </div>
-               {(!condensed && index % 2 === 0) && <p className="absolute right-[calc(50%+3rem)] w-1/2 text-left font-mono text-sm text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.time}</p>}
-            </div>
-          ))}
+                <div
+                    className={cn(`flex w-1/2 items-center ${
+                    index % 2 === 0 ? 'justify-start pl-12' : 'justify-end pr-12'
+                    }`, condensed && 'hidden')}
+                >
+                    {index % 2 === 0 ? timelineCard : (
+                        <p className="w-full text-right font-mono text-sm text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.time}</p>
+                    )}
+                </div>
+                {(!condensed && index % 2 === 0) && <p className="absolute right-[calc(50%+3rem)] w-1/2 text-left font-mono text-sm text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.time}</p>}
+                </div>
+            )
+          })}
         </div>
       </div>
     </section>
