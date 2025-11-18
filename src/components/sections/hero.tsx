@@ -54,10 +54,7 @@ export function Hero() {
           'hidden lg:block transition-opacity duration-500 delay-[1700ms]',
           loading ? 'opacity-0' : 'opacity-100 animate-fade-in-up'
         )}>
-          <div className="max-h-[60vh] overflow-y-auto rounded-lg bg-card/50 p-4 backdrop-blur-sm">
-             <h2 className="font-headline text-3xl font-bold text-center mb-4 drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
-              Fest Schedule
-            </h2>
+          <div className="h-[80vh] overflow-y-auto rounded-lg bg-card/50 p-4 backdrop-blur-sm">
             <Timeline condensed />
           </div>
         </div>
