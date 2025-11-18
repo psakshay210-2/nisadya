@@ -20,10 +20,10 @@ export function Events() {
     <section id="events" className="py-16 md:py-24 bg-transparent">
       <div className="container">
         <div className="mb-12 text-center">
-          <h2 className="font-headline text-4xl font-bold md:text-5xl">
+          <h2 className="font-headline text-4xl font-bold md:text-5xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
             Our Events
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
             Something for everyone, from coding wizards to creative souls.
           </p>
         </div>

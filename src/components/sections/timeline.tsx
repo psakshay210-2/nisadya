@@ -5,10 +5,10 @@ export function Timeline() {
     <section id="schedule" className="py-16 md:py-24 bg-transparent">
       <div className="container">
         <div className="mb-12 text-center">
-          <h2 className="font-headline text-4xl font-bold md:text-5xl">
+          <h2 className="font-headline text-4xl font-bold md:text-5xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
             Fest Schedule
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
             Plan your days and don't miss out on any of the action.
           </p>
         </div>
@@ -27,8 +27,8 @@ export function Timeline() {
               >
                 {index % 2 !== 0 && (
                   <div className="w-full">
-                    <p className="font-bold">{item.title}</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.title}</p>
+                    <p className="text-sm text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
                       {item.description}
                     </p>
                   </div>
@@ -48,17 +48,17 @@ export function Timeline() {
               >
                 {index % 2 === 0 ? (
                   <div className="w-full">
-                    <p className="font-bold">{item.title}</p>
+                    <p className="font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.title}</p>
 
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
                       {item.description}
                     </p>
                   </div>
                 ) : (
-                    <p className="w-full text-right font-mono text-sm text-primary">{item.time}</p>
+                    <p className="w-full text-right font-mono text-sm text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.time}</p>
                 )}
               </div>
-               {index % 2 === 0 && <p className="absolute right-[calc(50%+2rem)] w-1/2 text-left font-mono text-sm text-primary">{item.time}</p>}
+               {index % 2 === 0 && <p className="absolute right-[calc(50%+2rem)] w-1/2 text-left font-mono text-sm text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.time}</p>}
             </div>
           ))}
         </div>

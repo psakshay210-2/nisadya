@@ -16,7 +16,7 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         <Hero />
-        <div className="bg-background/90 backdrop-blur-sm">
+        <div>
           <Events />
           <Timeline />
           <Sponsors />
