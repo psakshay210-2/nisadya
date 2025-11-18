@@ -79,12 +79,21 @@ export default {
             opacity: '1',
             transform: 'translateY(0)'
           }
-        }
+        },
+        'pulse-grow': {
+          '0%, 100%': {
+            transform: 'scale(1)',
+          },
+          '50%': {
+            transform: 'scale(1.05)',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'fade-in-up': 'fade-in-up 0.5s ease-out forwards',
+        'pulse-grow': 'pulse-grow 2s infinite ease-in-out',
       },
     },
   },

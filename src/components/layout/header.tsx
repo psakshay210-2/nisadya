@@ -43,7 +43,7 @@ export function Header() {
           width={512}
           height={256}
           className={cn(
-            'invert drop-shadow-[0_8px_20px_rgba(0,0,0,1)] transition-transform duration-1000 ease-in-out',
+            'invert drop-shadow-[0_8px_20px_rgba(0,0,0,1)] transition-transform duration-1000 ease-in-out animate-pulse-grow',
             loading ? 'scale-100' : 'scale-0'
           )}
           priority
