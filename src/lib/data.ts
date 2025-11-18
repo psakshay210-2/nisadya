@@ -82,8 +82,8 @@ export const events: Event[] = [
 
 export const eventCategories = {
   Technical: { icon: Cpu, color: 'text-primary' },
-  Cultural: { icon: Music, color: 'text-orange-default' },
-  Informal: { icon: Users, color: 'text-accent' },
+  Cultural: { icon: Music, color: 'text-primary' },
+  Informal: { icon: Users, color: 'text-primary' },
 };
 
 export const schedule: ScheduleItem[] = [

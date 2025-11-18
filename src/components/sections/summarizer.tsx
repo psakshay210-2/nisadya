@@ -50,7 +50,7 @@ export function Summarizer() {
       <div className="container">
         <div className="mb-12 text-center">
            <h2 className="font-headline text-4xl font-bold md:text-5xl flex items-center justify-center gap-2">
-            <Sparkles className="h-10 w-10 text-accent" style={{filter: 'drop-shadow(0 0 5px hsl(var(--accent)))'}}/>
+            <Sparkles className="h-10 w-10 text-accent"/>
             AI Event Summarizer
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">

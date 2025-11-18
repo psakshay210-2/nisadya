@@ -37,12 +37,7 @@ export function Timeline() {
 
               <div className="absolute left-1/2 z-10 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full bg-background">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-card ring-2 ring-primary">
-                  <item.icon
-                    className="h-5 w-5 text-primary"
-                    style={{
-                      filter: 'drop-shadow(0 0 5px hsl(var(--primary)))',
-                    }}
-                  />
+                  <item.icon className="h-5 w-5 text-primary" />
                 </div>
               </div>
 
@@ -54,6 +49,7 @@ export function Timeline() {
                 {index % 2 === 0 ? (
                   <div className="w-full">
                     <p className="font-bold">{item.title}</p>
+
                     <p className="text-sm text-muted-foreground">
                       {item.description}
                     </p>

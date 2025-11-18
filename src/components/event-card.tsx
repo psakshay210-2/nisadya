@@ -35,7 +35,7 @@ export function EventCard({ event }: EventCardProps) {
 
   return (
     <Dialog>
-      <Card className="flex h-full flex-col overflow-hidden transition-all hover:scale-105 hover:shadow-lg hover:shadow-primary/20">
+      <Card className="flex h-full flex-col overflow-hidden">
         <CardHeader className="p-0">
           {placeholder && (
             <div className="aspect-[3/2] w-full overflow-hidden">
@@ -52,12 +52,7 @@ export function EventCard({ event }: EventCardProps) {
           <div className="p-6">
             <div className="mb-2 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <CategoryIcon
-                  className={cn('h-5 w-5', categoryColor)}
-                  style={{
-                    filter: `drop-shadow(0 0 5px currentColor)`,
-                  }}
-                />
+                <CategoryIcon className={cn('h-5 w-5', categoryColor)} />
                 <span className={`font-semibold ${categoryColor}`}>
                   {category}
                 </span>
