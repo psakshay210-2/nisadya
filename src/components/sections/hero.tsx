@@ -5,13 +5,13 @@ import Image from 'next/image';
 export function Hero() {
   return (
     <section
-      className="relative w-full bg-cover bg-center"
+      className="relative w-full bg-cover bg-bottom"
       style={{
         backgroundImage:
-          "linear-gradient(to top, hsl(var(--background)) 5%, transparent 50%), url('/background.png')",
+          "linear-gradient(to top, hsl(var(--background)) 1%, transparent 20%), url('/background.png')",
       }}
     >
-      <div className="container relative z-10 flex min-h-screen flex-col items-center justify-center pt-16 text-center">
+      <div className="container relative z-10 flex min-h-screen flex-col items-center justify-center pt-24 text-center">
         <div className="animate-fade-in-up">
           <Image
             src="/logo.png"
@@ -19,7 +19,9 @@ export function Hero() {
             width={600}
             height={300}
             className="h-auto w-80 md:w-[32rem]"
-            style={{ filter: 'invert(1)' }}
+            style={{
+              filter: 'invert(1) drop-shadow(0 2px 5px rgba(0,0,0,0.5))',
+            }}
           />
         </div>
         <p className="mx-auto mt-4 max-w-2xl animate-fade-in-up text-lg text-white/80 [animation-delay:200ms] md:text-xl">
