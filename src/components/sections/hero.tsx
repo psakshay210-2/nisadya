@@ -19,10 +19,10 @@ export function Hero() {
 
   return (
     <section className="relative w-full">
-      <div className="container relative z-10 grid min-h-screen items-center gap-8 pt-24 lg:grid-cols-2">
+      <div className="container relative z-10 grid min-h-screen items-center gap-8 pt-24 lg:grid-cols-3">
         <div
           className={cn(
-            'flex flex-col items-center text-center lg:items-start lg:text-left transition-opacity duration-500 delay-[1500ms]',
+            'flex flex-col items-center text-center lg:items-start lg:text-left transition-opacity duration-500 delay-[1500ms] lg:col-span-2',
             loading ? 'opacity-0' : 'opacity-100 animate-fade-in-up'
           )}
         >
