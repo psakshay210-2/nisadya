@@ -3,9 +3,10 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Rocket } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import React from 'react';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 const navLinks = [
   { href: '#events', label: 'Events' },
@@ -48,7 +49,7 @@ export function Header() {
     >
       <div className="container flex h-16 items-center">
         <Link href="/" className="mr-6 flex items-center gap-2">
-          <Rocket className="h-6 w-6 text-primary" />
+          <Image src="/logo.jpg" alt="Nisadya Logo" width={32} height={32} className="rounded-full" />
           <span className="font-headline text-lg font-bold">Nisadya</span>
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
@@ -68,7 +69,7 @@ export function Header() {
             <SheetContent side="right">
               <nav className="mt-8 grid gap-6 text-lg font-medium">
                 <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
-                  <Rocket className="h-6 w-6 text-primary" />
+                  <Image src="/logo.jpg" alt="Nisadya Logo" width={32} height={32} className="rounded-full" />
                   <span className="font-headline text-lg font-bold">Nisadya</span>
                 </Link>
                 <NavContent />
