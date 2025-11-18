@@ -82,16 +82,18 @@
 }
 
 @layer utilities {
-  .animated-gradient {
+  .animated-background {
     background: linear-gradient(
       -45deg,
       hsl(var(--background)),
+      hsl(var(--primary) / 0.4),
+      hsl(var(--accent) / 0.5),
+      hsl(var(--orange) / 0.6),
       hsl(228 30% 20%),
-      hsl(276 40% 25%),
       hsl(var(--background))
     );
     background-size: 400% 400%;
-    animation: animated-gradient 15s ease infinite;
+    animation: animated-gradient 20s ease infinite;
   }
 }
 
