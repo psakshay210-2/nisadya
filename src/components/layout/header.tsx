@@ -86,9 +86,6 @@ export function Header() {
               ))}
             </nav>
             <div className="ml-auto flex items-center gap-4">
-              <Button asChild>
-                <a href="#events">Register Now</a>
-              </Button>
               <Sheet>
                 <SheetTrigger asChild>
                   <Button
