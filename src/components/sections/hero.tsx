@@ -25,16 +25,18 @@ export function Hero() {
             loading ? 'opacity-0' : 'opacity-100 animate-fade-in-up'
           )}
         >
-          <p className="mx-auto max-w-3xl text-2xl font-medium text-white md:text-3xl drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
+          <p className="mx-auto max-w-3xl text-3xl font-medium text-white md:text-4xl drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
             "In the waves of chance we find a new beginning"
           </p>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-white/80 transition-colors group-hover:text-white md:text-xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
-            Nisadya is the Management fest of DoMS, NIT Trichy. It is a parley
-            of cultural and managerial events, fun and happiness, competition
-            and cooperation. We provide an open platform to all the talented
-            young budding managers to put forth their skills and talents to
-            take up the flames of test.
-          </p>
+          <div className="mx-auto mt-6 max-w-3xl rounded-lg bg-black/20 p-6 backdrop-blur-sm">
+            <p className="text-lg text-white/90 md:text-xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
+              Nisadya is the Management fest of DoMS, NIT Trichy. It is a parley
+              of cultural and managerial events, fun and happiness, competition
+              and cooperation. We provide an open platform to all the talented
+              young budding managers to put forth their skills and talents to
+              take up the flames of test.
+            </p>
+          </div>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Button size="lg" asChild>
               <a href="#events">
