@@ -19,26 +19,24 @@ export function Hero() {
       className="relative w-full bg-cover bg-bottom"
       style={{
         backgroundImage:
-          "linear-gradient(to top, hsl(var(--background)) 1%, transparent 50%), url('/background.png')",
+          "linear-gradient(to top, hsl(var(--background)) 5%, transparent 40%), url('/background.png')",
       }}
     >
       <div className="container relative z-10 flex min-h-screen flex-col items-center justify-center pt-24 text-center">
-        <div
-          className="animate-fade-in-up"
-          style={{ transform: `translateY(${offsetY * 0.5}px)` }}
-        >
-          <Image
-            src="/logo.png"
-            alt="Nisadya Logo"
-            width={600}
-            height={300}
-            className="h-auto w-80 md:w-[32rem]"
-            style={{
-              filter:
-                'invert(1) drop-shadow(0 8px 20px rgba(0, 0, 0, 0.8))',
-            }}
-          />
-        </div>
+        <a href="#events" className="animate-fade-in-up block">
+          <div style={{ transform: `translateY(${offsetY * 0.5}px)` }}>
+            <Image
+              src="/logo.png"
+              alt="Nisadya Logo"
+              width={600}
+              height={300}
+              className="h-auto w-80 md:w-[32rem]"
+              style={{
+                filter: 'invert(1) drop-shadow(0 8px 20px rgba(0, 0, 0, 0.8))',
+              }}
+            />
+          </div>
+        </a>
         <a href="#events" className="group">
           <p
             className="mx-auto mt-4 max-w-2xl animate-fade-in-up cursor-pointer text-lg text-white/80 transition-colors [animation-delay:200ms] group-hover:text-white md:text-xl"
