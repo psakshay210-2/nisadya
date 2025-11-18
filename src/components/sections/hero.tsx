@@ -1,17 +1,30 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import Image from 'next/image';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export function Hero() {
+  const heroImage = PlaceHolderImages.find((p) => p.id === 'hero-background');
+
   return (
     <section className="relative w-full overflow-hidden">
-      <div className="absolute inset-0 animated-background -z-10" />
+      {heroImage && (
+        <Image
+          src={heroImage.imageUrl}
+          alt={heroImage.description}
+          fill
+          className="object-cover -z-10"
+          data-ai-hint={heroImage.imageHint}
+        />
+      )}
+      <div className="absolute inset-0 bg-black/50 -z-10" />
       <div className="container relative flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center text-center">
         <h1 className="font-headline text-5xl font-bold tracking-tighter md:text-7xl lg:text-8xl">
           <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
             Nisadya
           </span>
         </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground md:text-xl">
+        <p className="mx-auto mt-4 max-w-2xl text-lg text-white md:text-xl">
           Where Technology, Culture, and Innovation Collide.
           <br />
           Join us for three days of non-stop excitement and learning.
