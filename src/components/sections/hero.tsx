@@ -10,7 +10,7 @@ export function Hero() {
         backgroundImage: "url('/background.png')",
       }}
     >
-      <div className="container relative z-10 flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center text-center">
+      <div className="container relative z-10 flex min-h-screen flex-col items-center justify-center pt-16 text-center">
         <div className="animate-fade-in-up">
           <Image
             src="/logo.png"

@@ -11,9 +11,11 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         <Hero />
-        <Events />
-        <Timeline />
-        <Sponsors />
+        <div className="bg-background">
+          <Events />
+          <Timeline />
+          <Sponsors />
+        </div>
       </main>
       <Footer />
     </div>

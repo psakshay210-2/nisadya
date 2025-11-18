@@ -63,9 +63,6 @@
     --ring: 240 5.9% 10%;
   }
 
-  header {
-    @apply light;
-  }
 }
 
 @layer utilities {
