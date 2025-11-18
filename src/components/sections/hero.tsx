@@ -7,8 +7,7 @@ export function Hero() {
     <section
       className="relative w-full bg-cover bg-center"
       style={{
-        backgroundImage:
-          "linear-gradient(to top, hsl(var(--background)) 5%, transparent 50%), url('/background.png')",
+        backgroundImage: "url('/background.png')",
       }}
     >
       <div className="container relative z-10 flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center text-center">
