@@ -20,7 +20,7 @@ export function Hero() {
             height={300}
             className="h-auto w-80 md:w-[32rem]"
             style={{
-              filter: 'invert(1) drop-shadow(0 2px 5px rgba(0,0,0,0.5))',
+              filter: 'invert(1) drop-shadow(0 4px 15px rgba(0,0,0,0.7))',
             }}
           />
         </div>
