@@ -1,7 +1,7 @@
 import { Footer } from '@/components/layout/footer';
 import { Hero } from '@/components/sections/hero';
-import { Sponsors } from '@/components/sections/sponsors';
 import { Timeline } from '@/components/sections/timeline';
+import { Events } from '@/components/sections/events';
 
 export default function Home() {
   return (
@@ -15,9 +15,9 @@ export default function Home() {
         <Hero />
         <div className="bg-transparent">
           <div className="lg:hidden">
+            <Events />
             <Timeline />
           </div>
-          <Sponsors />
         </div>
       </main>
       <Footer />
