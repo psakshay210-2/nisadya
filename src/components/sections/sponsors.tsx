@@ -30,8 +30,8 @@ export function Sponsors() {
                 <Image
                   src={placeholder.imageUrl}
                   alt={sponsor.name}
-                  width={200}
-                  height={100}
+                  width={150}
+                  height={75}
                   className="object-contain"
                   data-ai-hint={placeholder.imageHint}
                 />
