@@ -16,23 +16,13 @@ const navLinks = [
 ];
 
 export function Header() {
-  const [isScrolled, setIsScrolled] = React.useState(false);
-
-  React.useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   const NavContent = () => (
     <>
       {navLinks.map((link) => (
         <a
           key={link.href}
           href={link.href}
-          className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+          className="text-sm font-medium text-foreground transition-colors hover:text-primary"
         >
           {link.label}
         </a>
@@ -42,15 +32,11 @@ export function Header() {
 
   return (
     <header
-      className={cn(
-        'sticky top-0 z-50 w-full border-b border-transparent transition-all',
-        isScrolled && 'border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'
-      )}
+      className='sticky top-0 z-50 w-full border-b border-border/40 bg-white'
     >
       <div className="container flex h-16 items-center">
         <Link href="/" className="mr-6 flex items-center gap-2">
-          <Image src="/logo.png" alt="Nisadya Logo" width={32} height={32} className="rounded-full" />
-          <span className="font-headline text-lg font-bold">Nisadya</span>
+          <Image src="/logo.png" alt="Nisadya Logo" width={64} height={32} />
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
           <NavContent />
@@ -69,8 +55,7 @@ export function Header() {
             <SheetContent side="right">
               <nav className="mt-8 grid gap-6 text-lg font-medium">
                 <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
-                  <Image src="/logo.png" alt="Nisadya Logo" width={32} height={32} className="rounded-full" />
-                  <span className="font-headline text-lg font-bold">Nisadya</span>
+                  <Image src="/logo.png" alt="Nisadya Logo" width={64} height={32} />
                 </Link>
                 <NavContent />
               </nav>

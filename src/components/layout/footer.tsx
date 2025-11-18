@@ -7,7 +7,7 @@ export function Footer() {
     <footer className="border-t">
       <div className="container flex flex-col items-center justify-between gap-6 py-10 md:h-24 md:flex-row md:py-0">
         <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
-          <Image src="/logo.png" alt="Nisadya Logo" width={24} height={24} className="rounded-full" />
+          <Image src="/logo.png" alt="Nisadya Logo" width={32} height={32} />
           <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
             Built for Nisadya. The future is now.
           </p>
