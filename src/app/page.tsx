@@ -16,7 +16,9 @@ export default function Home() {
         <Hero />
         <div className="bg-transparent">
           <Events />
-          <Timeline />
+          <div className="lg:hidden">
+            <Timeline />
+          </div>
           <Sponsors />
         </div>
       </main>

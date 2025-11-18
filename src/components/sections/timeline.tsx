@@ -1,31 +1,40 @@
 import { schedule } from '@/lib/data';
+import { cn } from '@/lib/utils';
 
-export function Timeline() {
+
+type TimelineProps = {
+  condensed?: boolean;
+};
+
+
+export function Timeline({ condensed = false }: TimelineProps) {
   return (
-    <section id="schedule" className="py-16 md:py-24 bg-transparent">
+    <section id="schedule" className={cn("py-16 md:py-24 bg-transparent", condensed && "py-0 md:py-0")}>
       <div className="container">
-        <div className="mb-12 text-center">
-          <h2 className="font-headline text-4xl font-bold md:text-5xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
-            Fest Schedule
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
-            Plan your days and don't miss out on any of the action.
-          </p>
-        </div>
+        {!condensed && (
+            <div className="mb-12 text-center">
+            <h2 className="font-headline text-4xl font-bold md:text-5xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
+                Fest Schedule
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
+                Plan your days and don't miss out on any of the action.
+            </p>
+            </div>
+        )}
 
-        <div className="relative mx-auto max-w-4xl">
-          <div className="absolute left-1/2 top-0 h-full w-0.5 -translate-x-1/2 bg-border/50"></div>
+        <div className={cn("relative mx-auto max-w-4xl", condensed && "max-w-none")}>
+          <div className={cn("absolute left-1/2 top-0 h-full w-0.5 -translate-x-1/2 bg-border/50", condensed && "left-6")}></div>
           {schedule.map((item, index) => (
             <div
               key={index}
-              className="relative mb-8 flex w-full items-center"
+              className={cn("relative mb-8 flex w-full items-center", condensed && "mb-4")}
             >
               <div
-                className={`flex w-1/2 items-center ${
+                className={cn(`flex w-1/2 items-center ${
                   index % 2 === 0 ? 'justify-end pr-12' : 'justify-start pl-12'
-                }`}
+                }`, condensed && `w-full ${index % 2 === 0 ? 'justify-start pl-16' : 'justify-start pl-16'}`)}
               >
-                {index % 2 !== 0 && (
+                {(!condensed && index % 2 !== 0) && (
                   <div className="w-full rounded-lg border bg-card/50 p-4 shadow-lg backdrop-blur-sm">
                     <p className="font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.title}</p>
                     <p className="text-sm text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
@@ -33,18 +42,29 @@ export function Timeline() {
                     </p>
                   </div>
                 )}
+                 {(condensed) && (
+                  <div className="w-full rounded-lg border bg-card/50 p-3 shadow-lg backdrop-blur-sm">
+                    <div className="flex justify-between items-center">
+                        <p className="font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.title}</p>
+                        <p className="font-mono text-xs text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] shrink-0 ml-2">{item.time}</p>
+                    </div>
+                    <p className="text-xs text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] mt-1">
+                      {item.description}
+                    </p>
+                  </div>
+                )}
               </div>
 
-              <div className="absolute left-1/2 z-10 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full bg-background/80 backdrop-blur-sm">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-card ring-2 ring-primary">
-                  <item.icon className="h-5 w-5 text-primary" />
+              <div className={cn("absolute left-1/2 z-10 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full bg-background/80 backdrop-blur-sm", condensed && "left-6 h-10 w-10")}>
+                <div className={cn("flex h-10 w-10 items-center justify-center rounded-full bg-card ring-2 ring-primary", condensed && "h-8 w-8")}>
+                  <item.icon className={cn("h-5 w-5 text-primary", condensed && "h-4 w-4")} />
                 </div>
               </div>
 
               <div
-                className={`flex w-1/2 items-center ${
+                className={cn(`flex w-1/2 items-center ${
                   index % 2 === 0 ? 'justify-start pl-12' : 'justify-end pr-12'
-                }`}
+                }`, condensed && 'hidden')}
               >
                 {index % 2 === 0 ? (
                   <div className="w-full rounded-lg border bg-card/50 p-4 shadow-lg backdrop-blur-sm">
@@ -58,7 +78,7 @@ export function Timeline() {
                     <p className="w-full text-right font-mono text-sm text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.time}</p>
                 )}
               </div>
-               {index % 2 === 0 && <p className="absolute right-[calc(50%+3rem)] w-1/2 text-left font-mono text-sm text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.time}</p>}
+               {(!condensed && index % 2 === 0) && <p className="absolute right-[calc(50%+3rem)] w-1/2 text-left font-mono text-sm text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.time}</p>}
             </div>
           ))}
         </div>
