@@ -13,8 +13,8 @@ export function Timeline() {
           </p>
         </div>
 
-        <div className="relative mx-auto max-w-3xl">
-          <div className="absolute left-1/2 top-0 h-full w-0.5 -translate-x-1/2 bg-border"></div>
+        <div className="relative mx-auto max-w-4xl">
+          <div className="absolute left-1/2 top-0 h-full w-0.5 -translate-x-1/2 bg-border/50"></div>
           {schedule.map((item, index) => (
             <div
               key={index}
@@ -22,11 +22,11 @@ export function Timeline() {
             >
               <div
                 className={`flex w-1/2 items-center ${
-                  index % 2 === 0 ? 'justify-end pr-8' : 'justify-start pl-8'
+                  index % 2 === 0 ? 'justify-end pr-12' : 'justify-start pl-12'
                 }`}
               >
                 {index % 2 !== 0 && (
-                  <div className="w-full">
+                  <div className="w-full rounded-lg border bg-card/50 p-4 shadow-lg backdrop-blur-sm">
                     <p className="font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.title}</p>
                     <p className="text-sm text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
                       {item.description}
@@ -43,11 +43,11 @@ export function Timeline() {
 
               <div
                 className={`flex w-1/2 items-center ${
-                  index % 2 === 0 ? 'justify-start pl-8' : 'justify-end pr-8'
+                  index % 2 === 0 ? 'justify-start pl-12' : 'justify-end pr-12'
                 }`}
               >
                 {index % 2 === 0 ? (
-                  <div className="w-full">
+                  <div className="w-full rounded-lg border bg-card/50 p-4 shadow-lg backdrop-blur-sm">
                     <p className="font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.title}</p>
 
                     <p className="text-sm text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
@@ -58,7 +58,7 @@ export function Timeline() {
                     <p className="w-full text-right font-mono text-sm text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.time}</p>
                 )}
               </div>
-               {index % 2 === 0 && <p className="absolute right-[calc(50%+2rem)] w-1/2 text-left font-mono text-sm text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.time}</p>}
+               {index % 2 === 0 && <p className="absolute right-[calc(50%+3rem)] w-1/2 text-left font-mono text-sm text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.time}</p>}
             </div>
           ))}
         </div>
