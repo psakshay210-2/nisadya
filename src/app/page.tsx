@@ -1,6 +1,5 @@
 import { Footer } from '@/components/layout/footer';
 import { Header } from '@/components/layout/header';
-import { Chatbot } from '@/components/sections/chatbot';
 import { Events } from '@/components/sections/events';
 import { Hero } from '@/components/sections/hero';
 import { Sponsors } from '@/components/sections/sponsors';
@@ -14,7 +13,6 @@ export default function Home() {
         <Hero />
         <Events />
         <Timeline />
-        <Chatbot />
         <Sponsors />
       </main>
       <Footer />

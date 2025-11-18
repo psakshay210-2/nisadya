@@ -11,7 +11,6 @@ import Image from 'next/image';
 const navLinks = [
   { href: '#events', label: 'Events' },
   { href: '#schedule', label: 'Schedule' },
-  { href: '#chatbot', label: 'Chatbot' },
   { href: '#sponsors', label: 'Sponsors' },
 ];
 
