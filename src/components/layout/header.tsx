@@ -42,20 +42,22 @@ export function Header() {
   return (
     <header
       className={cn(
-        'light fixed top-0 z-50 w-full transition-all duration-300',
+        'fixed top-0 z-50 w-full transition-all duration-300',
         hasScrolled
           ? 'border-b border-border/40 bg-background/80 backdrop-blur-sm'
           : 'border-b border-transparent'
       )}
     >
-      <div className="container flex h-20 items-center">
+      <div className="container flex h-24 items-center">
         <Link href="/" className="mr-6 flex items-center gap-2">
           <Image
             src="/logo.png"
             alt="Nisadya Logo"
-            width={96}
-            height={48}
-            className={cn(hasScrolled ? '' : 'invert')}
+            width={128}
+            height={64}
+            className={cn(
+              hasScrolled ? '' : 'invert drop-shadow-[0_4px_4px_rgba(0,0,0,0.7)]'
+            )}
           />
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
@@ -100,8 +102,8 @@ export function Header() {
                   <Image
                     src="/logo.png"
                     alt="Nisadya Logo"
-                    width={96}
-                    height={48}
+                    width={128}
+                    height={64}
                   />
                 </Link>
                 {navLinks.map((link) => (
