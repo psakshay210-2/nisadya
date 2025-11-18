@@ -3,7 +3,7 @@
     {
       "id": "hero-background",
       "description": "The entrance of a modern college building with orange and grey accents.",
-      "imageUrl": "https://images.unsplash.com/photo-1562774053-623a11674149?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "imageUrl": "https://storage.googleapis.com/aai-web-samples/nextjs/nisadya/background.png",
       "imageHint": "college campus"
     },
     {
@@ -33,7 +33,7 @@
     {
       "id": "event-informal-1",
       "description": "Students playing video games.",
-      "imageUrl": "https://images.unsplash.com/photo-1759171053149-d5cce4261405?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxnYW1pbmclMjBjb21wZXRpdGlvbnxlbnwwfHx8fDE3NjM0MDczOTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1759171053149-d5cce4261405?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxnYW1pbmclMjBjb21wZXRpdGlvbnxlbnwwfHx8fDE3NjM0MDczOTd8MA&ixlibrb-4.1.0&q=80&w=1080",
       "imageHint": "gaming competition"
     },
     {
@@ -63,19 +63,19 @@
     {
       "id": "sponsor-4",
       "description": "Sponsor logo 4",
-      "imageUrl": "https://images.unsplash.com/photo-1619551734325-81aaf323686c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3NjMzNTU2NDl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1619551734325-81aaf323686c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3NjMzNTU2NDl8MA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "company logo"
     },
     {
       "id": "sponsor-5",
       "description": "Sponsor logo 5",
-      "imageUrl": "https://images.unsplash.com/photo-1619551734325-81aaf323686c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3NjMzNTU2NDl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1619551734325-81aaf323686c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3NjMzNTU2NDl8MA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "company logo"
     },
     {
       "id": "sponsor-6",
       "description": "Sponsor logo 6",
-      "imageUrl": "https://images.unsplash.com/photo-1562705121-e624542c7b9b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y29tcGFueSUyMGxvZ298ZW58MHx8fHwxNzYzMzU1NjQ5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1562705121-e624542c7b9b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y29tcGFueSUyMGxvZ298ZW58MHx8fHwxNzYzMzU1NjQ5fDA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "company logo"
     }
   ]
