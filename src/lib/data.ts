@@ -48,7 +48,7 @@ export const events: Event[] = [
     category: 'Cultural',
     date: 'Day 1 Evening',
     description: 'Witness the ultimate musical showdown as bands compete for glory.',
-    details: 'Stellaris is the flagship music event of Nisadya Nexus. Bands from across the country will perform their original compositions and covers to captivate the audience and judges. A panel of renowned musicians will decide the winner based on originality, technical skill, and stage presence. Get ready for an electrifying night of music.',
+    details: 'Stellaris is the flagship music event of Nisadya. Bands from across the country will perform their original compositions and covers to captivate the audience and judges. A panel of renowned musicians will decide the winner based on originality, technical skill, and stage presence. Get ready for an electrifying night of music.',
     imageId: 'event-cultural-1',
   },
   {
@@ -90,7 +90,7 @@ export const schedule: ScheduleItem[] = [
     {
         time: 'Day 1, 09:00 AM',
         title: 'Opening Ceremony',
-        description: 'Inauguration of Nisadya Nexus with guest speakers and performances.',
+        description: 'Inauguration of Nisadya with guest speakers and performances.',
         icon: Mic,
     },
     {

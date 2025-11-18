@@ -49,7 +49,7 @@ export function Header() {
       <div className="container flex h-16 items-center">
         <Link href="/" className="mr-6 flex items-center gap-2">
           <Rocket className="h-6 w-6 text-primary" />
-          <span className="font-headline text-lg font-bold">Nisadya Nexus</span>
+          <span className="font-headline text-lg font-bold">Nisadya</span>
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
           <NavContent />
@@ -69,7 +69,7 @@ export function Header() {
               <nav className="mt-8 grid gap-6 text-lg font-medium">
                 <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
                   <Rocket className="h-6 w-6 text-primary" />
-                  <span className="font-headline text-lg font-bold">Nisadya Nexus</span>
+                  <span className="font-headline text-lg font-bold">Nisadya</span>
                 </Link>
                 <NavContent />
               </nav>

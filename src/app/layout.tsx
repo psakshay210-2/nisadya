@@ -3,8 +3,8 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'Nisadya Nexus',
-  description: 'The official website for the Nisadya Nexus college fest.',
+  title: 'Nisadya',
+  description: 'The official website for the Nisadya college fest.',
 };
 
 export default function RootLayout({

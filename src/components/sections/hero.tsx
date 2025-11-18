@@ -8,7 +8,7 @@ export function Hero() {
       <div className="container relative flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center text-center">
         <h1 className="font-headline text-5xl font-bold tracking-tighter md:text-7xl lg:text-8xl">
           <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-            Nisadya Nexus
+            Nisadya
           </span>
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground md:text-xl">
