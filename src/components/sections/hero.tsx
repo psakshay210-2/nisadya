@@ -3,27 +3,18 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 
 export function Hero() {
-  const [offsetY, setOffsetY] = useState(0);
-  const handleScroll = () => setOffsetY(window.scrollY);
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
     <section
-      className="relative w-full bg-cover bg-bottom"
+      className="relative w-full bg-cover bg-bottom bg-fixed"
       style={{
         backgroundImage: "url('/background.png')",
       }}
     >
       <div className="container relative z-10 flex min-h-screen flex-col items-center justify-center pt-24 text-center">
         <a href="#events" className="animate-fade-in-up block">
-          <div style={{ transform: `translateY(${offsetY * 0.5}px)` }}>
+          <div>
             <Image
               src="/logo.png"
               alt="Nisadya Logo"
@@ -37,19 +28,13 @@ export function Hero() {
           </div>
         </a>
         <a href="#events" className="group">
-          <p
-            className="mx-auto mt-4 max-w-2xl animate-fade-in-up cursor-pointer text-lg text-white/80 transition-colors [animation-delay:200ms] group-hover:text-white md:text-xl"
-            style={{ transform: `translateY(${offsetY * 0.4}px)` }}
-          >
+          <p className="mx-auto mt-4 max-w-2xl animate-fade-in-up cursor-pointer text-lg text-white/80 transition-colors [animation-delay:200ms] group-hover:text-white md:text-xl">
             Where Technology, Culture, and Innovation Collide.
             <br />
             Join us for three days of non-stop excitement and learning.
           </p>
         </a>
-        <div
-          className="mt-8 flex animate-fade-in-up flex-wrap justify-center gap-4 [animation-delay:400ms]"
-          style={{ transform: `translateY(${offsetY * 0.3}px)` }}
-        >
+        <div className="mt-8 flex animate-fade-in-up flex-wrap justify-center gap-4 [animation-delay:400ms]">
           <Button size="lg" asChild>
             <a href="#events">
               Explore Events{' '}
