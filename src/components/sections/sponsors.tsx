@@ -15,7 +15,7 @@ export function Sponsors() {
             Powering innovation and making this event possible.
           </p>
         </div>
-        <div className="flex flex-wrap items-center justify-center gap-8">
+        <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16">
           {sponsors.map((sponsor) => {
             const placeholder = PlaceHolderImages.find(
               (p) => p.id === sponsor.imageId
@@ -25,14 +25,14 @@ export function Sponsors() {
               <Link
                 href="#"
                 key={sponsor.id}
-                className="flex items-center justify-center"
+                className="flex items-center justify-center opacity-60 transition-opacity duration-300 hover:opacity-100"
               >
                 <Image
                   src={placeholder.imageUrl}
                   alt={sponsor.name}
                   width={200}
                   height={100}
-                  className="object-contain grayscale transition-all duration-300 hover:grayscale-0"
+                  className="object-contain"
                   data-ai-hint={placeholder.imageHint}
                 />
               </Link>

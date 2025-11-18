@@ -35,7 +35,7 @@ export function EventCard({ event }: EventCardProps) {
 
   return (
     <Dialog>
-      <Card className="flex h-full flex-col overflow-hidden">
+      <Card className="group flex h-full flex-col overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-2">
         <CardHeader className="p-0">
           {placeholder && (
             <div className="aspect-[3/2] w-full overflow-hidden">
@@ -44,7 +44,7 @@ export function EventCard({ event }: EventCardProps) {
                 alt={placeholder.description}
                 width={600}
                 height={400}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 data-ai-hint={placeholder.imageHint}
               />
             </div>
