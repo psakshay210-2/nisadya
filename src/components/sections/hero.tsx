@@ -52,7 +52,7 @@ export function Hero() {
             </div>
           </div>
           <div className={cn(
-            'hidden lg:block transition-opacity duration-500 delay-[1700ms]',
+            'hidden lg:block transition-opacity duration-500 delay-[1700ms] mr-4',
             loading ? 'opacity-0' : 'opacity-100 animate-fade-in-up'
           )}>
             <div className="h-[80vh] overflow-y-auto rounded-lg bg-card/50 p-4 backdrop-blur-sm">
