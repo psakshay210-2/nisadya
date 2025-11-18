@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import Image from 'next/image';
 
 export function Hero() {
   return (
@@ -9,9 +10,16 @@ export function Hero() {
     >
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
       <div className="container relative z-10 flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center text-center">
-        <h1 className="animate-fade-in-up font-headline text-5xl font-bold tracking-tighter text-white drop-shadow-2xl md:text-7xl lg:text-8xl">
-          Nisadya
-        </h1>
+        <div className="animate-fade-in-up">
+          <Image
+            src="/logo.png"
+            alt="Nisadya Logo"
+            width={400}
+            height={200}
+            className="h-auto w-64 md:w-96"
+            style={{ filter: 'invert(1)' }}
+          />
+        </div>
         <p className="mx-auto mt-4 max-w-2xl animate-fade-in-up text-lg text-white/80 [animation-delay:200ms] md:text-xl">
           Where Technology, Culture, and Innovation Collide.
           <br />
