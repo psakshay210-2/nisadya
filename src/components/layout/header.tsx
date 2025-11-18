@@ -49,7 +49,7 @@ export function Header() {
     >
       <div className="container flex h-16 items-center">
         <Link href="/" className="mr-6 flex items-center gap-2">
-          <Image src="/logo.jpg" alt="Nisadya Logo" width={32} height={32} className="rounded-full" />
+          <Image src="/logo.png" alt="Nisadya Logo" width={32} height={32} className="rounded-full" />
           <span className="font-headline text-lg font-bold">Nisadya</span>
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
@@ -69,7 +69,7 @@ export function Header() {
             <SheetContent side="right">
               <nav className="mt-8 grid gap-6 text-lg font-medium">
                 <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
-                  <Image src="/logo.jpg" alt="Nisadya Logo" width={32} height={32} className="rounded-full" />
+                  <Image src="/logo.png" alt="Nisadya Logo" width={32} height={32} className="rounded-full" />
                   <span className="font-headline text-lg font-bold">Nisadya</span>
                 </Link>
                 <NavContent />
