@@ -7,11 +7,16 @@ import { Timeline } from '@/components/sections/timeline';
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div
+      className="flex min-h-screen flex-col bg-cover bg-bottom bg-fixed"
+      style={{
+        backgroundImage: "url('/background.png')",
+      }}
+    >
       <Header />
       <main className="flex-1">
         <Hero />
-        <div className="bg-transparent">
+        <div className="bg-background/80 backdrop-blur-sm">
           <Events />
           <Timeline />
           <Sponsors />

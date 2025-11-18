@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export function Sponsors() {
   return (
-    <section id="sponsors" className="py-16 md:py-24">
+    <section id="sponsors" className="py-16 md:py-24 bg-transparent">
       <div className="container">
         <div className="mb-12 text-center">
           <h2 className="font-headline text-4xl font-bold md:text-5xl">

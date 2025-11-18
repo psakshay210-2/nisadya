@@ -2,7 +2,7 @@ import { schedule } from '@/lib/data';
 
 export function Timeline() {
   return (
-    <section id="schedule" className="py-16 md:py-24">
+    <section id="schedule" className="py-16 md:py-24 bg-transparent">
       <div className="container">
         <div className="mb-12 text-center">
           <h2 className="font-headline text-4xl font-bold md:text-5xl">
@@ -35,7 +35,7 @@ export function Timeline() {
                 )}
               </div>
 
-              <div className="absolute left-1/2 z-10 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full bg-background">
+              <div className="absolute left-1/2 z-10 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full bg-background/80 backdrop-blur-sm">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-card ring-2 ring-primary">
                   <item.icon className="h-5 w-5 text-primary" />
                 </div>

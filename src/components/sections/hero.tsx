@@ -7,10 +7,7 @@ import Image from 'next/image';
 export function Hero() {
   return (
     <section
-      className="relative w-full bg-cover bg-bottom bg-fixed"
-      style={{
-        backgroundImage: "url('/background.png')",
-      }}
+      className="relative w-full"
     >
       <div className="container relative z-10 flex min-h-screen flex-col items-center justify-center pt-24 text-center">
         <a href="#events" className="animate-fade-in-up block">
