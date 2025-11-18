@@ -14,9 +14,9 @@ export function Hero() {
           <Image
             src="/logo.png"
             alt="Nisadya Logo"
-            width={400}
-            height={200}
-            className="h-auto w-64 md:w-96"
+            width={600}
+            height={300}
+            className="h-auto w-80 md:w-[32rem]"
             style={{ filter: 'invert(1)' }}
           />
         </div>
