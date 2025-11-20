@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
 const navLinks: { href: string, label: string }[] = [
+    { href: '#accommodation', label: 'Accommodation' },
 ];
 
 export function Header() {
