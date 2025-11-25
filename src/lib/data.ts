@@ -143,7 +143,7 @@ export const sponsors: Sponsor[] = [
 ];
 
 export const instagramPosts: InstagramPost[] = [
-  { id: '1', url: 'https://www.instagram.com/p/C8yv0-Svtou/' },
+  { id: '1', url: 'https://www.instagram.com/p/DEzDSWSMxky/?utm_source=ig_web_copy_link' },
   { id: '2', url: 'https://www.instagram.com/p/C8yv0-Svtou/' },
   { id: '3', url: 'https://www.instagram.com/p/C8xUpk8SAt-/' },
   { id: '4', url: 'https://www.instagram.com/p/C8xUpk8SAt-/' },
