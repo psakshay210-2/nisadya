@@ -94,38 +94,26 @@ export function InstagramFeed() {
     setError(null);
 
     try {
-      if (GOOGLE_SHEET_CSV_URL && GOOGLE_SHEET_CSV_URL.startsWith('http')) {
-        let csvText = null;
-        try {
-          const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(GOOGLE_SHEET_CSV_URL)}`;
-          const response = await fetch(proxyUrl);
-          if (response.ok) csvText = await response.text();
-        } catch (e) {
-          console.warn("Proxy 1 failed, trying Proxy 2");
-        }
+        const cacheBustingUrl = `${GOOGLE_SHEET_CSV_URL}&_=${new Date().getTime()}`;
+        const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(cacheBustingUrl)}`;
 
-        if (!csvText) {
-          try {
-            const proxyUrl2 = `https://api.allorigins.win/raw?url=${encodeURIComponent(GOOGLE_SHEET_CSV_URL)}`;
-            const response = await fetch(proxyUrl2);
-            if (response.ok) csvText = await response.text();
-          } catch(e) {
-            console.warn("Proxy 2 failed");
-          }
+        const response = await fetch(proxyUrl);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch from proxy. Status: ${response.status}`);
         }
+        const csvText = await response.text();
 
         if (csvText) {
-          const parsedLinks = parseCSV(csvText);
-          if (parsedLinks.length > 0) {
+            const parsedLinks = parseCSV(csvText);
+            if (parsedLinks.length > 0) {
             setLinks(parsedLinks);
-          } else {
-             setError("Connected to Sheet, but found no valid links.");
-             setLinks([]);
-          }
+            } else {
+            setError("Connected to Sheet, but found no valid links.");
+            setLinks([]);
+            }
         } else {
-          throw new Error("Could not fetch data from Google Sheet.");
+            throw new Error("Could not fetch data from Google Sheet.");
         }
-      }
     } catch (err: any) {
       console.error(err);
       setError(err.message || "Could not load your Sheet.");
