@@ -136,7 +136,13 @@ export function InstagramFeed() {
   };
 
   useEffect(() => {
-    fetchData();
+    fetchData(); // Fetch initial data
+    
+    const intervalId = setInterval(() => {
+      fetchData();
+    }, 120000); // 2 minutes in milliseconds
+
+    return () => clearInterval(intervalId); // Cleanup on component unmount
   }, []);
 
   return (
