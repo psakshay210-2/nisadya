@@ -58,7 +58,7 @@ const InstagramCard = ({ url }: { url: string }) => {
         src={embedUrl} 
         className={`w-full h-full border-0 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
         scrolling="no" 
-        allowTransparency={true}
+        allowtransparency="true"
         allow="encrypted-media"
         onLoad={() => setIsLoaded(true)}
         onError={() => setHasError(true)}
