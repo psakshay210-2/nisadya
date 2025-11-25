@@ -143,7 +143,14 @@ export const sponsors: Sponsor[] = [
 ];
 
 export const instagramPosts: InstagramPost[] = [
-  { id: '1', url: 'https://www.instagram.com/p/C-pN288S5eA/' },
-  { id: '2', url: 'https://www.instagram.com/p/C-m_4BMSsL_/' },
-  { id: '3', url: 'https://www.instagram.com/p/C-j5_3aSlpG/' },
+  { id: '1', url: 'https://www.instagram.com/p/C8yv0-Svtou/' },
+  { id: '2', url: 'https://www.instagram.com/p/C8yv0-Svtou/' },
+  { id: '3', url: 'https://www.instagram.com/p/C8xUpk8SAt-/' },
+  { id: '4', url: 'https://www.instagram.com/p/C8xUpk8SAt-/' },
+  { id: '5', url: 'https://www.instagram.com/p/C8s35WSv2BO/' },
+  { id: '6', url: 'https://www.instagram.com/p/C8s35WSv2BO/' },
+  { id: '7', url: 'https://www.instagram.com/p/C8ks3L1S62p/' },
+  { id: '8', url: 'https://www.instagram.com/p/C8ks3L1S62p/' },
+  { id: '9', url: 'https://www.instagram.com/p/C8iIdYFSf2T/' },
+  { id: '10', url: 'https://www.instagram.com/p/C8iIdYFSf2T/' }
 ];
