@@ -69,13 +69,13 @@
     {
       "id": "sponsor-3",
       "description": "Sponsor logo 3",
-      "imageUrl": "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3NjMzNTU2NDl8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3NjMzNTU2NDl8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "company logo"
     },
     {
       "id": "sponsor-4",
       "description": "Sponsor logo 4",
-      "imageUrl": "https://images.unsplash.com/photo-1619551734325-81aaf323686c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3NjMzNTU2NDl8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1619551734325-81aaf323686c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3NjMzNTU2NDl8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "company logo"
     },
     {
@@ -87,8 +87,56 @@
     {
       "id": "sponsor-6",
       "description": "Sponsor logo 6",
-      "imageUrl": "https://images.unsplash.com/photo-1562705121-e624542c7b9b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y29tcGFueSUyMGxvZ298ZW58MHx8fHwxNzYzMzU1NjQ5fDA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1562705121-e624542c7b9b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y29tcGFueSUyMGxvZ298ZW58MHx8fHwxNzYzMzU1NjQ5fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "company logo"
+    },
+    {
+      "id": "insta-1",
+      "description": "Nisadya fest poster",
+      "imageUrl": "https://images.unsplash.com/photo-1747564880774-eb41fd90bf04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxmZXN0JTIwcG9zdGVyfGVufDB8fHx8MTc2NDA4MDYwNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "fest poster"
+    },
+    {
+      "id": "insta-2",
+      "description": "Event announcement for a design competition",
+      "imageUrl": "https://images.unsplash.com/photo-1649660289179-54539943a58a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxkZXNpZ24lMjBjb21wZXRpdGlvbnxlbnwwfHx8fDE3NjQwODA2MDV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "design competition"
+    },
+    {
+      "id": "insta-3",
+      "description": "A person speaking at a workshop",
+      "imageUrl": "https://images.unsplash.com/photo-1581091226649-bf2f2b7c4a24?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx3b3Jrc2hvcCUyMHNwZWFrZXJ8ZW58MHx8fHwxNzY0MDgwNjA1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "workshop speaker"
+    },
+    {
+      "id": "insta-4",
+      "description": "A group of students at a college fest",
+      "imageUrl": "https://images.unsplash.com/photo-1620736287754-0647f41d1c61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjb2xsZWdlJTIwZmVzdHxlbnwwfHx8fDE3NjQwODA2MDV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "college fest"
+    },
+    {
+      "id": "insta-5",
+      "description": "A marketing-related event poster",
+      "imageUrl": "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtYXJrZXRpbmclMjBldmVudHxlbnwwfHx8fDE3NjQwMjUyMDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "marketing event"
+    },
+    {
+      "id": "insta-6",
+      "description": "An announcement for a business case competition",
+      "imageUrl": "https://images.unsplash.com/photo-1582834202430-ddcd18987a61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8YnVzaW5lc3MlMjBjb21wZXRpdGlvbnxlbnwwfHx8fDE3NjM5ODM3Mzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "business competition"
+    },
+    {
+      "id": "insta-7",
+      "description": "A poster for a fun informal event",
+      "imageUrl": "https://images.unsplash.com/photo-1762215609231-538f04f78d75?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxpbmZvcm1hbCUyMGV2ZW50fGVufDB8fHx8MTc2NDA4MDYwNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "informal event"
+    },
+    {
+      "id": "insta-8",
+      "description": "An event poster related to entrepreneurship",
+      "imageUrl": "https://images.unsplash.com/photo-1555758656-192db868857f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxlbnRyZXByZW5ldXJzaGlwJTIwZXZlbnR8ZW58MHx8fHwxNzY0MDgwNjA1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "entrepreneurship event"
     }
   ]
 }

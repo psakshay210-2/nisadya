@@ -19,4 +19,5 @@ export type Event = {
 export type InstagramPost = {
   id: string;
   url: string;
+  imageId: string;
 };

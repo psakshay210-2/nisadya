@@ -10,27 +10,32 @@ import {
 } from '@/components/ui/carousel';
 import { Instagram } from 'lucide-react';
 import { Card, CardContent } from '../ui/card';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
+import Image from 'next/image';
 
-// As we can't use the 'react-instagram-embed' package due to compatibility issues,
-// we will simulate the embed with a simple card that links to the post.
-// You would need a more robust solution for full embeds, possibly using an official API
-// or a different, up-to-date library.
+const InstagramPost = ({ url, imageId }: { url: string, imageId: string }) => {
+    const placeholder = PlaceHolderImages.find((p) => p.id === imageId);
 
-const InstagramPost = ({ url }: { url: string }) => {
-  const postId = url.split('/').filter(Boolean).pop();
-  return (
-    <Card className="w-full max-w-[320px] mx-auto">
-      <CardContent className="p-4">
-        <div className="aspect-square bg-muted flex items-center justify-center rounded-md">
-            <a href={url} target="_blank" rel="noopener noreferrer" className="text-center">
-                <Instagram className="h-16 w-16 text-muted-foreground/50" />
-                <p className="text-sm text-muted-foreground mt-2">View on Instagram</p>
-                <p className="text-xs text-muted-foreground/80 mt-1">Post ID: {postId}</p>
+    return (
+        <Card className="w-full max-w-[320px] mx-auto overflow-hidden group">
+            <a href={url} target="_blank" rel="noopener noreferrer">
+                <div className="aspect-square relative">
+                    {placeholder && (
+                        <Image
+                        src={placeholder.imageUrl}
+                        alt={placeholder.description}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        data-ai-hint={placeholder.imageHint}
+                        />
+                    )}
+                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <Instagram className="h-12 w-12 text-white" />
+                    </div>
+                </div>
             </a>
-        </div>
-      </CardContent>
-    </Card>
-  )
+        </Card>
+    )
 }
 
 export function InstagramFeed() {
@@ -58,7 +63,7 @@ export function InstagramFeed() {
             {instagramPosts.map((post) => (
               <CarouselItem key={post.id} className="md:basis-1/2 lg:basis-1/3 flex justify-center">
                 <div className="w-[320px]">
-                  <InstagramPost url={post.url} />
+                  <InstagramPost url={post.url} imageId={post.imageId} />
                 </div>
               </CarouselItem>
             ))}
