@@ -1,4 +1,4 @@
-import { Cpu, Music, Users, Bot, Gamepad2, Paintbrush, Code, Mic, Film, Ticket, Instagram } from "lucide-react";
+import { Cpu, Music, Users, Bot, Gamepad2, Paintbrush, Code, Mic, Film } from "lucide-react";
 import { Event } from "@/lib/types";
 
 export type ScheduleItem = {
@@ -141,15 +141,4 @@ export const sponsors: Sponsor[] = [
   { id: '4', name: 'Sponsor Four', imageId: 'sponsor-4' },
   { id: '5', name: 'Sponsor Five', imageId: 'sponsor-5' },
   { id: '6', name: 'Sponsor Six', imageId: 'sponsor-6' },
-];
-
-export const instagramPosts: InstagramPost[] = [
-  { id: '1', url: 'https://www.instagram.com/p/C8yv0-Svtou/', imageId: 'insta-1' },
-  { id: '2', url: 'https://www.instagram.com/p/C8xUpk8SAt-/', imageId: 'insta-2' },
-  { id: '3', url: 'https://www.instagram.com/p/C8s35WSv2BO/', imageId: 'insta-3' },
-  { id: '4', url: 'https://www.instagram.com/p/C8ks3L1S62p/', imageId: 'insta-4' },
-  { id: '5', url: 'https://www.instagram.com/p/C8iIdYFSf2T/', imageId: 'insta-5' },
-  { id: '6', url: 'https://www.instagram.com/p/C8g2Y3kSjT_/', imageId: 'insta-6' },
-  { id: '7', url: 'https://www.instagram.com/p/C8ft6hZS5a-/', imageId: 'insta-7' },
-  { id: '8', url: 'https://www.instagram.com/p/C8d5f3SSML6/', imageId: 'insta-8' },
 ];
