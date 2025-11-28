@@ -6,9 +6,9 @@ import { Events } from "./events"
 
 export function HeroTabs() {
   return (
-    <div className="h-[80vh] rounded-lg bg-card/50 p-4 backdrop-blur-sm flex flex-col">
+    <div className="h-[70vh] rounded-lg bg-card/50 p-4 backdrop-blur-sm flex flex-col">
       <Tabs defaultValue="events" className="flex flex-col h-full">
-        <TabsList className="shrink-0">
+        <TabsList className="shrink-0 w-full max-w-md mx-auto grid grid-cols-3">
           <TabsTrigger value="events" className="gap-2">
             <Ticket className="h-5 w-5"/>
             <span>Events</span>

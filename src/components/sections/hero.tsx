@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { HeroTabs } from './hero-tabs';
 import Image from 'next/image';
-import { Button } from '../ui/button';
 
 export function Hero() {
   const [loading, setLoading] = useState(true);
@@ -44,7 +43,7 @@ export function Hero() {
       </div>
 
       <div className="container">
-        <div className="relative z-10 flex h-screen flex-col items-center justify-center gap-8 pt-24 lg:pt-0">
+        <div className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-8 pt-24 lg:pt-0">
           <div
             className={cn(
               'flex flex-col items-center text-center transition-opacity duration-500 delay-[1500ms]',
