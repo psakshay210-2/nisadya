@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { Chatbot } from '@/components/sections/chatbot';
-import { Header } from '@/components/layout/header';
 import React from 'react';
 
 export const metadata: Metadata = {
@@ -26,7 +25,6 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        <Header />
         {children}
         <Chatbot />
         <Toaster />
