@@ -8,28 +8,19 @@ import Image from 'next/image';
 
 export default function Home() {
   return (
-    <>
-      <Image
-        src="/background.png"
-        alt="Nisadya background"
-        fill
-        className="object-cover fixed -z-10"
-        priority
-      />
-      <div className="flex min-h-screen flex-col">
-        <main className="flex-1">
-          <Hero />
-          <Accommodation />
-          <InstagramFeed />
-          <div className="bg-transparent">
-            <div className="lg:hidden">
-              <Events />
-              <Timeline />
-            </div>
+    <div className="flex min-h-screen flex-col">
+      <main className="flex-1">
+        <Hero />
+        <Accommodation />
+        <InstagramFeed />
+        <div className="bg-transparent">
+          <div className="lg:hidden">
+            <Events />
+            <Timeline />
           </div>
-        </main>
-        <Footer />
-      </div>
-    </>
+        </div>
+      </main>
+      <Footer />
+    </div>
   );
 }

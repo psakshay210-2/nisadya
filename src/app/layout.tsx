@@ -3,6 +3,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { Chatbot } from '@/components/sections/chatbot';
 import React from 'react';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'Nisadya',
@@ -25,6 +26,13 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
+        <Image
+          src="/background.png"
+          alt="Nisadya background"
+          fill
+          className="object-cover fixed -z-10"
+          priority
+        />
         {children}
         <Chatbot />
         <Toaster />
