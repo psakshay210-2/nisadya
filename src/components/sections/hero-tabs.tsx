@@ -6,23 +6,23 @@ import { Events } from "./events"
 
 export function HeroTabs() {
   return (
-    <div className="h-[80vh] rounded-lg bg-card/50 p-4 backdrop-blur-sm">
-      <Tabs defaultValue="events" orientation="vertical" className="flex h-full gap-4">
-        <TabsList className="grid h-full w-20 grid-rows-3 bg-transparent border-r border-border/50 rounded-none p-2">
-          <TabsTrigger value="events" className="flex flex-col gap-2 h-full data-[state=active]:bg-accent/50 data-[state=active]:shadow-none">
+    <div className="h-[80vh] rounded-lg bg-card/50 p-4 backdrop-blur-sm flex flex-col">
+      <Tabs defaultValue="events" className="flex flex-col h-full">
+        <TabsList className="shrink-0">
+          <TabsTrigger value="events" className="gap-2">
             <Ticket className="h-5 w-5"/>
             <span>Events</span>
           </TabsTrigger>
-          <TabsTrigger value="schedule" className="flex flex-col gap-2 h-full data-[state=active]:bg-accent/50 data-[state=active]:shadow-none">
+          <TabsTrigger value="schedule" className="gap-2">
             <Calendar className="h-5 w-5"/>
             <span>Schedule</span>
           </TabsTrigger>
-          <TabsTrigger value="sponsors" className="flex flex-col gap-2 h-full data-[state=active]:bg-accent/50 data-[state=active]:shadow-none">
+          <TabsTrigger value="sponsors" className="gap-2">
             <Building2 className="h-5 w-5"/>
             <span>Sponsors</span>
           </TabsTrigger>
         </TabsList>
-        <div className="flex-1 h-full overflow-hidden">
+        <div className="flex-1 mt-4 h-full overflow-hidden">
           <TabsContent value="events" className="h-full mt-0">
             <div className="h-full overflow-y-auto">
               <Events condensed />
