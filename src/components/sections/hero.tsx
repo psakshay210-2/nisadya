@@ -46,7 +46,7 @@ export function Hero() {
         <div className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-8 pt-24 lg:pt-0">
           <div
             className={cn(
-              'flex flex-col items-center text-center transition-opacity duration-500 delay-[1500ms]',
+              'flex flex-col items-center text-center transition-opacity duration-500 delay-[1500ms] w-full',
               loading ? 'opacity-0' : 'opacity-100'
             )}
           >
@@ -70,10 +70,10 @@ export function Hero() {
             <div
               className={cn(
                 'flex flex-col items-center transition-all duration-500 ease-in-out w-full mt-8',
-                showInfo ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
+                showInfo ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none h-0'
               )}
             >
-              <div className="max-w-3xl rounded-lg bg-black/20 p-6 backdrop-blur-sm">
+              <div className="max-w-3xl rounded-lg bg-black/20 p-6 backdrop-blur-sm mb-8">
                 <p className="text-lg text-white/90 md:text-xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
                   Nisadya is the Management fest of DoMS, NIT Trichy. It is a parley
                   of cultural and managerial events, fun and happiness, competition
@@ -86,7 +86,7 @@ export function Hero() {
           </div>
           <div
             className={cn(
-              'w-full max-w-4xl transition-opacity duration-500 delay-[1700ms]',
+              'w-full max-w-4xl transition-opacity duration-500 delay-[1700ms] h-[60vh]',
               loading ? 'opacity-0' : 'opacity-100 animate-fade-in-up'
             )}
           >
