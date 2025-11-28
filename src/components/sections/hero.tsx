@@ -44,16 +44,16 @@ export function Hero() {
       </div>
 
       <div className="container">
-        <div className="relative z-10 grid h-screen items-center gap-8 lg:grid-cols-3 pt-24 lg:pt-0">
+        <div className="relative z-10 flex h-screen flex-col items-center justify-center gap-8 pt-24 lg:pt-0">
           <div
             className={cn(
-              'flex flex-col items-center text-center lg:items-start lg:text-left transition-opacity duration-500 delay-[1500ms] lg:col-span-2',
+              'flex flex-col items-center text-center transition-opacity duration-500 delay-[1500ms]',
               loading ? 'opacity-0' : 'opacity-100'
             )}
           >
             <div
               className={cn(
-                'fixed top-8 left-1/2 -translate-x-1/2 z-50 cursor-pointer transition-all duration-700 ease-in-out',
+                'relative cursor-pointer transition-all duration-700 ease-in-out',
                 showInfo ? 'w-48' : 'w-64'
               )}
               onClick={() => setShowInfo(!showInfo)}
@@ -70,14 +70,11 @@ export function Hero() {
 
             <div
               className={cn(
-                'flex flex-col items-center lg:items-start transition-all duration-500 ease-in-out w-full mt-24',
-                showInfo ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+                'flex flex-col items-center transition-all duration-500 ease-in-out w-full mt-8',
+                showInfo ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
               )}
             >
-              <p className="max-w-3xl text-4xl font-bold text-white md:text-5xl drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">
-                "In the waves of chance we find a new beginning"
-              </p>
-              <div className="mx-auto mt-6 max-w-3xl rounded-lg bg-black/20 p-6 backdrop-blur-sm lg:mx-0">
+              <div className="max-w-3xl rounded-lg bg-black/20 p-6 backdrop-blur-sm">
                 <p className="text-lg text-white/90 md:text-xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
                   Nisadya is the Management fest of DoMS, NIT Trichy. It is a parley
                   of cultural and managerial events, fun and happiness, competition
@@ -86,19 +83,11 @@ export function Hero() {
                   take up the flames of test.
                 </p>
               </div>
-              <div className="mt-8 flex flex-wrap justify-center gap-4 lg:justify-start">
-                <Button size="lg" variant="secondary" asChild className="lg:hidden">
-                    <a href="#schedule">View Schedule</a>
-                </Button>
-                <Button size="lg" asChild className="lg:hidden">
-                    <a href="#accommodation">Book Stay</a>
-                </Button>
-              </div>
             </div>
           </div>
           <div
             className={cn(
-              'hidden lg:block transition-opacity duration-500 delay-[1700ms] mr-4',
+              'w-full max-w-4xl transition-opacity duration-500 delay-[1700ms]',
               loading ? 'opacity-0' : 'opacity-100 animate-fade-in-up'
             )}
           >
