@@ -7,15 +7,7 @@ import Image from 'next/image';
 
 export function Hero() {
   return (
-    <section className="relative w-full h-screen flex flex-col">
-      <Image
-        src="/background.png"
-        alt="Nisadya background"
-        fill
-        className="object-cover -z-10"
-        priority
-      />
-
+    <section className="w-full h-screen flex flex-col">
       <div className="container flex flex-col items-center justify-center flex-grow pt-12 pb-8">
         <div className="relative mb-8">
           <Image
