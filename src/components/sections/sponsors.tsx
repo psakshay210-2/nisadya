@@ -10,29 +10,6 @@ type SponsorsProps = {
 }
 
 export function Sponsors({ condensed = false }: SponsorsProps) {
-  const sponsorContent = sponsors.map((sponsor) => {
-    const placeholder = PlaceHolderImages.find(
-      (p) => p.id === sponsor.imageId
-    );
-    if (!placeholder) return null;
-    return (
-      <Link
-        href="#"
-        key={sponsor.id}
-        className="flex items-center justify-center opacity-60 transition-opacity duration-300 hover:opacity-100 shrink-0"
-      >
-        <Image
-          src={placeholder.imageUrl}
-          alt={sponsor.name}
-          width={150}
-          height={75}
-          className="object-contain"
-          data-ai-hint={placeholder.imageHint}
-        />
-      </Link>
-    );
-  });
-  
   if (condensed) {
     return (
       <Carousel
@@ -85,7 +62,28 @@ export function Sponsors({ condensed = false }: SponsorsProps) {
             </p>
           </div>
         <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16">
-          {sponsorContent}
+          {sponsors.map((sponsor) => {
+            const placeholder = PlaceHolderImages.find(
+              (p) => p.id === sponsor.imageId
+            );
+            if (!placeholder) return null;
+            return (
+              <Link
+                href="#"
+                key={sponsor.id}
+                className="flex items-center justify-center opacity-60 transition-opacity duration-300 hover:opacity-100 shrink-0"
+              >
+                <Image
+                  src={placeholder.imageUrl}
+                  alt={sponsor.name}
+                  width={150}
+                  height={75}
+                  className="object-contain"
+                  data-ai-hint={placeholder.imageHint}
+                />
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>

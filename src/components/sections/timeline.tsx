@@ -19,17 +19,17 @@ export function Timeline({ condensed = false }: TimelineProps) {
           {schedule.map((item, index) => (
             <CarouselItem key={index} className="basis-full md:basis-1/2 lg:basis-1/3">
               <div className="p-1 h-full">
-                <div key={index} className="h-full rounded-lg border bg-card/50 p-4 shadow-lg backdrop-blur-sm group flex flex-col">
+                <div key={index} className="h-full rounded-lg border bg-card/80 p-4 shadow-lg group flex flex-col">
                   <div className="flex items-start gap-4">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-card ring-2 ring-primary shrink-0">
                       <item.icon className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <p className="font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.title}</p>
-                      <p className="font-mono text-xs text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.time}</p>
+                      <p className="font-bold">{item.title}</p>
+                      <p className="font-mono text-xs text-primary">{item.time}</p>
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] mt-2 flex-grow">
+                  <p className="text-sm text-muted-foreground mt-2 flex-grow">
                     {item.description}
                   </p>
                 </div>

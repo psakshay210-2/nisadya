@@ -48,7 +48,9 @@ export function Events({ condensed = false }: EventsProps) {
         )}
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {events.map((event) => (
-            <EventCard key={event.id} event={event} />
+            <div key={event.id} className="aspect-[3/4]">
+              <EventCard event={event} />
+            </div>
           ))}
         </div>
       </div>

@@ -7,12 +7,7 @@ import { InstagramFeed } from '@/components/sections/instagram-feed';
 
 export default function Home() {
   return (
-    <div
-      className="flex min-h-screen flex-col bg-cover bg-bottom bg-fixed"
-      style={{
-        backgroundImage: "url('/background.png')",
-      }}
-    >
+    <div className="flex min-h-screen flex-col">
       <main className="flex-1">
         <Hero />
         <Accommodation />

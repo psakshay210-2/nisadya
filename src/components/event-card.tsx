@@ -31,7 +31,7 @@ export function EventCard({ event }: { event: Event }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="h-full w-full cursor-pointer overflow-hidden rounded-lg relative group">
+        <div className="h-full w-full cursor-pointer overflow-hidden rounded-lg relative group aspect-[3/4]">
           {placeholder && (
             <Image
               src={placeholder.imageUrl}

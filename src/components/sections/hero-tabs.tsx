@@ -6,9 +6,9 @@ import { Events } from "./events"
 
 export function HeroTabs() {
   return (
-    <div className="rounded-lg bg-card/50 p-4 backdrop-blur-sm flex flex-col w-full h-full">
+    <div className="flex flex-col w-full h-full">
       <Tabs defaultValue="events" className="flex flex-col h-full">
-        <TabsList className="shrink-0 w-full max-w-md mx-auto grid grid-cols-3">
+        <TabsList className="shrink-0 w-full max-w-md mx-auto grid grid-cols-3 bg-card/50 backdrop-blur-sm">
           <TabsTrigger value="events" className="gap-2">
             <Ticket className="h-5 w-5"/>
             <span>Events</span>
@@ -22,19 +22,19 @@ export function HeroTabs() {
             <span>Sponsors</span>
           </TabsTrigger>
         </TabsList>
-        <div className="flex-1 mt-4 h-full overflow-hidden">
-          <TabsContent value="events" className="h-full mt-0">
+        <div className="flex-1 mt-4 h-full overflow-hidden rounded-lg bg-card/50 backdrop-blur-sm">
+          <TabsContent value="events" className="h-full mt-0 p-4">
             <div className="h-full flex items-center">
               <Events condensed />
             </div>
           </TabsContent>
-          <TabsContent value="schedule" className="h-full mt-0">
-            <div className="h-full overflow-x-auto">
+          <TabsContent value="schedule" className="h-full mt-0 p-4">
+            <div className="h-full flex items-center">
               <Timeline condensed />
             </div>
           </TabsContent>
-          <TabsContent value="sponsors" className="h-full mt-0">
-            <div className="h-full flex items-center overflow-x-auto">
+          <TabsContent value="sponsors" className="h-full mt-0 p-4">
+            <div className="h-full flex items-center">
               <Sponsors condensed />
             </div>
           </TabsContent>
