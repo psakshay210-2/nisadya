@@ -16,13 +16,15 @@ export default function Home() {
           priority
         />
       </div>
-      <Link href="/fest" legacyBehavior>
-        <a className="animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-          <Button size="lg">
-            Enter Fest
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
-        </a>
+      <Link
+        href="/fest"
+        className="animate-fade-in-up"
+        style={{ animationDelay: '0.3s' }}
+      >
+        <Button size="lg">
+          Enter Fest
+          <ArrowRight className="ml-2 h-5 w-5" />
+        </Button>
       </Link>
     </div>
   );
