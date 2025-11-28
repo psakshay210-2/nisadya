@@ -6,6 +6,29 @@ type TimelineProps = {
 };
 
 export function Timeline({ condensed = false }: TimelineProps) {
+  if (condensed) {
+    return (
+      <div className="flex w-max p-4 gap-4">
+        {schedule.map((item, index) => (
+          <div key={index} className="w-64 rounded-lg border bg-card/50 p-4 shadow-lg backdrop-blur-sm group shrink-0">
+            <div className="flex items-start gap-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-card ring-2 ring-primary shrink-0">
+                <item.icon className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <p className="font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.title}</p>
+                <p className="font-mono text-xs text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.time}</p>
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] mt-2">
+              {item.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    )
+  }
+  
   return (
     <section id="schedule" className={cn("py-16 md:py-24 bg-transparent", condensed && "py-0 md:py-0")}>
       <div className="container">

@@ -1,21 +1,28 @@
 import { sponsors } from '@/lib/data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export function Sponsors() {
+type SponsorsProps = {
+  condensed?: boolean;
+}
+
+export function Sponsors({ condensed = false }: SponsorsProps) {
   return (
-    <section id="sponsors" className="py-16 md:py-24 bg-transparent">
+    <section id="sponsors" className={cn("py-16 md:py-24 bg-transparent w-full", condensed && "py-0 md:py-0")}>
       <div className="container">
-        <div className="mb-12 text-center">
-          <h2 className="font-headline text-4xl font-bold md:text-5xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
-            Our Sponsors
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
-            Powering innovation and making this event possible.
-          </p>
-        </div>
-        <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16">
+        {!condensed && (
+          <div className="mb-12 text-center">
+            <h2 className="font-headline text-4xl font-bold md:text-5xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
+              Our Sponsors
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
+              Powering innovation and making this event possible.
+            </p>
+          </div>
+        )}
+        <div className={cn("flex flex-wrap items-center justify-center gap-8 md:gap-16", condensed && "flex-nowrap justify-start")}>
           {sponsors.map((sponsor) => {
             const placeholder = PlaceHolderImages.find(
               (p) => p.id === sponsor.imageId
@@ -25,7 +32,7 @@ export function Sponsors() {
               <Link
                 href="#"
                 key={sponsor.id}
-                className="flex items-center justify-center opacity-60 transition-opacity duration-300 hover:opacity-100"
+                className="flex items-center justify-center opacity-60 transition-opacity duration-300 hover:opacity-100 shrink-0"
               >
                 <Image
                   src={placeholder.imageUrl}

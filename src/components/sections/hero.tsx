@@ -43,7 +43,7 @@ export function Hero() {
       </div>
 
       <div className="container">
-        <div className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-8 pt-24 lg:pt-0">
+        <div className="relative z-10 flex h-screen flex-col items-center justify-center gap-8 pt-12 pb-8">
           <div
             className={cn(
               'flex flex-col items-center text-center transition-opacity duration-500 delay-[1500ms] w-full',
@@ -53,7 +53,7 @@ export function Hero() {
             <div
               className={cn(
                 'relative cursor-pointer transition-all duration-700 ease-in-out',
-                showInfo ? 'w-48' : 'w-64'
+                'w-48'
               )}
               onClick={() => setShowInfo(!showInfo)}
             >
@@ -69,12 +69,12 @@ export function Hero() {
 
             <div
               className={cn(
-                'flex flex-col items-center transition-all duration-500 ease-in-out w-full mt-8',
+                'flex flex-col items-center transition-all duration-500 ease-in-out w-full mt-4',
                 showInfo ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none h-0'
               )}
             >
-              <div className="max-w-3xl rounded-lg bg-black/20 p-6 backdrop-blur-sm mb-8">
-                <p className="text-lg text-white/90 md:text-xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
+              <div className="max-w-3xl rounded-lg bg-black/20 p-4 backdrop-blur-sm">
+                <p className="text-base text-white/90 md:text-lg drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
                   Nisadya is the Management fest of DoMS, NIT Trichy. It is a parley
                   of cultural and managerial events, fun and happiness, competition
                   and cooperation. We provide an open platform to all the talented
@@ -86,7 +86,7 @@ export function Hero() {
           </div>
           <div
             className={cn(
-              'w-full max-w-4xl transition-opacity duration-500 delay-[1700ms] h-[60vh]',
+              'w-full max-w-6xl flex-1 transition-opacity duration-500 delay-[1700ms]',
               loading ? 'opacity-0' : 'opacity-100 animate-fade-in-up'
             )}
           >
