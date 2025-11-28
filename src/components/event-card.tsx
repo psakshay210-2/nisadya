@@ -29,49 +29,38 @@ export function EventCard({ event }: { event: Event }) {
   const CategoryIcon = eventCategories[event.category].icon;
 
   return (
-    <Card className="flex flex-col h-full overflow-hidden bg-card/50 backdrop-blur-sm">
-      {placeholder && (
-        <div className="aspect-[3/2] w-full overflow-hidden">
-          <Image
-            src={placeholder.imageUrl}
-            alt={placeholder.description}
-            width={600}
-            height={400}
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-            data-ai-hint={placeholder.imageHint}
-          />
+    <Dialog>
+      <DialogTrigger asChild>
+        <div className="h-full w-full cursor-pointer overflow-hidden rounded-lg relative group">
+          {placeholder && (
+            <Image
+              src={placeholder.imageUrl}
+              alt={placeholder.description}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              data-ai-hint={placeholder.imageHint}
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+          <div className="absolute bottom-0 left-0 p-4">
+            <h3 className="font-headline text-2xl text-white drop-shadow-md">
+              {event.title}
+            </h3>
+          </div>
         </div>
-      )}
-      <CardHeader>
-        <div className="flex justify-between items-start">
-          <CardTitle className="font-headline text-2xl">{event.title}</CardTitle>
-          <Badge variant="secondary" className="shrink-0">
-            <CategoryIcon className="mr-1 h-3 w-3" />
-            {event.category}
-          </Badge>
-        </div>
-        <p className="text-sm font-bold text-primary">{event.date}</p>
-      </CardHeader>
-      <CardContent className="flex-grow">
-        <CardDescription>{event.description}</CardDescription>
-      </CardContent>
-      <CardFooter className="flex gap-2">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline" className="w-full">
-              Details
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle className="font-headline text-2xl">
-                {event.title}
-              </DialogTitle>
-              <p className="text-sm font-bold text-primary">{event.date}</p>
-              <DialogDescription>{event.details}</DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <div className="flex justify-between items-start mb-2">
+            <DialogTitle className="font-headline text-3xl">{event.title}</DialogTitle>
+            <Badge variant="secondary" className="shrink-0">
+              <CategoryIcon className="mr-1 h-3 w-3" />
+              {event.category}
+            </Badge>
+          </div>
+          <p className="text-sm font-bold text-primary">{event.date}</p>
+          <DialogDescription className='text-base pt-2'>{event.details}</DialogDescription>
+        </DialogHeader>
         <Dialog>
           <DialogTrigger asChild>
             <Button className="w-full">Register</Button>
@@ -89,7 +78,7 @@ export function EventCard({ event }: { event: Event }) {
             <RegistrationForm eventName={event.title} />
           </DialogContent>
         </Dialog>
-      </CardFooter>
-    </Card>
+      </DialogContent>
+    </Dialog>
   );
 }

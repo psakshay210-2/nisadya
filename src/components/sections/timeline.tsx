@@ -1,5 +1,6 @@
 import { schedule } from '@/lib/data';
 import { cn } from '@/lib/utils';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../ui/carousel';
 
 type TimelineProps = {
   condensed?: boolean;
@@ -8,24 +9,37 @@ type TimelineProps = {
 export function Timeline({ condensed = false }: TimelineProps) {
   if (condensed) {
     return (
-      <div className="flex w-max p-4 gap-4">
-        {schedule.map((item, index) => (
-          <div key={index} className="w-64 h-full rounded-lg border bg-card/50 p-4 shadow-lg backdrop-blur-sm group shrink-0 flex flex-col">
-            <div className="flex items-start gap-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-card ring-2 ring-primary shrink-0">
-                <item.icon className="h-5 w-5 text-primary" />
+      <Carousel
+        opts={{
+          align: "start",
+        }}
+        className="w-full"
+      >
+        <CarouselContent>
+          {schedule.map((item, index) => (
+            <CarouselItem key={index} className="basis-full md:basis-1/2 lg:basis-1/3">
+              <div className="p-1 h-full">
+                <div key={index} className="h-full rounded-lg border bg-card/50 p-4 shadow-lg backdrop-blur-sm group flex flex-col">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-card ring-2 ring-primary shrink-0">
+                      <item.icon className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.title}</p>
+                      <p className="font-mono text-xs text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.time}</p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] mt-2 flex-grow">
+                    {item.description}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.title}</p>
-                <p className="font-mono text-xs text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.time}</p>
-              </div>
-            </div>
-            <p className="text-sm text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] mt-2 flex-grow">
-              {item.description}
-            </p>
-          </div>
-        ))}
-      </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
     )
   }
   
