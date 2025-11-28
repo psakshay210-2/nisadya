@@ -29,7 +29,7 @@ export function EventCard({ event }: { event: Event }) {
   const CategoryIcon = eventCategories[event.category].icon;
 
   return (
-    <Card className="flex flex-col overflow-hidden bg-card/50 backdrop-blur-sm">
+    <Card className="flex flex-col h-full overflow-hidden bg-card/50 backdrop-blur-sm">
       {placeholder && (
         <div className="aspect-[3/2] w-full overflow-hidden">
           <Image

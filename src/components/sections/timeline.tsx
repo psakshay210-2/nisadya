@@ -10,7 +10,7 @@ export function Timeline({ condensed = false }: TimelineProps) {
     return (
       <div className="flex w-max p-4 gap-4">
         {schedule.map((item, index) => (
-          <div key={index} className="w-64 rounded-lg border bg-card/50 p-4 shadow-lg backdrop-blur-sm group shrink-0">
+          <div key={index} className="w-64 h-full rounded-lg border bg-card/50 p-4 shadow-lg backdrop-blur-sm group shrink-0 flex flex-col">
             <div className="flex items-start gap-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-card ring-2 ring-primary shrink-0">
                 <item.icon className="h-5 w-5 text-primary" />
@@ -20,7 +20,7 @@ export function Timeline({ condensed = false }: TimelineProps) {
                 <p className="font-mono text-xs text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.time}</p>
               </div>
             </div>
-            <p className="text-sm text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] mt-2">
+            <p className="text-sm text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] mt-2 flex-grow">
               {item.description}
             </p>
           </div>
