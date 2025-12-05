@@ -1,13 +1,40 @@
+'use client';
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Timeline } from "./timeline"
 import { Sponsors } from "./sponsors"
 import { Calendar, Building2, Ticket } from "lucide-react"
 import { Events } from "./events"
+import { useEffect, useState } from "react";
+
+const tabs = ["events", "schedule", "sponsors"];
 
 export function HeroTabs() {
+  const [activeTab, setActiveTab] = useState(tabs[0]);
+  const [isCycling, setIsCycling] = useState(true);
+
+  useEffect(() => {
+    if (!isCycling) return;
+
+    const interval = setInterval(() => {
+      setActiveTab((currentTab) => {
+        const currentIndex = tabs.indexOf(currentTab);
+        const nextIndex = (currentIndex + 1) % tabs.length;
+        return tabs[nextIndex];
+      });
+    }, 3000); // Change tab every 3 seconds
+
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, [isCycling]);
+
+  const handleTabChange = (value: string) => {
+    setIsCycling(false);
+    setActiveTab(value);
+  }
+
   return (
     <div className="flex flex-col w-full h-full">
-      <Tabs defaultValue="events" className="flex flex-col h-full">
+      <Tabs value={activeTab} onValueChange={handleTabChange} className="flex flex-col h-full">
         <TabsList className="shrink-0 w-full max-w-md mx-auto grid grid-cols-3 bg-card/50 backdrop-blur-sm">
           <TabsTrigger value="events" className="gap-2">
             <Ticket className="h-5 w-5"/>
