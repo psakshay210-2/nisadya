@@ -13,20 +13,35 @@ const tabs = ["events", "schedule", "sponsors"];
 export function HeroTabs() {
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [isCycling, setIsCycling] = useState(true);
+  const [direction, setDirection] = useState<'forward' | 'backward'>('forward');
 
   useEffect(() => {
     if (!isCycling) return;
 
     const interval = setInterval(() => {
-      setActiveTab((currentTab) => {
-        const currentIndex = tabs.indexOf(currentTab);
-        const nextIndex = (currentIndex + 1) % tabs.length;
-        return tabs[nextIndex];
-      });
+      const currentIndex = tabs.indexOf(activeTab);
+      let nextIndex;
+
+      if (direction === 'forward') {
+        if (currentIndex === tabs.length - 1) {
+          setDirection('backward');
+          nextIndex = currentIndex - 1;
+        } else {
+          nextIndex = currentIndex + 1;
+        }
+      } else { // backward
+        if (currentIndex === 0) {
+          setDirection('forward');
+          nextIndex = currentIndex + 1;
+        } else {
+          nextIndex = currentIndex - 1;
+        }
+      }
+      setActiveTab(tabs[nextIndex]);
     }, 3000); // Change tab every 3 seconds
 
     return () => clearInterval(interval); // Cleanup interval on component unmount
-  }, [isCycling]);
+  }, [isCycling, activeTab, direction]);
 
   const handleTabChange = (value: string) => {
     setIsCycling(false);
