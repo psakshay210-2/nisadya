@@ -13,8 +13,8 @@ export default function Home() {
                 <Image
                 src="/logo.png"
                 alt="Nisadya Logo"
-                width={400}
-                height={200}
+                width={500}
+                height={250}
                 className={'invert drop-shadow-[0_4px_10px_rgba(0,0,0,1)] w-full h-auto'}
                 priority
                 />
