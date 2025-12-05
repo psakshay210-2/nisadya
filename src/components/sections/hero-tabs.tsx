@@ -5,7 +5,7 @@ import { Timeline } from "./timeline"
 import { Sponsors } from "./sponsors"
 import { Calendar, Building2, Ticket } from "lucide-react"
 import { Events } from "./events"
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 const tabs = ["events", "schedule", "sponsors"];
@@ -14,6 +14,37 @@ export function HeroTabs() {
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [isCycling, setIsCycling] = useState(true);
   const [direction, setDirection] = useState<'forward' | 'backward'>('forward');
+  const tabsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // If the component is intersecting the viewport, start cycling.
+        // Otherwise, stop cycling.
+        if (entry.isIntersecting) {
+          setIsCycling(true);
+        } else {
+          setIsCycling(false);
+        }
+      },
+      {
+        root: null, // observes intersections relative to the viewport
+        rootMargin: '0px',
+        threshold: 0.1, // trigger when 10% of the element is visible
+      }
+    );
+
+    const currentRef = tabsRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (!isCycling) return;
@@ -44,14 +75,14 @@ export function HeroTabs() {
   }, [isCycling, activeTab, direction]);
 
   const handleTabChange = (value: string) => {
-    setIsCycling(false);
+    setIsCycling(false); // Stop cycling on manual interaction
     setActiveTab(value);
   }
 
   const tabContentBaseClasses = "absolute top-0 left-0 w-full h-full transition-opacity duration-500 ease-in-out";
 
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="flex flex-col w-full h-full" ref={tabsRef}>
       <Tabs value={activeTab} onValueChange={handleTabChange} className="flex flex-col h-full">
         <TabsList className="shrink-0 w-full max-w-md mx-auto grid grid-cols-3 bg-card/50 backdrop-blur-sm">
           <TabsTrigger value="events" className="gap-2">
