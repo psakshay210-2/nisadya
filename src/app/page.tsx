@@ -10,7 +10,7 @@ export default function Home() {
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
         <section className="flex flex-col items-center justify-center text-center py-12">
-            <div className="relative mb-8 animate-fade-in-up">
+            <div className="relative mb-4 animate-fade-in-up">
                 <Image
                 src="/logo.png"
                 alt="Nisadya Logo"
