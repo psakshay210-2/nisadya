@@ -6,6 +6,7 @@ import { Sponsors } from "./sponsors"
 import { Calendar, Building2, Ticket } from "lucide-react"
 import { Events } from "./events"
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 const tabs = ["events", "schedule", "sponsors"];
 
@@ -32,6 +33,8 @@ export function HeroTabs() {
     setActiveTab(value);
   }
 
+  const tabContentBaseClasses = "absolute top-0 left-0 w-full h-full transition-opacity duration-500 ease-in-out";
+
   return (
     <div className="flex flex-col w-full h-full">
       <Tabs value={activeTab} onValueChange={handleTabChange} className="flex flex-col h-full">
@@ -49,19 +52,19 @@ export function HeroTabs() {
             <span>Sponsors</span>
           </TabsTrigger>
         </TabsList>
-        <div className="mt-4 h-[500px] overflow-hidden rounded-lg bg-card/50 backdrop-blur-sm">
-          <TabsContent value="events" className="h-full mt-0 p-4">
-            <div className="h-full flex items-center">
+        <div className="relative mt-4 h-[500px] overflow-hidden rounded-lg bg-card/50 backdrop-blur-sm">
+          <TabsContent value="events" forceMount className={cn(tabContentBaseClasses, activeTab === 'events' ? 'opacity-100' : 'opacity-0 pointer-events-none')}>
+            <div className="h-full flex items-center p-4">
               <Events condensed />
             </div>
           </TabsContent>
-          <TabsContent value="schedule" className="h-full mt-0 p-4">
-            <div className="h-full flex items-center">
+          <TabsContent value="schedule" forceMount className={cn(tabContentBaseClasses, activeTab === 'schedule' ? 'opacity-100' : 'opacity-0 pointer-events-none')}>
+            <div className="h-full flex items-center p-4">
               <Timeline condensed />
             </div>
           </TabsContent>
-          <TabsContent value="sponsors" className="h-full mt-0 p-4">
-            <div className="h-full flex items-center">
+          <TabsContent value="sponsors" forceMount className={cn(tabContentBaseClasses, activeTab === 'sponsors' ? 'opacity-100' : 'opacity-0 pointer-events-none')}>
+            <div className="h-full flex items-center p-4">
               <Sponsors condensed />
             </div>
           </TabsContent>
