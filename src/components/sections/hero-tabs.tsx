@@ -22,7 +22,7 @@ export function HeroTabs() {
             <span>Sponsors</span>
           </TabsTrigger>
         </TabsList>
-        <div className="flex-1 mt-4 h-full overflow-hidden rounded-lg bg-card/50 backdrop-blur-sm">
+        <div className="flex-1 mt-4 h-[500px] overflow-hidden rounded-lg bg-card/50 backdrop-blur-sm flex flex-col justify-center">
           <TabsContent value="events" className="h-full mt-0 p-4">
             <div className="h-full flex items-center">
               <Events condensed />
