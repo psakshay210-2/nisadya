@@ -8,14 +8,14 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
-        <section className="flex flex-col items-center text-center overflow-hidden">
-          <div className="relative animate-fade-in-up -mt-64">
+        <section className="flex flex-col items-center justify-center text-center overflow-hidden pt-8">
+          <div className="relative -mb-16">
             <Image
               src="/logo.png"
               alt="Nisadya Logo"
               width={1600}
               height={800}
-              className={'invert drop-shadow-[0_4px_10px_rgba(0,0,0,1)] h-auto'}
+              className={'invert drop-shadow-[0_4px_10px_rgba(0,0,0,1)] h-auto w-full max-w-5xl'}
               priority
             />
           </div>
