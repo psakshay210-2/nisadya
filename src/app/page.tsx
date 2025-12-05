@@ -9,7 +9,7 @@ export default function Home() {
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
         <section className="flex flex-col items-center text-center overflow-hidden">
-          <div className="relative animate-fade-in-up -mt-32">
+          <div className="relative animate-fade-in-up -mt-64">
             <Image
               src="/logo.png"
               alt="Nisadya Logo"
