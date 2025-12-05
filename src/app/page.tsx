@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
-        <section className="flex flex-col items-center justify-center text-center pt-8">
+        <section className="flex flex-col items-center text-center pt-8">
           <div className="relative animate-fade-in-up">
             <Image
               src="/logo.png"
