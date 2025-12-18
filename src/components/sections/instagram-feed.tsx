@@ -28,7 +28,7 @@ const InstagramCard = ({ url }: { url: string }) => {
   if (!embedUrl) return null;
 
   return (
-    <div className="flex flex-col h-[550px] bg-card/50 backdrop-blur-sm rounded-xl shadow-sm border overflow-hidden hover:shadow-md transition-shadow duration-300 relative">
+    <div className="flex flex-col h-[550px] w-full max-w-sm bg-card/50 backdrop-blur-sm rounded-xl shadow-sm border overflow-hidden hover:shadow-md transition-shadow duration-300 relative">
       
       {!isLoaded && !hasError && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-card/80 z-10">
@@ -164,7 +164,7 @@ export function InstagramFeed() {
         {!loading && (
             <>
                 {error && <p className="text-center text-red-500 mb-4">{error}</p>}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="flex flex-wrap justify-center gap-8">
                     {links.map((link, index) => (
                     <InstagramCard key={`${link}-${index}`} url={link} />
                     ))}
