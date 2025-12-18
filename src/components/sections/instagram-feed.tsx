@@ -63,6 +63,7 @@ const InstagramCard = ({ url }: { url: string }) => {
         onLoad={() => setIsLoaded(true)}
         onError={() => setHasError(true)}
         title="Instagram Post"
+        data-theme="dark"
       />
       
       <div className="absolute bottom-0 w-full bg-card/90 backdrop-blur-sm border-t py-3 px-4 flex justify-between items-center text-xs text-muted-foreground">
