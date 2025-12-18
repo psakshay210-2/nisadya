@@ -56,14 +56,13 @@ const InstagramCard = ({ url }: { url: string }) => {
 
       <iframe 
         src={embedUrl} 
-        className={`w-full h-full border-0 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+        className={`w-full h-full border-0 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} brightness-90 saturate-50 contrast-125`}
         scrolling="no" 
         allowtransparency="true"
         allow="encrypted-media"
         onLoad={() => setIsLoaded(true)}
         onError={() => setHasError(true)}
         title="Instagram Post"
-        data-theme="dark"
       />
       
       <div className="absolute bottom-0 w-full bg-card/90 backdrop-blur-sm border-t py-3 px-4 flex justify-between items-center text-xs text-muted-foreground">
