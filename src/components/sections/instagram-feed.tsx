@@ -28,7 +28,7 @@ const InstagramCard = ({ url }: { url: string }) => {
   if (!embedUrl) return null;
 
   return (
-    <div className="flex flex-col h-[550px] w-full max-w-sm bg-card/50 backdrop-blur-sm rounded-xl overflow-hidden hover:shadow-md transition-shadow duration-300 relative">
+    <div className="flex flex-col h-[550px] w-full max-w-sm bg-card/50 backdrop-blur-sm rounded-xl overflow-hidden relative">
       
       {!isLoaded && !hasError && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-card/80 z-10">
@@ -56,7 +56,7 @@ const InstagramCard = ({ url }: { url: string }) => {
 
       <iframe 
         src={embedUrl} 
-        className={`w-full h-full border-0 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} brightness-90 saturate-50 contrast-125`}
+        className={`w-full h-full border-0 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} brightness-95 contrast-125`}
         scrolling="no" 
         allowtransparency="true"
         allow="encrypted-media"
@@ -80,6 +80,11 @@ export function InstagramFeed() {
   const [links, setLinks] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const parseCSV = (text: string) => {
     return text.split('\n')
@@ -89,7 +94,7 @@ export function InstagramFeed() {
       .filter((val, id, array) => array.indexOf(val) === id); 
   };
 
-  const fetchData = async () => {
+  const fetchData = React.useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -121,17 +126,23 @@ export function InstagramFeed() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    fetchData(); // Fetch initial data
-    
-    const intervalId = setInterval(() => {
-      fetchData();
-    }, 120000); // 2 minutes in milliseconds
+    if (isMounted) {
+        fetchData(); // Fetch initial data
+        
+        const intervalId = setInterval(() => {
+        fetchData();
+        }, 120000); // 2 minutes in milliseconds
 
-    return () => clearInterval(intervalId); // Cleanup on component unmount
-  }, []);
+        return () => clearInterval(intervalId); // Cleanup on component unmount
+    }
+  }, [isMounted, fetchData]);
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <section id="instagram" className="py-16 md:py-24 border-y">
