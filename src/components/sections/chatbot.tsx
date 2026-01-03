@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Bot, Send, User, X } from 'lucide-react';
-import React, { useRef, useState, useTransition } from 'react';
+import React, { useRef, useState, useTransition, useEffect } from 'react';
 import { ScrollArea } from '../ui/scroll-area';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import { cn } from '@/lib/utils';
@@ -17,12 +17,17 @@ export function Chatbot() {
   const [input, setInput] = useState('');
   const [isPending, startTransition] = useTransition();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isOpen) {
       scrollToBottom();
     }
@@ -41,6 +46,10 @@ export function Chatbot() {
       setMessages((prev) => [...prev, response]);
     });
   };
+
+  if (!isMounted) {
+    return null;
+  }
 
   if (!isOpen) {
     return (

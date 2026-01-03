@@ -1,11 +1,20 @@
+'use client';
+
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Card, CardContent } from '../ui/card';
 import { AccommodationForm } from '../accommodation-form';
+import React, { useEffect, useState } from 'react';
+import { Skeleton } from '../ui/skeleton';
 
 export function Accommodation() {
   const roomImage1 = PlaceHolderImages.find((p) => p.id === 'room-1');
   const roomImage2 = PlaceHolderImages.find((p) => p.id === 'room-2');
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   
   return (
     <section id="accommodation" className="py-16 md:py-24 bg-background/50 backdrop-blur-sm border-y">
@@ -47,7 +56,23 @@ export function Accommodation() {
         <div>
             <Card>
                 <CardContent className="p-6">
-                    <AccommodationForm />
+                    {!isMounted ? (
+                      <div className="space-y-4">
+                        <Skeleton className="h-10 w-full" />
+                        <div className="grid grid-cols-2 gap-4">
+                          <Skeleton className="h-10 w-full" />
+                          <Skeleton className="h-10 w-full" />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <Skeleton className="h-10 w-full" />
+                          <Skeleton className="h-10 w-full" />
+                        </div>
+                        <Skeleton className="h-10 w-full" />
+                        <Skeleton className="h-10 w-full" />
+                      </div>
+                    ) : (
+                      <AccommodationForm />
+                    )}
                 </CardContent>
             </Card>
         </div>

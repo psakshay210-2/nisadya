@@ -15,12 +15,17 @@ export function HeroTabs() {
   const [isCycling, setIsCycling] = useState(true);
   const [direction, setDirection] = useState<'forward' | 'backward'>('forward');
   const tabsRef = useRef<HTMLDivElement>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // If the component is intersecting the viewport, start cycling.
-        // Otherwise, stop cycling.
         if (entry.isIntersecting) {
           setIsCycling(true);
         } else {
@@ -28,9 +33,9 @@ export function HeroTabs() {
         }
       },
       {
-        root: null, // observes intersections relative to the viewport
+        root: null,
         rootMargin: '0px',
-        threshold: 0.1, // trigger when 10% of the element is visible
+        threshold: 0.1,
       }
     );
 
@@ -44,10 +49,10 @@ export function HeroTabs() {
         observer.unobserve(currentRef);
       }
     };
-  }, []);
+  }, [isMounted]);
 
   useEffect(() => {
-    if (!isCycling) return;
+    if (!isCycling || !isMounted) return;
 
     const interval = setInterval(() => {
       const currentIndex = tabs.indexOf(activeTab);
@@ -69,17 +74,26 @@ export function HeroTabs() {
         }
       }
       setActiveTab(tabs[nextIndex]);
-    }, 3000); // Change tab every 3 seconds
+    }, 3000);
 
-    return () => clearInterval(interval); // Cleanup interval on component unmount
-  }, [isCycling, activeTab, direction]);
+    return () => clearInterval(interval);
+  }, [isCycling, activeTab, direction, isMounted]);
 
   const handleTabChange = (value: string) => {
-    setIsCycling(false); // Stop cycling on manual interaction
+    setIsCycling(false);
     setActiveTab(value);
   }
 
   const tabContentBaseClasses = "absolute top-0 left-0 w-full h-full transition-opacity duration-500 ease-in-out";
+
+  if (!isMounted) {
+    return (
+        <div className="flex flex-col w-full h-full">
+            <div className="shrink-0 w-full max-w-md mx-auto h-10 rounded-md bg-muted/50" />
+            <div className="relative mt-4 h-[500px] overflow-hidden rounded-lg bg-card/50 backdrop-blur-sm" />
+        </div>
+    );
+  }
 
   return (
     <div className="flex flex-col w-full h-full" ref={tabsRef}>
