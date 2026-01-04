@@ -4,14 +4,15 @@ const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR
 
 // Simple CSV to JSON parser
 const parseCSV = (text: string): Record<string, string>[] => {
-  const lines = text.split('\n');
+  const lines = text.trim().split('\n');
   if (lines.length < 2) return [];
   
   const headers = lines[0].split(',').map(h => h.trim());
   const rows = [];
 
   for (let i = 1; i < lines.length; i++) {
-    const data = lines[i].split(',').map(d => d.trim());
+    // This regex handles commas inside quoted fields
+    const data = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(d => d.trim().replace(/^"|"$/g, ''));
     if (data.length === headers.length) {
       const row: Record<string, string> = {};
       headers.forEach((header, index) => {
@@ -21,6 +22,19 @@ const parseCSV = (text: string): Record<string, string>[] => {
     }
   }
   return rows;
+};
+
+const transformGoogleDriveUrl = (url: string): string => {
+  if (!url || !url.includes('drive.google.com')) {
+    return url;
+  }
+  const regex = /drive\.google\.com\/file\/d\/([^/]+)/;
+  const match = url.match(regex);
+  if (match && match[1]) {
+    const fileId = match[1];
+    return `https://drive.google.com/uc?export=view&id=${fileId}`;
+  }
+  return url;
 };
 
 
@@ -44,16 +58,15 @@ export const fetchEvents = async (): Promise<Event[]> => {
     return parsedData.map((item, index) => ({
       id: String(index + 1),
       title: item['Event name'] || 'Unnamed Event',
-      description: item['Descrtiption'] || '',
-      details: item['Descrtiption'] || '',
+      description: item['Description'] || '',
+      details: item['Description'] || '',
       startDate: item['Start Date'] || '',
       endDate: item['End Date'] || '',
       registrationLink: item['Unstop Link'] || '',
-      imageUrl: item['Image Link'] || '',
+      imageUrl: transformGoogleDriveUrl(item['Image Link'] || ''),
       coordinator: item['Coordinator'] || '',
       contact: item['Contact'] || '',
-      // Assign category somewhat randomly for now. You might want to add this to your sheet.
-      category: (['Technical', 'Cultural', 'Informal'][index % 3]) as 'Technical' | 'Cultural' | 'Informal',
+      category: (item['Category'] as any) || (['Technical', 'Cultural', 'Informal'][index % 3]),
     }));
 
   } catch (err) {
