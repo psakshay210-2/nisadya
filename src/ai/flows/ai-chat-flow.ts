@@ -7,7 +7,7 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { events } from '@/lib/data';
+import { fetchEvents } from '@/lib/events-loader';
 import { type Message } from '@/lib/types';
 import { z } from 'genkit';
 
@@ -23,6 +23,7 @@ const EventInfoTool = ai.defineTool(
     outputSchema: z.string(),
   },
   async ({ eventName }) => {
+    const events = await fetchEvents();
     if (eventName) {
       const event = events.find(e => e.title.toLowerCase().includes(eventName.toLowerCase()));
       if (event) {
@@ -38,13 +39,7 @@ export async function chat(messages: Message[]): Promise<Message> {
   const llmResponse = await ai.generate({
     prompt: `You are an expert event assistant for the Nisadya college fest. Your goal is to answer questions about the events. Be friendly and helpful.
 
-    Here are the events for context, but always use the getEventInfo tool to get the most accurate and detailed information.
-    - Quantum Leap Hackathon
-    - Robo-Wars
-    - Stellaris: Battle of Bands
-    - Nritya: Dance Fusion
-    - Nexus Gaming Arena
-    - The Enigma Hunt
+    If the user asks about events, always use the getEventInfo tool to get the most accurate and detailed information. Do not rely on your own knowledge.
 
     If the user asks a question that is not related to the events, politely decline to answer and steer the conversation back to the events.
     `,

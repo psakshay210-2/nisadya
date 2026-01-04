@@ -19,26 +19,24 @@ import {
 } from './ui/dialog';
 import { RegistrationForm } from './registration-form';
 import type { Event } from '@/lib/types';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
 import { Badge } from './ui/badge';
 import { eventCategories } from '@/lib/data';
+import Link from 'next/link';
 
 export function EventCard({ event }: { event: Event }) {
-  const placeholder = PlaceHolderImages.find((p) => p.id === event.imageId);
-  const CategoryIcon = eventCategories[event.category].icon;
+  const CategoryIcon = eventCategories[event.category]?.icon || eventCategories['Informal'].icon;
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <div className="h-full w-full cursor-pointer overflow-hidden rounded-lg relative group aspect-[3/4]">
-          {placeholder && (
+          {event.imageUrl && (
             <Image
-              src={placeholder.imageUrl}
-              alt={placeholder.description}
+              src={event.imageUrl}
+              alt={event.title}
               fill
               className="object-cover transition-transform duration-300 group-hover:scale-105"
-              data-ai-hint={placeholder.imageHint}
             />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -58,26 +56,33 @@ export function EventCard({ event }: { event: Event }) {
               {event.category}
             </Badge>
           </div>
-          <p className="text-sm font-bold text-primary">{event.date}</p>
+          <p className="text-sm font-bold text-primary">{event.startDate} - {event.endDate}</p>
           <DialogDescription className='text-base pt-2'>{event.details}</DialogDescription>
         </DialogHeader>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="w-full">Register</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle className="font-headline text-2xl">
-                Register for {event.title}
-              </DialogTitle>
-              <DialogDescription>
-                Fill out the form below to register for this event. Deadline: 2
-                days before event.
-              </DialogDescription>
-            </DialogHeader>
-            <RegistrationForm eventName={event.title} />
-          </DialogContent>
-        </Dialog>
+        {event.registrationLink ? (
+          <Button asChild>
+            <Link href={event.registrationLink} target="_blank" rel="noopener noreferrer">
+              Register
+            </Link>
+          </Button>
+        ) : (
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="w-full">Register</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="font-headline text-2xl">
+                  Register for {event.title}
+                </DialogTitle>
+                <DialogDescription>
+                  Fill out the form below to register for this event.
+                </DialogDescription>
+              </DialogHeader>
+              <RegistrationForm eventName={event.title} />
+            </DialogContent>
+          </Dialog>
+        )}
       </DialogContent>
     </Dialog>
   );

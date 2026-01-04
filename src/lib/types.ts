@@ -9,11 +9,15 @@ export type Message = z.infer<typeof MessageSchema>;
 export type Event = {
   id: string;
   title: string;
-  category: 'Technical' | 'Cultural' | 'Informal';
-  date: string;
   description: string;
-  details: string;
-  imageId: string;
+  startDate: string;
+  endDate: string;
+  registrationLink: string;
+  imageUrl: string;
+  coordinator: string;
+  contact: string;
+  category: 'Technical' | 'Cultural' | 'Informal'; // This might need to be added to your sheet or derived
+  details: string; // This might be the same as description
 };
 
 export type InstagramPost = {
