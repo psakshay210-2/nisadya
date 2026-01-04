@@ -23,9 +23,25 @@ import Image from 'next/image';
 import { Badge } from './ui/badge';
 import { eventCategories } from '@/lib/data';
 import Link from 'next/link';
+import { format, parse } from 'date-fns';
 
 export function EventCard({ event }: { event: Event }) {
   const CategoryIcon = eventCategories[event.category]?.icon || eventCategories['Informal'].icon;
+
+  const formatDate = (dateString: string) => {
+    if (!dateString) return '';
+    try {
+      // Assuming date is in MM/DD/YYYY format from the sheet
+      const date = parse(dateString, 'MM/dd/yyyy', new Date());
+      return format(date, 'dd MMMM yyyy');
+    } catch (error) {
+      console.error('Failed to parse date:', dateString, error);
+      return dateString; // Fallback to original string
+    }
+  };
+
+  const formattedStartDate = formatDate(event.startDate);
+  const formattedEndDate = formatDate(event.endDate);
 
   return (
     <Dialog>
@@ -56,7 +72,7 @@ export function EventCard({ event }: { event: Event }) {
               {event.category}
             </Badge>
           </div>
-          <p className="text-sm font-bold text-primary">{event.startDate} - {event.endDate}</p>
+          <p className="text-sm font-bold text-primary">{formattedStartDate}{formattedEndDate && formattedEndDate !== formattedStartDate ? ` - ${formattedEndDate}` : ''}</p>
           <DialogDescription className='text-base pt-2'>{event.details}</DialogDescription>
         </DialogHeader>
         {event.registrationLink ? (
