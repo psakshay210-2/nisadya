@@ -16,7 +16,6 @@ export type Event = {
   imageUrl: string;
   coordinator: string;
   contact: string;
-  category: 'Technical' | 'Cultural' | 'Informal'; // This might need to be added to your sheet or derived
   details: string; // This might be the same as description
 };
 

@@ -1,4 +1,4 @@
-import { Cpu, Music, Users, Bot, Gamepad2, Paintbrush, Code, Mic, Film } from "lucide-react";
+import { Bot, Gamepad2, Code, Mic, Film, Music, Paintbrush } from "lucide-react";
 
 export type ScheduleItem = {
   time: string;
@@ -17,12 +17,6 @@ export type InstagramPost = {
   id: string;
   url: string;
   imageId: string;
-};
-
-export const eventCategories = {
-  Technical: { icon: Cpu, color: 'text-primary' },
-  Cultural: { icon: Music, color: 'text-primary' },
-  Informal: { icon: Users, color: 'text-primary' },
 };
 
 export const schedule: ScheduleItem[] = [

@@ -66,7 +66,6 @@ export const fetchEvents = async (): Promise<Event[]> => {
       imageUrl: transformGoogleDriveUrl(item['Image Link'] || ''),
       coordinator: item['Coordinator'] || '',
       contact: item['Contact'] || '',
-      category: (item['Category'] as any) || (['Technical', 'Cultural', 'Informal'][index % 3]),
     }));
 
   } catch (err) {

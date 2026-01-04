@@ -1,15 +1,6 @@
 'use client';
 
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Button } from './ui/button';
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -17,17 +8,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from './ui/dialog';
+import { Button } from './ui/button';
 import { RegistrationForm } from './registration-form';
 import type { Event } from '@/lib/types';
 import Image from 'next/image';
-import { Badge } from './ui/badge';
-import { eventCategories } from '@/lib/data';
 import Link from 'next/link';
 import { format, parse } from 'date-fns';
 
 export function EventCard({ event }: { event: Event }) {
-  const CategoryIcon = eventCategories[event.category]?.icon || eventCategories['Informal'].icon;
-
   const formatDate = (dateString: string) => {
     if (!dateString) return '';
     try {
@@ -65,13 +53,7 @@ export function EventCard({ event }: { event: Event }) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <div className="flex justify-between items-start mb-2">
-            <DialogTitle className="font-headline text-3xl">{event.title}</DialogTitle>
-            <Badge variant="secondary" className="shrink-0">
-              <CategoryIcon className="mr-1 h-3 w-3" />
-              {event.category}
-            </Badge>
-          </div>
+          <DialogTitle className="font-headline text-3xl mb-2">{event.title}</DialogTitle>
           <p className="text-sm font-bold text-primary">{formattedStartDate}{formattedEndDate && formattedEndDate !== formattedStartDate ? ` - ${formattedEndDate}` : ''}</p>
           <DialogDescription className='text-base pt-2'>{event.details}</DialogDescription>
         </DialogHeader>
