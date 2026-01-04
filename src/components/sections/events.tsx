@@ -5,15 +5,16 @@ import { EventCard } from "../event-card";
 import { fetchEvents } from "@/lib/events-loader";
 import type { Event } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "../ui/carousel";
 import { Skeleton } from '../ui/skeleton';
 import { Frown } from 'lucide-react';
 
 type EventsProps = {
   condensed?: boolean;
+  setApi?: (api: CarouselApi) => void;
 }
 
-export function Events({ condensed = false }: EventsProps) {
+export function Events({ condensed = false, setApi }: EventsProps) {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -75,6 +76,7 @@ export function Events({ condensed = false }: EventsProps) {
   if (condensed) {
     return (
       <Carousel
+        setApi={setApi}
         opts={{
           align: "start",
         }}

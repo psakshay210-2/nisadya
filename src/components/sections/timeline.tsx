@@ -1,15 +1,17 @@
 import { schedule } from '@/lib/data';
 import { cn } from '@/lib/utils';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '../ui/carousel';
 
 type TimelineProps = {
   condensed?: boolean;
+  setApi?: (api: CarouselApi) => void;
 };
 
-export function Timeline({ condensed = false }: TimelineProps) {
+export function Timeline({ condensed = false, setApi }: TimelineProps) {
   if (condensed) {
     return (
       <Carousel
+        setApi={setApi}
         opts={{
           align: "start",
         }}

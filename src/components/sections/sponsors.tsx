@@ -3,16 +3,18 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '../ui/carousel';
 
 type SponsorsProps = {
   condensed?: boolean;
+  setApi?: (api: CarouselApi) => void;
 }
 
-export function Sponsors({ condensed = false }: SponsorsProps) {
+export function Sponsors({ condensed = false, setApi }: SponsorsProps) {
   if (condensed) {
     return (
       <Carousel
+        setApi={setApi}
         opts={{
           align: "start",
           loop: true,

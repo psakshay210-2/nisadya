@@ -7,6 +7,8 @@ import { Calendar, Building2, Ticket } from "lucide-react"
 import { Events } from "./events"
 import { useEffect, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
+import { type CarouselApi } from "../ui/carousel";
+import { Progress } from "../ui/progress";
 
 const tabs = ["events", "schedule", "sponsors"];
 
@@ -16,6 +18,33 @@ export function HeroTabs() {
   const [direction, setDirection] = useState<'forward' | 'backward'>('forward');
   const tabsRef = useRef<HTMLDivElement>(null);
   const [isMounted, setIsMounted] = useState(false);
+
+  const [eventsApi, setEventsApi] = useState<CarouselApi>();
+  const [scheduleApi, setScheduleApi] = useState<CarouselApi>();
+  const [sponsorsApi, setSponsorsApi] = useState<CarouselApi>();
+  const [progress, setProgress] = useState(0);
+
+  const activeApi = {
+    events: eventsApi,
+    schedule: scheduleApi,
+    sponsors: sponsorsApi,
+  }[activeTab];
+
+  useEffect(() => {
+    if (!activeApi) {
+      return
+    }
+    const handleSelect = () => {
+      setProgress(activeApi.scrollProgress() * 100);
+    }
+    handleSelect();
+    activeApi.on("select", handleSelect)
+    activeApi.on("reInit", handleSelect)
+    return () => {
+      activeApi.off("select", handleSelect)
+      activeApi.off("reInit", handleSelect)
+    }
+  }, [activeApi, activeTab])
 
   useEffect(() => {
     setIsMounted(true);
@@ -113,19 +142,20 @@ export function HeroTabs() {
           </TabsTrigger>
         </TabsList>
         <div className="relative mt-4 h-[500px] overflow-hidden rounded-lg bg-card/50 backdrop-blur-sm">
+          <Progress value={progress} className="absolute top-0 left-0 z-10 h-1" />
           <TabsContent value="events" forceMount className={cn(tabContentBaseClasses, activeTab === 'events' ? 'opacity-100' : 'opacity-0 pointer-events-none')}>
             <div className="h-full flex items-center p-4">
-              <Events condensed />
+              <Events condensed setApi={setEventsApi} />
             </div>
           </TabsContent>
           <TabsContent value="schedule" forceMount className={cn(tabContentBaseClasses, activeTab === 'schedule' ? 'opacity-100' : 'opacity-0 pointer-events-none')}>
             <div className="h-full flex items-center p-4">
-              <Timeline condensed />
+              <Timeline condensed setApi={setScheduleApi} />
             </div>
           </TabsContent>
           <TabsContent value="sponsors" forceMount className={cn(tabContentBaseClasses, activeTab === 'sponsors' ? 'opacity-100' : 'opacity-0 pointer-events-none')}>
             <div className="h-full flex items-center p-4">
-              <Sponsors condensed />
+              <Sponsors condensed setApi={setSponsorsApi} />
             </div>
           </TabsContent>
         </div>
