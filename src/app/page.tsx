@@ -1,3 +1,4 @@
+
 import { Footer } from '@/components/layout/footer';
 import { Accommodation } from '@/components/sections/accommodation';
 import { HeroTabs } from '@/components/sections/hero-tabs';
@@ -25,8 +26,8 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <Accommodation />
         <InstagramFeed />
+        <Accommodation />
       </main>
       <Footer />
     </div>
