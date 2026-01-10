@@ -49,12 +49,12 @@ export function Accommodation() {
                 />
                 )}
             </div>
-            <p className="text-muted-foreground text-center md:text-left">
+            <p className="text-muted-foreground text-center">
                 We offer convenient on-campus hostel accommodation for participants. Rooms are available on a shared basis. Fill out the form to send us your booking request and we will get back to you with confirmation and payment details.
             </p>
         </div>
         <div className="max-w-4xl w-full">
-            <Card className="bg-slate-900/50 border-slate-800">
+            <Card className="bg-slate-950/50 border-slate-800">
                 <CardContent className="p-6">
                     {!isMounted ? (
                       <div className="space-y-4">
