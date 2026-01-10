@@ -18,9 +18,9 @@ export function Accommodation() {
   
   return (
     <section id="accommodation" className="py-16 md:py-24 bg-background/50 backdrop-blur-sm border-y">
-      <div className="container grid md:grid-cols-2 gap-12 items-center">
-        <div className="space-y-6">
-            <div className="text-center md:text-left">
+      <div className="container flex flex-col items-center gap-12">
+        <div className="space-y-6 max-w-4xl w-full">
+            <div className="text-center">
                 <h2 className="font-headline text-4xl font-bold md:text-5xl">Book Your Stay</h2>
                 <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
                     Comfortable and affordable accommodation for attendees.
@@ -49,11 +49,11 @@ export function Accommodation() {
                 />
                 )}
             </div>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground text-center md:text-left">
                 We offer convenient on-campus hostel accommodation for participants. Rooms are available on a shared basis. Fill out the form to send us your booking request and we will get back to you with confirmation and payment details.
             </p>
         </div>
-        <div>
+        <div className="max-w-4xl w-full">
             <Card>
                 <CardContent className="p-6">
                     {!isMounted ? (
