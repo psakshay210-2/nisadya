@@ -8,68 +8,68 @@
     },
     {
       "id": "room-1",
-      "description": "The majestic Taj Mahal Palace hotel in Mumbai.",
-      "imageUrl": "https://images.unsplash.com/photo-1598925244502-d1fbceb12a87?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNDE5ODJ8MHwxfHNlYXJjaHwxfHxUYWolMjBIb3RlbHxlbnwwfHx8fDE3Njg0NzEwODJ8MA&ixlib=rb-4.0.3&q=80&w=1080",
-      "imageHint": "Taj Hotel"
+      "description": "A modern hotel room with a large bed and city view.",
+      "imageUrl": "https://images.unsplash.com/photo-1566073771259-6a8506099945?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNDE5ODJ8MHwxfHNlYXJjaHwzfHxob3RlbHxlbnwwfHx8fDE3Njg0NzE4NDF8MA&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "modern hotel"
     },
     {
       "id": "room-2",
-      "description": "The beautiful poolside of the Taj Hotel.",
-      "imageUrl": "https://images.unsplash.com/photo-1562676921-5c9931393e17?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNDE5ODJ8MHwxfHNlYXJjaHw0fHxUYWolMjBIb3RlbCUyMHBvb2x8ZW58MHx8fHwxNzY4NDcxMjU0fDA&ixlib=rb-4.0.3&q=80&w=1080",
+      "description": "A beautiful hotel swimming pool area at dusk.",
+      "imageUrl": "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNDE5ODJ8MHwxfHNlYXJjaHw1fHxob3RlbHxlbnwwfHx8fDE3Njg0NzE4NDF8MA&ixlib=rb-4.0.3&q=80&w=1080",
       "imageHint": "hotel pool"
     },
     {
       "id": "room-3",
-      "description": "A luxurious and elegant hotel room at the Taj.",
+      "description": "A luxurious and elegant hotel room with classic decor.",
       "imageUrl": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNDE5ODJ8MHwxfHNlYXJjaHwxfHxob3RlbCUyMHJvb218ZW58MHx8fHwxNzY4NDcxMzMxfDA&ixlib=rb-4.0.3&q=80&w=1080",
       "imageHint": "luxury room"
     },
     {
       "id": "room-4",
-      "description": "The opulent interior of a luxury hotel.",
-      "imageUrl": "https://images.unsplash.com/photo-1629169623812-701a1e505296?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNDE5ODJ8MHwxfHNlYXJjaHwzfHxob3RlbCUyMGludGVyaW9yfGVufDB8fHx8MTc2ODQ3MTM3N3ww&ixlib=rb-4.0.3&q=80&w=1080",
-      "imageHint": "hotel interior"
+      "description": "The opulent interior of a luxury hotel lobby.",
+      "imageUrl": "https://images.unsplash.com/photo-1542314831-068cd1dbb563?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNDE5ODJ8MHwxfHNlYXJjaHw4fHxob3RlbHxlbnwwfHx8fDE3Njg0NzE4NDF8MA&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "hotel lobby"
     },
     {
       "id": "room-5",
-      "description": "A grand hallway inside the Taj Hotel.",
-      "imageUrl": "https://images.unsplash.com/photo-1549294413-26f195200c16?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNDE5ODJ8MHwxfHNlYXJjaHw1fHxob3RlbCUyMGludGVyaW9yfGVufDB8fHx8MTc2ODQ3MTM3N3ww&ixlib=rb-4.0.3&q=80&w=1080",
-      "imageHint": "grand hotel"
+      "description": "A stylish hotel restaurant with modern furniture.",
+      "imageUrl": "https://images.unsplash.com/photo-1555396273-367ea4d445c9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNDE5ODJ8MHwxfHNlYXJjaHwxMHx8aG90ZWx8ZW58MHx8fHwxNzY4NDcxODQxfDA&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "hotel restaurant"
     },
     {
       "id": "sponsor-1",
       "description": "Sponsor logo 1",
-      "imageUrl": "https://images.unsplash.com/photo-1687523327554-fa9f50423489?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3Njc5NzMxMjh8MA&ixlib=rb-4.1.0&q=80&w=600",
+      "imageUrl": "https://images.unsplash.com/photo-1549924231-f129b911e442?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3Njc5NzMxMjh8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "company logo"
     },
     {
       "id": "sponsor-2",
       "description": "Sponsor logo 2",
-      "imageUrl": "https://images.unsplash.com/photo-1549924231-f129b911e442?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3Njc5NzMxMjh8MA&ixlib=rb-4.1.0&q=80&w=600",
+      "imageUrl": "https://images.unsplash.com/photo-1549924231-f129b911e442?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3Njc5NzMxMjh8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "company logo"
     },
     {
       "id": "sponsor-3",
       "description": "Sponsor logo 3",
-      "imageUrl": "https://images.unsplash.com/photo-1562783912-21ad31ee2a83?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3Njc5NzMxMjh8MA&ixlib=rb-4.1.0&q=80&w=600",
+      "imageUrl": "https://images.unsplash.com/photo-1620288627223-53302f4e8c74?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3Njc5NzMxMjh8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "company logo"
     },
     {
       "id": "sponsor-4",
       "description": "Sponsor logo 4",
-      "imageUrl": "https://images.unsplash.com/photo-1562705121-e624542c7b9b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y29tcGFueSUyMGxvZ298ZW58MHx8fHwxNzY3OTczMTI4fDA&ixlib=rb-4.1.0&q=80&w=600",
+      "imageUrl": "https://images.unsplash.com/photo-1562705121-e624542c7b9b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y29tcGFueSUyMGxvZ298ZW58MHx8fHwxNzY3OTczMTI4fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "company logo"
     },
     {
       "id": "sponsor-5",
       "description": "Sponsor logo 5",
-      "imageUrl": "https://images.unsplash.com/photo-1529612700005-e35377bf1415?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3Njc5NzMxMjh8MA&ixlib=rb-4.1.0&q=80&w=600",
+      "imageUrl": "https://images.unsplash.com/photo-1622465911368-72162f8da3e2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3Njc5NzMxMjh8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "company logo"
     },
     {
       "id": "sponsor-6",
       "description": "Sponsor logo 6",
-      "imageUrl": "https://images.unsplash.com/photo-1496200186974-4293800e2c20?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3Njc5NzMxMjh8MA&ixlib=rb-4.1.0&q=80&w=600",
+      "imageUrl": "https://images.unsplash.com/photo-1687523327554-fa9f50423489?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3Njc5NzMxMjh8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "company logo"
     }
   ]
