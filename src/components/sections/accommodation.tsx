@@ -52,7 +52,8 @@ export function Accommodation() {
             </Card>
         </div>
         <p className="text-slate-300 text-center drop-shadow-sm max-w-2xl">
-            We offer convenient on-campus hostel accommodation for participants. Rooms are available on a shared basis. Fill out the form to send us your booking request and we will get back to you with confirmation and payment details.
+            We offer shared on-campus hostel rooms for participants. 
+            Fill out the form to request your booking, and we'll contact you with the details.
         </p>
       </div>
     </section>
