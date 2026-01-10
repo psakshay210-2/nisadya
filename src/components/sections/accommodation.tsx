@@ -27,7 +27,7 @@ export function Accommodation() {
                 </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {roomImage1 && (
                 <Image
                     src={roomImage1.imageUrl}
@@ -54,7 +54,7 @@ export function Accommodation() {
             </p>
         </div>
         <div className="max-w-4xl w-full">
-            <Card>
+            <Card className="bg-slate-900/50 border-slate-800">
                 <CardContent className="p-6">
                     {!isMounted ? (
                       <div className="space-y-4">
