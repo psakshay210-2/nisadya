@@ -211,7 +211,7 @@ export function AccommodationForm() {
           )}
         />
         
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
+        <Button type="submit" className="w-full hover:bg-lite-green" disabled={isSubmitting}>
           {isSubmitting ? 'Submitting...' : 'Request Booking'}
           <BedDouble className="ml-2 h-4 w-4" />
         </Button>

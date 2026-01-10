@@ -14,6 +14,7 @@ export default {
         headline: ['"Space Grotesk"', 'sans-serif'],
       },
       colors: {
+        'lite-green': '#00FF00',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
