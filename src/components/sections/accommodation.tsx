@@ -24,6 +24,9 @@ export function Accommodation() {
       <div className="container relative flex flex-col items-center gap-8">
         <div className="w-full max-w-4xl space-y-4 text-center">
             <h2 className="font-headline text-4xl font-bold md:text-5xl text-white drop-shadow-md">Book Your Stay</h2>
+            <p className="text-lg text-slate-200 drop-shadow-sm">
+              Comfortable and affordable accommodation for attendees.
+            </p>
         </div>
         <div className='w-full max-w-2xl'>
             <Card className='bg-slate-950/50 backdrop-blur-md border-slate-700 transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/20'>
