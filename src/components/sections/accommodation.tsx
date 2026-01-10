@@ -13,7 +13,7 @@ export function Accommodation() {
   const roomImages = PlaceHolderImages.filter(p => p.id.startsWith('room-'));
   const [isMounted, setIsMounted] = useState(false);
   const autoplay = React.useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: true })
+    Autoplay({ delay: 2000, stopOnInteraction: true })
   );
 
   useEffect(() => {
