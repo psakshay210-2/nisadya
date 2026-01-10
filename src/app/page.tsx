@@ -25,8 +25,8 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <Accommodation />
         <InstagramFeed />
+        <Accommodation />
       </main>
       <Footer />
     </div>
