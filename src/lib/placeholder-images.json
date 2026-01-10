@@ -8,33 +8,33 @@
     },
     {
       "id": "room-1",
-      "description": "A modern and clean hotel room.",
-      "imageUrl": "https://images.unsplash.com/photo-1631049552057-403cdb8f0658?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxob3RlbCUyMHJvb218ZW58MHx8fHwxNzY3OTgyMjQwfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "hotel room"
+      "description": "The majestic Taj Mahal Palace hotel in Mumbai.",
+      "imageUrl": "https://images.unsplash.com/photo-1598925244502-d1fbceb12a87?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNDE5ODJ8MHwxfHNlYXJjaHwxfHxUYWolMjBIb3RlbHxlbnwwfHx8fDE3Njg0NzEwODJ8MA&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "Taj Hotel"
     },
     {
       "id": "room-2",
-      "description": "A cozy shared hostel room.",
-      "imageUrl": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxob3N0ZWwlMjByb29tfGVufDB8fHx8MTc2NzkzODg0MXww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "hostel room"
+      "description": "The beautiful poolside of the Taj Hotel.",
+      "imageUrl": "https://images.unsplash.com/photo-1562676921-5c9931393e17?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNDE5ODJ8MHwxfHNlYXJjaHw0fHxUYWolMjBIb3RlbCUyMHBvb2x8ZW58MHx8fHwxNzY4NDcxMjU0fDA&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "hotel pool"
     },
     {
       "id": "room-3",
-      "description": "A hotel room with a view of the city.",
-      "imageUrl": "https://images.unsplash.com/photo-1640154251432-1bddc79ca91d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxob3RlbCUyMHJvb20lMjBjaXR5fGVufDB8fHx8MTc2ODA1MDU4MHww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "hotel room city"
+      "description": "A luxurious and elegant hotel room at the Taj.",
+      "imageUrl": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNDE5ODJ8MHwxfHNlYXJjaHwxfHxob3RlbCUyMHJvb218ZW58MHx8fHwxNzY4NDcxMzMxfDA&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "luxury room"
     },
     {
       "id": "room-4",
-      "description": "A luxurious hotel suite with a king-sized bed.",
-      "imageUrl": "https://images.unsplash.com/photo-1759223198981-661cadbbff36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxsdXh1cnklMjBzdWl0ZXxlbnwwfHx8fDE3NjgwNDMwNDJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "luxury suite"
+      "description": "The opulent interior of a luxury hotel.",
+      "imageUrl": "https://images.unsplash.com/photo-1629169623812-701a1e505296?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNDE5ODJ8MHwxfHNlYXJjaHwzfHxob3RlbCUyMGludGVyaW9yfGVufDB8fHx8MTc2ODQ3MTM3N3ww&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "hotel interior"
     },
     {
       "id": "room-5",
-      "description": "A minimalist and modern hotel room interior.",
-      "imageUrl": "https://images.unsplash.com/photo-1612196808827-9ff25cb6137a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxtaW5pbWFsaXN0JTIwaW50ZXJpb3J8ZW58MHx8fHwxNzY3OTY4ODUwfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "minimalist interior"
+      "description": "A grand hallway inside the Taj Hotel.",
+      "imageUrl": "https://images.unsplash.com/photo-1549294413-26f195200c16?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNDE5ODJ8MHwxfHNlYXJjaHw1fHxob3RlbCUyMGludGVyaW9yfGVufDB8fHx8MTc2ODQ3MTM3N3ww&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "grand hotel"
     },
     {
       "id": "sponsor-1",
