@@ -31,16 +31,17 @@ export function Sponsors({ condensed = false, setApi }: SponsorsProps) {
               <CarouselItem key={sponsor.id} className="basis-1/2 md:basis-1/3 lg:basis-1/4 pl-8">
                 <Link
                   href="#"
-                  className="flex aspect-video items-center justify-center p-6 opacity-60 transition-opacity duration-300 hover:opacity-100"
+                  className="flex aspect-video items-center justify-center p-6 opacity-60 transition-opacity duration-300 hover:opacity-100 grayscale hover:grayscale-0"
                 >
-                  <Image
-                    src={placeholder.imageUrl}
-                    alt={sponsor.name}
-                    width={150}
-                    height={75}
-                    className="object-contain"
-                    data-ai-hint={placeholder.imageHint}
-                  />
+                  <div className='relative w-[150px] h-[75px]'>
+                    <Image
+                      src={placeholder.imageUrl}
+                      alt={sponsor.name}
+                      fill
+                      className="object-contain"
+                      data-ai-hint={placeholder.imageHint}
+                    />
+                  </div>
                 </Link>
               </CarouselItem>
             )
@@ -73,16 +74,17 @@ export function Sponsors({ condensed = false, setApi }: SponsorsProps) {
               <Link
                 href="#"
                 key={sponsor.id}
-                className="flex items-center justify-center opacity-60 transition-opacity duration-300 hover:opacity-100 shrink-0"
+                className="flex items-center justify-center opacity-60 transition-opacity duration-300 hover:opacity-100 shrink-0 grayscale hover:grayscale-0"
               >
-                <Image
-                  src={placeholder.imageUrl}
-                  alt={sponsor.name}
-                  width={150}
-                  height={75}
-                  className="object-contain"
-                  data-ai-hint={placeholder.imageHint}
-                />
+                <div className='relative w-[150px] h-[75px]'>
+                  <Image
+                    src={placeholder.imageUrl}
+                    alt={sponsor.name}
+                    fill
+                    className="object-contain"
+                    data-ai-hint={placeholder.imageHint}
+                  />
+                </div>
               </Link>
             );
           })}
