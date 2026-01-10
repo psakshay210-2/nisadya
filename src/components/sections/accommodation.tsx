@@ -6,15 +6,9 @@ import { Card, CardContent } from '../ui/card';
 import { AccommodationForm } from '../accommodation-form';
 import React, { useEffect, useState } from 'react';
 import { Skeleton } from '../ui/skeleton';
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
-import Autoplay from "embla-carousel-autoplay";
 
 export function Accommodation() {
-  const roomImages = PlaceHolderImages.filter(p => p.id.startsWith('room-'));
   const [isMounted, setIsMounted] = useState(false);
-  const autoplay = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true })
-  );
 
   useEffect(() => {
     setIsMounted(true);
@@ -30,32 +24,6 @@ export function Accommodation() {
                     Comfortable and affordable accommodation for attendees.
                 </p>
             </div>
-
-            <Carousel 
-                className="w-full"
-                plugins={[autoplay.current]}
-                onMouseEnter={autoplay.current.stop}
-                onMouseLeave={autoplay.current.reset}
-                opts={{
-                  loop: true,
-                }}
-              >
-              <CarouselContent>
-                {roomImages.map((image) => (
-                  <CarouselItem key={image.id}>
-                    <div className="aspect-[16/9] w-full overflow-hidden rounded-lg">
-                      <Image
-                        src={image.imageUrl}
-                        alt={image.description}
-                        fill
-                        className="object-cover"
-                        data-ai-hint={image.imageHint}
-                      />
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-            </Carousel>
             
             <p className="text-muted-foreground text-center">
                 We offer convenient on-campus hostel accommodation for participants. Rooms are available on a shared basis. Fill out the form to send us your booking request and we will get back to you with confirmation and payment details.
