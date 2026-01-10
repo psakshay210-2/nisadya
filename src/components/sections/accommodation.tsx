@@ -20,7 +20,7 @@ export function Accommodation() {
       className="relative py-16 md:py-24 bg-cover bg-center border-y"
       style={{ backgroundImage: bgImage ? `url(${bgImage.imageUrl})` : 'none' }}
     >
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
       <div className="container relative flex flex-col items-center gap-12">
         <div className="w-full max-w-4xl space-y-6">
             <div className="text-center">
