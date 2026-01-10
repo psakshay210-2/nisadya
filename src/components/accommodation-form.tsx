@@ -82,7 +82,7 @@ export function AccommodationForm() {
                 <FormItem>
                 <FormLabel>Email Address</FormLabel>
                 <FormControl>
-                    <Input placeholder="you@example.com" {...field} />
+                    <Input placeholder="nisadya@nitt.edu" {...field} />
                 </FormControl>
                 <FormMessage />
                 </FormItem>
@@ -95,7 +95,7 @@ export function AccommodationForm() {
                 <FormItem>
                 <FormLabel>Phone Number</FormLabel>
                 <FormControl>
-                    <Input placeholder="+1 234 567 890" {...field} />
+                    <Input placeholder="+91 1234567891" {...field} />
                 </FormControl>
                 <FormMessage />
                 </FormItem>
