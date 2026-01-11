@@ -186,7 +186,18 @@ export function InstagramFeed() {
           >
             <CarouselContent className="-ml-4">
               {links.map((link, index) => (
-                <CarouselItem key={`${link}-${index}`} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                <CarouselItem 
+                  key={`${link}-${index}`} 
+                  className="pl-4 md:basis-1/2 lg:basis-1/3"
+                  onMouseEnter={() => {
+                    if (index === current) {
+                      autoplayPlugin.current.stop();
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    autoplayPlugin.current.reset();
+                  }}
+                >
                   <div className="p-1">
                     <InstagramCard url={link} isActive={index === current} />
                   </div>
