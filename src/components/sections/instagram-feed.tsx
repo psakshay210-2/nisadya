@@ -1,11 +1,15 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ExternalLink, Loader2, Camera, RefreshCw } from 'lucide-react';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '../ui/carousel';
+import { cn } from '@/lib/utils';
+import { Button } from '../ui/button';
+import Autoplay from "embla-carousel-autoplay";
 
-const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTsFJbgfDgI-OTKglkjmEnXAV_HisTESw51KXJGhKzrYFJaIAFJ75a6CTkD6zdPveUYPugJuifL0C5r/pub?output=csv"; 
+const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTsFJbgfDgI-OTKglkjmEnXAV_HisTESw51KXJGhKzrYFJaIAFJ75a6CTkD6zdPveUYPugJuifL0C5r/pub?output=csv";
 
-const InstagramCard = ({ url }: { url: string }) => {
+const InstagramCard = ({ url }: { url: string; }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
 
@@ -13,9 +17,7 @@ const InstagramCard = ({ url }: { url: string }) => {
     try {
       const urlObj = new URL(rawUrl);
       let path = urlObj.pathname;
-      
       if (!path.endsWith('/')) path += '/';
-      
       return `${urlObj.origin}${path}embed/captioned/`;
     } catch (e) {
       console.error("Invalid URL:", rawUrl);
@@ -28,49 +30,42 @@ const InstagramCard = ({ url }: { url: string }) => {
   if (!embedUrl) return null;
 
   return (
-    <div className="flex flex-col h-[550px] w-full max-w-sm bg-card/50 backdrop-blur-sm rounded-xl overflow-hidden relative">
-      
+    <div
+      className={cn(
+        "relative h-[550px] w-full max-w-sm transform-gpu overflow-hidden rounded-xl bg-card/50 backdrop-blur-sm transition-all duration-500 ease-in-out"
+      )}
+    >
       {!isLoaded && !hasError && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-card/80 z-10">
-          <Loader2 className="w-8 h-8 text-primary animate-spin mb-2" />
-          <span className="text-xs text-muted-foreground">Loading Post...</span>
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-card/80">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
       )}
 
       {hasError && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-card/80 p-6 text-center z-20">
-          <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mb-3">
-            <Camera className="text-muted-foreground" size={24} />
-          </div>
-          <p className="font-medium text-foreground mb-1">Post Unavailable</p>
-          <a 
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-card/80 p-6 text-center">
+          <Camera className="h-8 w-8 text-muted-foreground" />
+          <p className="mt-2 text-sm text-muted-foreground">Post Unavailable</p>
+          <a
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-primary hover:underline flex items-center gap-1"
+            className="mt-2 text-xs text-primary hover:underline"
           >
-            View on Instagram <ExternalLink size={12} />
+            View on Instagram
           </a>
         </div>
       )}
 
-      <iframe 
-        src={embedUrl} 
-        className={`w-full h-full border-0 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} brightness-95 contrast-125`}
-        scrolling="no" 
-        allowtransparency="true"
+      <iframe
+        src={embedUrl}
+        className={`h-full w-full border-0 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} brightness-95 contrast-125`}
+        scrolling="no"
+        allowTransparency={true}
         allow="encrypted-media"
         onLoad={() => setIsLoaded(true)}
         onError={() => setHasError(true)}
         title="Instagram Post"
       />
-      
-      <div className="absolute bottom-0 w-full bg-card/90 backdrop-blur-sm border-t py-3 px-4 flex justify-between items-center text-xs text-muted-foreground">
-        <span>Instagram Post</span>
-        <a href={url} target="_blank" rel="noreferrer" className="hover:text-primary flex items-center gap-1 font-medium">
-          Open App <ExternalLink size={10} />
-        </a>
-      </div>
     </div>
   );
 };
@@ -81,6 +76,12 @@ export function InstagramFeed() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(false);
+  const [api, setApi] = useState<CarouselApi>()
+  const [current, setCurrent] = useState(0)
+
+  const autoplayPlugin = useRef(
+    Autoplay({ delay: 2000, stopOnInteraction: true, stopOnMouseEnter: false })
+  );
 
   useEffect(() => {
     setIsMounted(true);
@@ -91,37 +92,28 @@ export function InstagramFeed() {
       .map(row => row.trim())
       .map(row => row.replace(/^"|"$/g, ''))
       .filter(row => row.includes('instagram.com/p/') || row.includes('instagram.com/reel/'))
-      .filter((val, id, array) => array.indexOf(val) === id); 
+      .filter((val, id, array) => array.indexOf(val) === id);
   };
 
-  const fetchData = React.useCallback(async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
-
     try {
-        const cacheBustingUrl = `${GOOGLE_SHEET_CSV_URL}&_=${new Date().getTime()}`;
-        const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(cacheBustingUrl)}`;
-
-        const response = await fetch(proxyUrl);
-        if (!response.ok) {
-            throw new Error(`Failed to fetch from proxy. Status: ${response.status}`);
-        }
-        const csvText = await response.text();
-
-        if (csvText) {
-            const parsedLinks = parseCSV(csvText);
-            if (parsedLinks.length > 0) {
-            setLinks(parsedLinks);
-            } else {
-            setError("Connected to Sheet, but found no valid links.");
-            setLinks([]);
-            }
-        } else {
-            throw new Error("Could not fetch data from Google Sheet.");
-        }
+      const cacheBustingUrl = `${GOOGLE_SHEET_CSV_URL}&_=${new Date().getTime()}`;
+      const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(cacheBustingUrl)}`;
+      const response = await fetch(proxyUrl);
+      if (!response.ok) throw new Error(`Failed to fetch. Status: ${response.status}`);
+      const csvText = await response.text();
+      if (csvText) {
+        const parsedLinks = parseCSV(csvText);
+        setLinks(parsedLinks.length > 0 ? parsedLinks : []);
+        if (parsedLinks.length === 0) setError("No valid Instagram links found in the sheet.");
+      } else {
+        throw new Error("Could not fetch data from Google Sheet.");
+      }
     } catch (err: any) {
       console.error(err);
-      setError(err.message || "Could not load your Sheet.");
+      setError(err.message || "An error occurred while fetching posts.");
       setLinks([]);
     } finally {
       setLoading(false);
@@ -130,15 +122,24 @@ export function InstagramFeed() {
 
   useEffect(() => {
     if (isMounted) {
-        fetchData(); // Fetch initial data
-        
-        const intervalId = setInterval(() => {
-        fetchData();
-        }, 120000); // 2 minutes in milliseconds
-
-        return () => clearInterval(intervalId); // Cleanup on component unmount
+      fetchData();
     }
   }, [isMounted, fetchData]);
+
+  useEffect(() => {
+    if (!api) return;
+
+    const handleSelect = () => {
+        setCurrent(api.selectedScrollSnap());
+    };
+    
+    handleSelect();
+    api.on('select', handleSelect);
+
+    return () => {
+      api.off('select', handleSelect);
+    };
+  }, [api]);
 
   if (!isMounted) {
     return null;
@@ -147,24 +148,15 @@ export function InstagramFeed() {
   return (
     <section id="instagram" className="py-16 md:py-24 border-y">
       <div className="container">
-        <div className="mb-8 flex items-center justify-between">
-            <div>
-                <h2 className="font-headline text-4xl font-bold md:text-5xl">
-                    On the Gram
-                </h2>
-                <p className="mt-2 text-lg text-muted-foreground">
-                    Follow our journey and catch the latest updates.
-                </p>
-            </div>
-            <button 
-              onClick={fetchData} 
-              className="p-2 text-muted-foreground hover:text-primary hover:bg-accent rounded-full transition-all"
-              title="Refresh Data"
-            >
-              <RefreshCw size={24} className={loading ? "animate-spin" : ""} />
-            </button>
+        <div className="mb-12 text-center">
+            <h2 className="font-headline text-4xl font-bold md:text-5xl">
+              On the Gram
+            </h2>
+            <p className="mx-auto mt-2 max-w-2xl text-lg text-muted-foreground">
+              Follow our journey and catch the latest updates.
+            </p>
         </div>
-        
+
         {loading && (
           <div className="flex flex-col items-center justify-center py-20 space-y-4">
             <Loader2 className="w-10 h-10 text-primary animate-spin" />
@@ -172,18 +164,50 @@ export function InstagramFeed() {
           </div>
         )}
 
-        {!loading && (
-            <>
-                {error && <p className="text-center text-red-500 mb-4">{error}</p>}
-                <div className="flex flex-wrap justify-center gap-8">
-                    {links.map((link, index) => (
-                    <InstagramCard key={`${link}-${index}`} url={link} />
-                    ))}
-                </div>
-            </>
+        {!loading && error && (
+          <div className="text-center py-20 text-muted-foreground border-2 border-dashed border-border rounded-xl">
+            <Camera className="mx-auto h-12 w-12 text-muted-foreground/50 mb-4" />
+            <p className="text-lg font-medium text-foreground">Could not load posts</p>
+            <p className="text-sm max-w-sm mx-auto">{error}</p>
+            <Button onClick={fetchData} variant="ghost" className="mt-4">
+              <RefreshCw className="mr-2 h-4 w-4" />
+              Try Again
+            </Button>
+          </div>
+        )}
+        
+        {!loading && !error && links.length > 0 && (
+          <Carousel 
+            setApi={setApi} 
+            opts={{ align: 'center', loop: true }}
+            plugins={[autoplayPlugin.current]}
+          >
+            <CarouselContent className="-ml-4">
+              {links.map((link, index) => (
+                <CarouselItem 
+                  key={`${link}-${index}`} 
+                  className="pl-4 md:basis-1/2 lg:basis-1/3"
+                  onMouseEnter={() => {
+                    if (index === current) {
+                      autoplayPlugin.current.stop();
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    autoplayPlugin.current.play();
+                  }}
+                >
+                  <div className={cn("p-1 transition-transform duration-300", index === current ? "scale-100" : "scale-90")}>
+                    <InstagramCard url={link} />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
         )}
 
-        {!loading && links.length === 0 && (
+        {!loading && !error && links.length === 0 && (
           <div className="text-center py-20 text-muted-foreground border-2 border-dashed border-border rounded-xl">
             <Camera className="mx-auto h-12 w-12 text-muted-foreground/50 mb-4" />
             <p className="text-lg font-medium text-foreground">No posts found</p>

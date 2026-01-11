@@ -21,6 +21,47 @@ export function Accommodation() {
     Autoplay({ delay: 3000, stopOnInteraction: true })
   )
   
+  if (!isMounted) {
+    return (
+        <section id="accommodation" className="py-16 md:py-24 bg-background/50 backdrop-blur-sm border-y">
+            <div className="container grid md:grid-cols-2 gap-12 items-center">
+                <div className="space-y-6">
+                    <div className="text-center md:text-left">
+                        <h2 className="font-headline text-4xl font-bold md:text-5xl">Book Your Stay</h2>
+                        <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+                            Comfortable and affordable accommodation for attendees.
+                        </p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        <Skeleton className="rounded-lg object-cover aspect-[4/3]" />
+                        <Skeleton className="rounded-lg object-cover aspect-[4/3]" />
+                    </div>
+                    <Skeleton className="h-12 w-full" />
+                </div>
+                <div>
+                    <Card>
+                        <CardContent className="p-6">
+                            <div className="space-y-4">
+                                <Skeleton className="h-10 w-full" />
+                                <div className="grid grid-cols-2 gap-4">
+                                    <Skeleton className="h-10 w-full" />
+                                    <Skeleton className="h-10 w-full" />
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <Skeleton className="h-10 w-full" />
+                                    <Skeleton className="h-10 w-full" />
+                                </div>
+                                <Skeleton className="h-10 w-full" />
+                                <Skeleton className="h-10 w-full" />
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+        </section>
+    )
+  }
+
   return (
     <section 
       id="accommodation" 
@@ -62,23 +103,7 @@ export function Accommodation() {
         <div className='w-full lg:w-1/2 max-w-md'>
             <Card className='bg-slate-950/50 backdrop-blur-md border-slate-700 transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/20'>
                 <CardContent className="p-6">
-                    {!isMounted ? (
-                      <div className="space-y-4">
-                        <Skeleton className="h-10 w-full bg-slate-700/50" />
-                        <div className="grid grid-cols-2 gap-4">
-                          <Skeleton className="h-10 w-full bg-slate-700/50" />
-                          <Skeleton className="h-10 w-full bg-slate-700/50" />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <Skeleton className="h-10 w-full bg-slate-700/50" />
-                          <Skeleton className="h-10 w-full bg-slate-700/50" />
-                        </div>
-                        <Skeleton className="h-10 w-full bg-slate-700/50" />
-                        <Skeleton className="h-10 w-full bg-slate-700/50" />
-                      </div>
-                    ) : (
-                      <AccommodationForm />
-                    )}
+                    <AccommodationForm />
                 </CardContent>
             </Card>
         </div>

@@ -1,3 +1,4 @@
+
 import { Footer } from '@/components/layout/footer';
 import { Accommodation } from '@/components/sections/accommodation';
 import { HeroTabs } from '@/components/sections/hero-tabs';
@@ -15,7 +16,7 @@ export default function Home() {
               alt="Nisadya Logo"
               width={1600}
               height={800}
-              className={'invert drop-shadow-[0_4px_10px_rgba(0,0,0,1)] h-auto max-w-xs sm:max-w-sm md:max-w-md lg:max-w-2xl'}
+              className={'invert drop-shadow-[0_4px_10px_rgba(0,0,0,1)] h-auto max-w-[70vw] sm:max-w-sm md:max-w-2xl lg:max-w-4xl'}
               priority
             />
           </div>

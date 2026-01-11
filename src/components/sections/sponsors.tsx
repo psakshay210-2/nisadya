@@ -28,12 +28,12 @@ export function Sponsors({ condensed = false, setApi }: SponsorsProps) {
             );
             if (!placeholder) return null;
             return (
-              <CarouselItem key={sponsor.id} className="basis-1/2 md:basis-1/3 lg:basis-1/4 pl-8">
+              <CarouselItem key={sponsor.id} className="basis-1/2 sm:basis-1/3 pl-8">
                 <Link
                   href="#"
                   className="flex aspect-video items-center justify-center p-6 opacity-60 transition-opacity duration-300 hover:opacity-100 grayscale hover:grayscale-0"
                 >
-                  <div className='relative w-[150px] h-[75px]'>
+                  <div className='relative w-full h-full'>
                     <Image
                       src={placeholder.imageUrl}
                       alt={sponsor.name}
