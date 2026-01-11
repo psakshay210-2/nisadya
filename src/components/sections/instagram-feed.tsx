@@ -80,7 +80,7 @@ export function InstagramFeed() {
   const [current, setCurrent] = useState(0)
 
   const autoplayPlugin = useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true, stopOnMouseEnter: true })
+    Autoplay({ delay: 2000, stopOnInteraction: true, stopOnMouseEnter: false })
   );
 
   useEffect(() => {
@@ -188,9 +188,7 @@ export function InstagramFeed() {
                   key={`${link}-${index}`} 
                   className="pl-4 md:basis-1/2 lg:basis-1/3"
                   onMouseEnter={() => {
-                    if (index !== current) {
-                      autoplayPlugin.current.play();
-                    } else {
+                    if (index === current) {
                       autoplayPlugin.current.stop();
                     }
                   }}
