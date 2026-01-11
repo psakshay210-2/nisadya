@@ -1,11 +1,12 @@
 
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, 'useState', 'useEffect', 'useCallback', 'useRef' } from 'react';
 import { ExternalLink, Loader2, Camera, RefreshCw } from 'lucide-react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '../ui/carousel';
 import { cn } from '@/lib/utils';
 import { Button } from '../ui/button';
+import Autoplay from "embla-carousel-autoplay";
 
 const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTsFJbgfDgI-OTKglkjmEnXAV_HisTESw51KXJGhKzrYFJaIAFJ75a6CTkD6zdPveUYPugJuifL0C5r/pub?output=csv";
 
@@ -33,7 +34,7 @@ const InstagramCard = ({ url, isActive }: { url: string; isActive: boolean }) =>
     <div
       className={cn(
         "relative h-[550px] w-full max-w-sm transform-gpu overflow-hidden rounded-xl bg-card/50 backdrop-blur-sm transition-all duration-500 ease-in-out",
-        isActive ? 'scale-100 opacity-100' : 'scale-90 opacity-50 blur-[2px]'
+        isActive ? 'scale-100 opacity-100' : 'scale-90 opacity-50'
       )}
     >
       {!isLoaded && !hasError && (
@@ -79,6 +80,10 @@ export function InstagramFeed() {
   const [isMounted, setIsMounted] = useState(false);
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
+
+  const autoplayPlugin = useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: true })
+  );
 
   useEffect(() => {
     setIsMounted(true);
@@ -174,7 +179,13 @@ export function InstagramFeed() {
         )}
         
         {!loading && !error && links.length > 0 && (
-          <Carousel setApi={setApi} opts={{ align: 'center', loop: true }}>
+          <Carousel 
+            setApi={setApi} 
+            opts={{ align: 'center', loop: true }}
+            plugins={[autoplayPlugin.current]}
+            onMouseEnter={() => autoplayPlugin.current.stop()}
+            onMouseLeave={() => autoplayPlugin.current.play()}
+          >
             <CarouselContent className="-ml-4">
               {links.map((link, index) => (
                 <CarouselItem key={`${link}-${index}`} className="pl-4 md:basis-1/2 lg:basis-1/3">
