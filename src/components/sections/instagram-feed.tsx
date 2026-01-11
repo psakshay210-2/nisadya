@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, 'useState', 'useEffect', 'useCallback', 'useRef' } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ExternalLink, Loader2, Camera, RefreshCw } from 'lucide-react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '../ui/carousel';
 import { cn } from '@/lib/utils';
