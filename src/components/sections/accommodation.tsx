@@ -1,3 +1,4 @@
+
 'use client';
 
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -57,7 +58,7 @@ export function Accommodation() {
   return (
     <section 
       id="accommodation" 
-      className="py-16 md:py-24 border-y relative"
+      className="py-16 md:py-0 border-y relative md:h-screen md:scroll-snap-align-start flex flex-col justify-center"
     >
       {bgImage && (
         <Image 

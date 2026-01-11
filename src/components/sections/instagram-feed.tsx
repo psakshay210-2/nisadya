@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
@@ -146,7 +147,7 @@ export function InstagramFeed() {
   }
 
   return (
-    <section id="instagram" className="py-16 md:py-24 border-y">
+    <section id="instagram" className="py-16 md:py-0 border-y md:h-screen md:scroll-snap-align-start flex flex-col justify-center">
       <div className="container">
         <div className="mb-12 text-center">
             <h2 className="font-headline text-4xl font-bold md:text-5xl">
