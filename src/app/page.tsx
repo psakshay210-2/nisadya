@@ -7,7 +7,7 @@ import Image from 'next/image';
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="flex min-h-screen flex-col">
       <div className="md:h-screen md:overflow-y-scroll md:scroll-snap-type-y-mandatory">
         <main className="flex-1">
           <section className="flex h-screen flex-col overflow-hidden md:scroll-snap-align-start">
