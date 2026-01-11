@@ -186,7 +186,7 @@ export function InstagramFeed() {
               {links.map((link, index) => (
                 <CarouselItem 
                   key={`${link}-${index}`} 
-                  className="pl-4 md:basis-1/2 lg:basis-1/3"
+                  className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
                   onMouseEnter={() => {
                     if (index === current) {
                       autoplayPlugin.current.stop();

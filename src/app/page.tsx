@@ -16,7 +16,7 @@ export default function Home() {
               alt="Nisadya Logo"
               width={1600}
               height={800}
-              className={'invert drop-shadow-[0_4px_10px_rgba(0,0,0,1)] h-auto max-w-[70vw] sm:max-w-sm md:max-w-2xl lg:max-w-4xl'}
+              className={'invert drop-shadow-[0_4px_10px_rgba(0,0,0,1)] h-auto max-w-[70vw] sm:max-w-xs md:max-w-lg lg:max-w-2xl'}
               priority
             />
           </div>

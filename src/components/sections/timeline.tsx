@@ -65,9 +65,9 @@ export function Timeline({ condensed = false, setApi }: TimelineProps) {
             
             const timelineCard = (
                 <div className="w-full rounded-lg border bg-card/50 p-4 shadow-lg backdrop-blur-sm group">
-                    <div className="flex justify-between items-center">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
                         <p className="font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">{item.title}</p>
-                        <p className="font-mono text-xs text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] shrink-0 ml-2">{item.time}</p>
+                        <p className="font-mono text-xs text-primary drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] shrink-0 sm:ml-2 mt-1 sm:mt-0">{item.time}</p>
                     </div>
                     <p className="text-sm text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)] mt-1">
                       {item.description}
@@ -78,15 +78,17 @@ export function Timeline({ condensed = false, setApi }: TimelineProps) {
             return (
                 <div
                 key={index}
-                className="relative mb-8 flex w-full items-center justify-start md:justify-normal"
+                className="relative mb-8 flex w-full items-center md:justify-normal"
                 >
                 <div
                     className={cn(`flex w-full items-center md:w-1/2`, 
-                      index % 2 === 0 ? 'md:justify-end md:pr-12' : 'md:justify-start md:pl-12'
+                      index % 2 === 0 ? 'md:justify-start md:pl-12' : 'md:justify-end md:pr-12'
                     )}
                 >
-                   {(index % 2 !== 0) && <div className='hidden md:block w-full'>{timelineCard}</div>}
-                   <div className='block md:hidden w-full pl-16'>{timelineCard}</div>
+                   {index % 2 !== 0 ? (
+                      <div className='hidden md:block w-full'>{timelineCard}</div>
+                    ) : <div className="hidden md:block"></div>}
+                   <div className='block md:hidden w-full pl-12'>{timelineCard}</div>
                 </div>
 
                 <div className="absolute left-6 z-10 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full bg-background/80 backdrop-blur-sm md:left-1/2">
@@ -96,13 +98,13 @@ export function Timeline({ condensed = false, setApi }: TimelineProps) {
                 </div>
 
                 <div
-                    className={cn(`flex w-1/2 items-center`,
+                    className={cn(`flex w-full items-center md:w-1/2`,
                       index % 2 === 0 ? 'md:justify-start md:pl-12' : 'md:justify-end md:pr-12'
                     )}
                 >
                     {index % 2 === 0 ? (
                       <div className='hidden md:block w-full'>{timelineCard}</div>
-                    ): <p></p>}
+                    ): <div className="hidden md:block"></div>}
                 </div>
                 </div>
             )

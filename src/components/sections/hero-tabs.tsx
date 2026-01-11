@@ -119,7 +119,7 @@ export function HeroTabs() {
     return (
         <div className="flex flex-col w-full h-full">
             <div className="shrink-0 w-full max-w-md mx-auto h-10 rounded-md bg-muted/50" />
-            <div className="relative mt-4 h-[400px] md:h-[500px] overflow-hidden rounded-lg bg-card/50 backdrop-blur-sm" />
+            <div className="relative mt-4 h-[350px] md:h-[450px] overflow-hidden rounded-lg bg-card/50 backdrop-blur-sm" />
         </div>
     );
   }
@@ -141,7 +141,7 @@ export function HeroTabs() {
             <span>Sponsors</span>
           </TabsTrigger>
         </TabsList>
-        <div className="relative mt-4 h-[400px] md:h-[500px] overflow-hidden rounded-lg bg-card/50 backdrop-blur-sm">
+        <div className="relative mt-4 h-[350px] sm:h-[400px] md:h-[450px] overflow-hidden rounded-lg bg-card/50 backdrop-blur-sm">
           <Progress value={progress} className="absolute top-0 left-0 z-10 h-1" />
           <TabsContent value="events" forceMount className={cn(tabContentBaseClasses, activeTab === 'events' ? 'opacity-100' : 'opacity-0 pointer-events-none')}>
             <div className="h-full flex items-center p-4">
