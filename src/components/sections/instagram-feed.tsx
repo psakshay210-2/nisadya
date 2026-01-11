@@ -80,7 +80,7 @@ export function InstagramFeed() {
   const [current, setCurrent] = useState(0)
 
   const autoplayPlugin = useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: false, stopOnMouseEnter: false })
+    Autoplay({ delay: 2000, stopOnInteraction: true, stopOnMouseEnter: true })
   );
 
   useEffect(() => {
@@ -188,12 +188,14 @@ export function InstagramFeed() {
                   key={`${link}-${index}`} 
                   className="pl-4 md:basis-1/2 lg:basis-1/3"
                   onMouseEnter={() => {
-                    if (index === current) {
+                    if (index !== current) {
+                      autoplayPlugin.current.play();
+                    } else {
                       autoplayPlugin.current.stop();
                     }
                   }}
                   onMouseLeave={() => {
-                    autoplayPlugin.current.reset();
+                    autoplayPlugin.current.play();
                   }}
                 >
                   <div className={cn("p-1 transition-transform duration-300", index === current ? "scale-100" : "scale-90")}>
