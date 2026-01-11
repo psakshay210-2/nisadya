@@ -148,7 +148,7 @@ export function InstagramFeed() {
 
   return (
     <section id="instagram" className="py-16 md:py-0 border-y md:h-screen md:scroll-snap-align-start flex flex-col justify-center">
-      <div className="container">
+      <div className="container flex flex-col items-center">
         <div className="mb-12 text-center">
             <h2 className="font-headline text-4xl font-bold md:text-5xl">
               On the Gram
@@ -182,6 +182,7 @@ export function InstagramFeed() {
             setApi={setApi} 
             opts={{ align: 'center', loop: true }}
             plugins={[autoplayPlugin.current]}
+            className="w-full"
           >
             <CarouselContent className="-ml-4">
               {links.map((link, index) => (
