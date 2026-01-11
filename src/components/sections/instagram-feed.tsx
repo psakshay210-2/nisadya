@@ -34,7 +34,7 @@ const InstagramCard = ({ url, isActive }: { url: string; isActive: boolean }) =>
     <div
       className={cn(
         "relative h-[550px] w-full max-w-sm transform-gpu overflow-hidden rounded-xl bg-card/50 backdrop-blur-sm transition-all duration-500 ease-in-out",
-        isActive ? 'scale-100 opacity-100' : 'scale-90 opacity-50'
+        isActive ? 'scale-100' : 'scale-90'
       )}
     >
       {!isLoaded && !hasError && (
@@ -82,7 +82,7 @@ export function InstagramFeed() {
   const [current, setCurrent] = useState(0)
 
   const autoplayPlugin = useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: true })
+    Autoplay({ delay: 2000, stopOnInteraction: true })
   );
 
   useEffect(() => {
