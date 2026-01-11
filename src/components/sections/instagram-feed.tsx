@@ -10,7 +10,7 @@ import Autoplay from "embla-carousel-autoplay";
 
 const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTsFJbgfDgI-OTKglkjmEnXAV_HisTESw51KXJGhKzrYFJaIAFJ75a6CTkD6zdPveUYPugJuifL0C5r/pub?output=csv";
 
-const InstagramCard = ({ url, isActive }: { url: string; isActive: boolean }) => {
+const InstagramCard = ({ url }: { url: string; }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
 
@@ -33,8 +33,7 @@ const InstagramCard = ({ url, isActive }: { url: string; isActive: boolean }) =>
   return (
     <div
       className={cn(
-        "relative h-[550px] w-full max-w-sm transform-gpu overflow-hidden rounded-xl bg-card/50 backdrop-blur-sm transition-all duration-500 ease-in-out",
-        isActive ? 'scale-100' : 'scale-90'
+        "relative h-[550px] w-full max-w-sm transform-gpu overflow-hidden rounded-xl bg-card/50 backdrop-blur-sm transition-all duration-500 ease-in-out"
       )}
     >
       {!isLoaded && !hasError && (
@@ -82,7 +81,7 @@ export function InstagramFeed() {
   const [current, setCurrent] = useState(0)
 
   const autoplayPlugin = useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true })
+    Autoplay({ delay: 2000, stopOnInteraction: false, stopOnMouseEnter: false })
   );
 
   useEffect(() => {
@@ -198,8 +197,8 @@ export function InstagramFeed() {
                     autoplayPlugin.current.reset();
                   }}
                 >
-                  <div className="p-1">
-                    <InstagramCard url={link} isActive={index === current} />
+                  <div className={cn("p-1 transition-transform duration-300", index === current ? "scale-100" : "scale-90")}>
+                    <InstagramCard url={link} />
                   </div>
                 </CarouselItem>
               ))}
