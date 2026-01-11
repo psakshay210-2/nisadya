@@ -5,56 +5,102 @@ import { Card, CardContent } from '../ui/card';
 import { AccommodationForm } from '../accommodation-form';
 import React, { useEffect, useState } from 'react';
 import { Skeleton } from '../ui/skeleton';
+import Image from 'next/image';
 
 export function Accommodation() {
   const [isMounted, setIsMounted] = useState(false);
-  const bgImage = PlaceHolderImages.find((p) => p.id === 'room-1');
+  const roomImage1 = PlaceHolderImages.find((p) => p.id === 'room-1');
+  const roomImage2 = PlaceHolderImages.find((p) => p.id === 'room-2');
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
   
+  if (!isMounted) {
+    return (
+        <section id="accommodation" className="py-16 md:py-24 bg-background/50 backdrop-blur-sm border-y">
+            <div className="container grid md:grid-cols-2 gap-12 items-center">
+                <div className="space-y-6">
+                    <div className="text-center md:text-left">
+                        <h2 className="font-headline text-4xl font-bold md:text-5xl">Book Your Stay</h2>
+                        <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+                            Comfortable and affordable accommodation for attendees.
+                        </p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        <Skeleton className="rounded-lg object-cover aspect-[4/3]" />
+                        <Skeleton className="rounded-lg object-cover aspect-[4/3]" />
+                    </div>
+                    <Skeleton className="h-12 w-full" />
+                </div>
+                <div>
+                    <Card>
+                        <CardContent className="p-6">
+                            <div className="space-y-4">
+                                <Skeleton className="h-10 w-full" />
+                                <div className="grid grid-cols-2 gap-4">
+                                    <Skeleton className="h-10 w-full" />
+                                    <Skeleton className="h-10 w-full" />
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <Skeleton className="h-10 w-full" />
+                                    <Skeleton className="h-10 w-full" />
+                                </div>
+                                <Skeleton className="h-10 w-full" />
+                                <Skeleton className="h-10 w-full" />
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+        </section>
+    )
+  }
+
   return (
-    <section 
-      id="accommodation" 
-      className="relative py-16 md:py-24 bg-cover bg-center border-y"
-      style={{ backgroundImage: bgImage ? `url(${bgImage.imageUrl})` : 'none' }}
-    >
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
-      <div className="container relative flex flex-col items-center gap-8">
-        <div className="w-full max-w-4xl space-y-4 text-center">
-            <h2 className="font-headline text-4xl font-bold md:text-5xl text-white drop-shadow-md">Book Your Stay</h2>
-            <p className="text-lg text-slate-200 drop-shadow-sm">
-              Comfortable and affordable accommodation for attendees.
+    <section id="accommodation" className="py-16 md:py-24 bg-background/50 backdrop-blur-sm border-y">
+      <div className="container grid md:grid-cols-2 gap-12 items-center">
+        <div className="space-y-6">
+            <div className="text-center md:text-left">
+                <h2 className="font-headline text-4xl font-bold md:text-5xl">Book Your Stay</h2>
+                <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+                    Comfortable and affordable accommodation for attendees.
+                </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+                {roomImage1 && (
+                <Image
+                    src={roomImage1.imageUrl}
+                    alt={roomImage1.description}
+                    width={400}
+                    height={300}
+                    className="rounded-lg object-cover aspect-[4/3]"
+                    data-ai-hint={roomImage1.imageHint}
+                />
+                )}
+                {roomImage2 && (
+                <Image
+                    src={roomImage2.imageUrl}
+                    alt={roomImage2.description}
+                    width={400}
+                    height={300}
+                    className="rounded-lg object-cover aspect-[4/3]"
+                    data-ai-hint={roomImage2.imageHint}
+                />
+                )}
+            </div>
+            <p className="text-muted-foreground">
+                We offer convenient on-campus hostel accommodation for participants. Rooms are available on a shared basis. Fill out the form to send us your booking request and we will get back to you with confirmation and payment details.
             </p>
         </div>
-        <div className='w-full max-w-2xl'>
-            <Card className='bg-slate-950/50 backdrop-blur-md border-slate-700 transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/20'>
+        <div>
+            <Card>
                 <CardContent className="p-6">
-                    {!isMounted ? (
-                      <div className="space-y-4">
-                        <Skeleton className="h-10 w-full bg-slate-700/50" />
-                        <div className="grid grid-cols-2 gap-4">
-                          <Skeleton className="h-10 w-full bg-slate-700/50" />
-                          <Skeleton className="h-10 w-full bg-slate-700/50" />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <Skeleton className="h-10 w-full bg-slate-700/50" />
-                          <Skeleton className="h-10 w-full bg-slate-700/50" />
-                        </div>
-                        <Skeleton className="h-10 w-full bg-slate-700/50" />
-                        <Skeleton className="h-10 w-full bg-slate-700/50" />
-                      </div>
-                    ) : (
-                      <AccommodationForm />
-                    )}
+                    <AccommodationForm />
                 </CardContent>
             </Card>
         </div>
-        <p className="text-slate-300 text-center drop-shadow-sm max-w-2xl">
-            We offer shared on-campus hostel rooms for participants. 
-            Fill out the form to request your booking, and we'll contact you with the details.
-        </p>
       </div>
     </section>
   );
