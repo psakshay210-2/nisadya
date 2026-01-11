@@ -13,14 +13,18 @@ import { RegistrationForm } from './registration-form';
 import type { Event } from '@/lib/types';
 import Image from 'next/image';
 import Link from 'next/link';
-import { format, parse } from 'date-fns';
+import { format, parse, isValid } from 'date-fns';
 
 export function EventCard({ event }: { event: Event }) {
   const formatDate = (dateString: string) => {
     if (!dateString) return '';
     try {
-      // Corrected date format to handle dd/MM/yyyy
       const date = parse(dateString, 'dd/MM/yyyy', new Date());
+      // Check if the parsed date is valid
+      if (!isValid(date)) {
+        console.warn('Invalid date detected:', dateString);
+        return dateString;
+      }
       return format(date, 'dd MMMM yyyy');
     } catch (error) {
       console.error('Failed to parse date:', dateString, error);
