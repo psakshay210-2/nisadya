@@ -19,8 +19,8 @@ export function EventCard({ event }: { event: Event }) {
   const formatDate = (dateString: string) => {
     if (!dateString) return '';
     try {
-      // Assuming date is in MM/DD/YYYY format from the sheet
-      const date = parse(dateString, 'MM/dd/yyyy', new Date());
+      // Corrected date format to handle dd/MM/yyyy
+      const date = parse(dateString, 'dd/MM/yyyy', new Date());
       return format(date, 'dd MMMM yyyy');
     } catch (error) {
       console.error('Failed to parse date:', dateString, error);
