@@ -179,35 +179,37 @@ export function InstagramFeed() {
           )}
           
           {!loading && !error && links.length > 0 && (
-            <Carousel 
-              setApi={setApi} 
-              opts={{ align: 'center', loop: true }}
-              plugins={[autoplayPlugin.current]}
-              className="w-full"
-            >
-              <CarouselContent className="-ml-4">
-                {links.map((link, index) => (
-                  <CarouselItem 
-                    key={`${link}-${index}`} 
-                    className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
-                    onMouseEnter={() => {
-                      if (index === current) {
-                        autoplayPlugin.current.stop();
-                      }
-                    }}
-                    onMouseLeave={() => {
-                      autoplayPlugin.current.play();
-                    }}
-                  >
-                    <div className={cn("p-1 transition-transform duration-300", index === current ? "scale-100" : "scale-90")}>
-                      <InstagramCard url={link} />
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
+            <div className="w-full flex justify-center">
+              <Carousel 
+                setApi={setApi} 
+                opts={{ align: 'center', loop: true }}
+                plugins={[autoplayPlugin.current]}
+                className="w-full"
+              >
+                <CarouselContent className="-ml-4">
+                  {links.map((link, index) => (
+                    <CarouselItem 
+                      key={`${link}-${index}`} 
+                      className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
+                      onMouseEnter={() => {
+                        if (index === current) {
+                          autoplayPlugin.current.stop();
+                        }
+                      }}
+                      onMouseLeave={() => {
+                        autoplayPlugin.current.play();
+                      }}
+                    >
+                      <div className={cn("p-1 transition-transform duration-300", index === current ? "scale-100" : "scale-90")}>
+                        <InstagramCard url={link} />
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
+            </div>
           )}
 
           {!loading && !error && links.length === 0 && (
