@@ -148,76 +148,76 @@ export function InstagramFeed() {
 
   return (
     <section id="instagram" className="py-16 md:py-0 border-y md:h-screen md:scroll-snap-align-start flex flex-col justify-center">
-      <div className="container flex flex-col items-center">
-        <div className="mb-12 text-center">
-            <h2 className="font-headline text-4xl font-bold md:text-5xl">
-              On the Gram
-            </h2>
-            <p className="mx-auto mt-2 max-w-2xl text-lg text-muted-foreground">
-              Follow our journey and catch the latest updates.
-            </p>
-        </div>
+      <div className="container">
+        <div className="flex flex-col items-center">
+            <div className="mb-12 text-center">
+                <h2 className="font-headline text-4xl font-bold md:text-5xl">
+                On the Gram
+                </h2>
+                <p className="mx-auto mt-2 max-w-2xl text-lg text-muted-foreground">
+                Follow our journey and catch the latest updates.
+                </p>
+            </div>
 
-        {loading && (
-          <div className="flex flex-col items-center justify-center py-20 space-y-4">
-            <Loader2 className="w-10 h-10 text-primary animate-spin" />
-            <p className="text-muted-foreground font-medium">Fetching latest posts...</p>
-          </div>
-        )}
+            {loading && (
+            <div className="flex flex-col items-center justify-center py-20 space-y-4">
+                <Loader2 className="w-10 h-10 text-primary animate-spin" />
+                <p className="text-muted-foreground font-medium">Fetching latest posts...</p>
+            </div>
+            )}
 
-        {!loading && error && (
-          <div className="text-center py-20 text-muted-foreground border-2 border-dashed border-border rounded-xl">
-            <Camera className="mx-auto h-12 w-12 text-muted-foreground/50 mb-4" />
-            <p className="text-lg font-medium text-foreground">Could not load posts</p>
-            <p className="text-sm max-w-sm mx-auto">{error}</p>
-            <Button onClick={fetchData} variant="ghost" className="mt-4">
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Try Again
-            </Button>
-          </div>
-        )}
-        
-        {!loading && !error && links.length > 0 && (
-          <div className="w-full flex justify-center">
+            {!loading && error && (
+            <div className="text-center py-20 text-muted-foreground border-2 border-dashed border-border rounded-xl">
+                <Camera className="mx-auto h-12 w-12 text-muted-foreground/50 mb-4" />
+                <p className="text-lg font-medium text-foreground">Could not load posts</p>
+                <p className="text-sm max-w-sm mx-auto">{error}</p>
+                <Button onClick={fetchData} variant="ghost" className="mt-4">
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Try Again
+                </Button>
+            </div>
+            )}
+            
+            {!loading && !error && links.length > 0 && (
             <Carousel 
-              setApi={setApi} 
-              opts={{ align: 'center', loop: true }}
-              plugins={[autoplayPlugin.current]}
-              className="max-w-6xl"
+                setApi={setApi} 
+                opts={{ align: 'center', loop: true }}
+                plugins={[autoplayPlugin.current]}
+                className="w-full max-w-6xl"
             >
-              <CarouselContent className="-ml-4">
+                <CarouselContent className="-ml-4">
                 {links.map((link, index) => (
-                  <CarouselItem 
+                    <CarouselItem 
                     key={`${link}-${index}`} 
                     className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
                     onMouseEnter={() => {
-                      if (index === current) {
+                        if (index === current) {
                         autoplayPlugin.current.stop();
-                      }
+                        }
                     }}
                     onMouseLeave={() => {
-                      autoplayPlugin.current.play();
+                        autoplayPlugin.current.play();
                     }}
-                  >
+                    >
                     <div className={cn("p-1 transition-transform duration-300", index === current ? "scale-100" : "scale-90")}>
-                      <InstagramCard url={link} />
+                        <InstagramCard url={link} />
                     </div>
-                  </CarouselItem>
+                    </CarouselItem>
                 ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
             </Carousel>
-          </div>
-        )}
+            )}
 
-        {!loading && !error && links.length === 0 && (
-          <div className="text-center py-20 text-muted-foreground border-2 border-dashed border-border rounded-xl">
-            <Camera className="mx-auto h-12 w-12 text-muted-foreground/50 mb-4" />
-            <p className="text-lg font-medium text-foreground">No posts found</p>
-            <p className="text-sm">Check the Google Sheet or try refreshing.</p>
-          </div>
-        )}
+            {!loading && !error && links.length === 0 && (
+            <div className="text-center py-20 text-muted-foreground border-2 border-dashed border-border rounded-xl">
+                <Camera className="mx-auto h-12 w-12 text-muted-foreground/50 mb-4" />
+                <p className="text-lg font-medium text-foreground">No posts found</p>
+                <p className="text-sm">Check the Google Sheet or try refreshing.</p>
+            </div>
+            )}
+        </div>
       </div>
     </section>
   );
