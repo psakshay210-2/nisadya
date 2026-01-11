@@ -183,8 +183,6 @@ export function InstagramFeed() {
             setApi={setApi} 
             opts={{ align: 'center', loop: true }}
             plugins={[autoplayPlugin.current]}
-            onMouseEnter={() => autoplayPlugin.current.stop()}
-            onMouseLeave={() => autoplayPlugin.current.play()}
           >
             <CarouselContent className="-ml-4">
               {links.map((link, index) => (
