@@ -148,22 +148,13 @@ export function InstagramFeed() {
   return (
     <section id="instagram" className="py-16 md:py-24 border-y">
       <div className="container">
-        <div className="mb-8 flex items-center justify-between">
-            <div>
-                <h2 className="font-headline text-4xl font-bold md:text-5xl">
-                    On the Gram
-                </h2>
-                <p className="mt-2 text-lg text-muted-foreground">
-                    Follow our journey and catch the latest updates.
-                </p>
-            </div>
-            <button 
-              onClick={fetchData} 
-              className="p-2 text-muted-foreground hover:text-primary hover:bg-accent rounded-full transition-all"
-              title="Refresh Data"
-            >
-              <RefreshCw size={24} className={loading ? "animate-spin" : ""} />
-            </button>
+        <div className="mb-12 text-center">
+          <h2 className="font-headline text-4xl font-bold md:text-5xl">
+            On the Gram
+          </h2>
+          <p className="mx-auto mt-2 max-w-2xl text-lg text-muted-foreground">
+            Follow our journey and catch the latest updates.
+          </p>
         </div>
         
         {loading && (
