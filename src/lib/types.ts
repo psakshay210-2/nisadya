@@ -19,6 +19,22 @@ export type Event = {
   details: string; // This might be the same as description
 };
 
+export type Sponsor = {
+  id: string;
+  name: string;
+  imageId: string;
+  type: string;
+  description: string;
+};
+
+export type ScheduleItem = {
+  time: string;
+  title: string;
+  description: string;
+  icon: React.ComponentType<any>;
+};
+
+
 export type InstagramPost = {
   id: string;
   url: string;

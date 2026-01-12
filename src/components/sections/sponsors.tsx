@@ -1,60 +1,9 @@
 import { sponsors } from '@/lib/data';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { cn } from '@/lib/utils';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '../ui/carousel';
+import { SponsorCard } from '../sponsor-card';
 
-type SponsorsProps = {
-  condensed?: boolean;
-  setApi?: (api: CarouselApi) => void;
-}
-
-export function Sponsors({ condensed = false, setApi }: SponsorsProps) {
-  if (condensed) {
-    return (
-      <Carousel
-        setApi={setApi}
-        opts={{
-          align: "start",
-          loop: true,
-        }}
-        className="w-full"
-      >
-        <CarouselContent className='-ml-8'>
-          {sponsors.map((sponsor) => {
-            const placeholder = PlaceHolderImages.find(
-              (p) => p.id === sponsor.imageId
-            );
-            if (!placeholder) return null;
-            return (
-              <CarouselItem key={sponsor.id} className="basis-1/2 sm:basis-1/3 pl-8">
-                <Link
-                  href="#"
-                  className="flex aspect-video items-center justify-center p-6 opacity-60 transition-opacity duration-300 hover:opacity-100 grayscale hover:grayscale-0"
-                >
-                  <div className='relative w-full h-full'>
-                    <Image
-                      src={placeholder.imageUrl}
-                      alt={sponsor.name}
-                      fill
-                      className="object-contain"
-                      data-ai-hint={placeholder.imageHint}
-                    />
-                  </div>
-                </Link>
-              </CarouselItem>
-            )
-          })}
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
-    )
-  }
-
+export function Sponsors() {
   return (
-    <section id="sponsors" className="py-16 md:py-24 bg-transparent w-full">
+    <section id="sponsors" className="py-16 md:py-24 bg-transparent w-full md:scroll-snap-align-start">
       <div className="container">
           <div className="mb-12 text-center">
             <h2 className="font-headline text-4xl font-bold md:text-5xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
@@ -64,30 +13,12 @@ export function Sponsors({ condensed = false, setApi }: SponsorsProps) {
               Powering innovation and making this event possible.
             </p>
           </div>
-        <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16">
-          {sponsors.map((sponsor) => {
-            const placeholder = PlaceHolderImages.find(
-              (p) => p.id === sponsor.imageId
-            );
-            if (!placeholder) return null;
-            return (
-              <Link
-                href="#"
-                key={sponsor.id}
-                className="flex items-center justify-center opacity-60 transition-opacity duration-300 hover:opacity-100 shrink-0 grayscale hover:grayscale-0"
-              >
-                <div className='relative w-[150px] h-[75px]'>
-                  <Image
-                    src={placeholder.imageUrl}
-                    alt={sponsor.name}
-                    fill
-                    className="object-contain"
-                    data-ai-hint={placeholder.imageHint}
-                  />
-                </div>
-              </Link>
-            );
-          })}
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {sponsors.map((sponsor) => (
+            <div key={sponsor.id} className="h-full">
+              <SponsorCard sponsor={sponsor} />
+            </div>
+          ))}
         </div>
       </div>
     </section>

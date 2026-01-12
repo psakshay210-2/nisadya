@@ -1,23 +1,5 @@
 import { Bot, Gamepad2, Code, Mic, Film, Music, Paintbrush } from "lucide-react";
-
-export type ScheduleItem = {
-  time: string;
-  title: string;
-  description: string;
-  icon: React.ComponentType<any>;
-};
-
-export type Sponsor = {
-  id: string;
-  name: string;
-  imageId: string;
-};
-
-export type InstagramPost = {
-  id: string;
-  url: string;
-  imageId: string;
-};
+import type { Sponsor, ScheduleItem } from "./types";
 
 export const schedule: ScheduleItem[] = [
     {
@@ -71,10 +53,10 @@ export const schedule: ScheduleItem[] = [
 ];
 
 export const sponsors: Sponsor[] = [
-  { id: '1', name: 'Sponsor One', imageId: 'sponsor-1' },
-  { id: '2', name: 'Sponsor Two', imageId: 'sponsor-2' },
-  { id: '3', name: 'Sponsor Three', imageId: 'sponsor-3' },
-  { id: '4', name: 'Sponsor Four', imageId: 'sponsor-4' },
-  { id: '5', name: 'Sponsor Five', imageId: 'sponsor-5' },
-  { id: '6', name: 'Sponsor Six', imageId: 'sponsor-6' },
+  { id: '1', name: 'Innovate Corp', imageId: 'sponsor-1', type: 'Title Sponsor', description: 'Pioneering the future of technology with cutting-edge AI solutions.' },
+  { id: '2', name: 'QuantumLeap', imageId: 'sponsor-2', type: 'Gold Sponsor', description: 'Accelerating startups with funding and mentorship.' },
+  { id: '3', name: 'TechVibe', imageId: 'sponsor-3', type: 'Gold Sponsor', description: 'The leading online community for developers and tech enthusiasts.' },
+  { id: '4', name: 'Synergy Systems', imageId: 'sponsor-4', type: 'Silver Sponsor', description: 'Providing scalable cloud infrastructure for enterprises.' },
+  { id: '5', name: 'Creative Minds', imageId: 'sponsor-5', type: 'Silver Sponsor', description: 'A design agency that brings ideas to life with stunning visuals.' },
+  { id: '6', name: 'NextGen Gaming', imageId: 'sponsor-6', type: 'Gaming Partner', description: 'Building immersive worlds and next-generation gaming experiences.' },
 ];
