@@ -53,22 +53,17 @@ export function Accommodation() {
     )
   }
 
-  const bgImage = roomImages[0];
-
   return (
     <section 
       id="accommodation" 
       className="py-16 md:py-0 border-y relative md:h-screen md:scroll-snap-align-start flex flex-col justify-center"
     >
-      {bgImage && (
-        <Image 
-          src={bgImage.imageUrl} 
-          alt={bgImage.description} 
-          fill
-          className="object-cover"
-          data-ai-hint={bgImage.imageHint}
-        />
-      )}
+      <Image 
+        src="/stay.jpg" 
+        alt="Comfortable accommodation" 
+        fill
+        className="object-cover"
+      />
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
 
       <div className="container relative z-10 grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
