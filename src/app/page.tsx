@@ -3,7 +3,6 @@ import { Footer } from '@/components/layout/footer';
 import { Accommodation } from '@/components/sections/accommodation';
 import { HeroTabs } from '@/components/sections/hero-tabs';
 import { InstagramFeed } from '@/components/sections/instagram-feed';
-import { Sponsors } from '@/components/sections/sponsors';
 import Image from 'next/image';
 
 export default function Home() {
@@ -28,7 +27,6 @@ export default function Home() {
               </div>
             </div>
           </section>
-          <Sponsors />
           <InstagramFeed />
           <Accommodation />
         </main>

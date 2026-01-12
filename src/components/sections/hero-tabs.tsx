@@ -1,15 +1,17 @@
+
 'use client';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Timeline } from "./timeline"
-import { Calendar, Ticket } from "lucide-react"
+import { Calendar, Ticket, Heart } from "lucide-react"
 import { Events } from "./events"
 import { useEffect, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { type CarouselApi } from "../ui/carousel";
 import { Progress } from "../ui/progress";
+import { Sponsors } from "./sponsors";
 
-const tabs = ["events", "schedule"];
+const tabs = ["events", "schedule", "sponsors"];
 
 export function HeroTabs() {
   const [activeTab, setActiveTab] = useState(tabs[0]);
@@ -20,11 +22,13 @@ export function HeroTabs() {
 
   const [eventsApi, setEventsApi] = useState<CarouselApi>();
   const [scheduleApi, setScheduleApi] = useState<CarouselApi>();
+  const [sponsorsApi, setSponsorsApi] = useState<CarouselApi>();
   const [progress, setProgress] = useState(0);
 
   const activeApi = {
     events: eventsApi,
     schedule: scheduleApi,
+    sponsors: sponsorsApi,
   }[activeTab];
 
   useEffect(() => {
@@ -124,7 +128,7 @@ export function HeroTabs() {
   return (
     <div className="flex flex-col w-full h-full" ref={tabsRef}>
       <Tabs value={activeTab} onValueChange={handleTabChange} className="flex flex-col h-full">
-        <TabsList className="shrink-0 w-full max-w-sm mx-auto grid grid-cols-2 bg-card/50 backdrop-blur-sm">
+        <TabsList className="shrink-0 w-full max-w-sm mx-auto grid grid-cols-3 bg-card/50 backdrop-blur-sm">
           <TabsTrigger value="events" className="gap-2">
             <Ticket className="h-5 w-5"/>
             <span>Events</span>
@@ -132,6 +136,10 @@ export function HeroTabs() {
           <TabsTrigger value="schedule" className="gap-2">
             <Calendar className="h-5 w-5"/>
             <span>Schedule</span>
+          </TabsTrigger>
+          <TabsTrigger value="sponsors" className="gap-2">
+            <Heart className="h-5 w-5"/>
+            <span>Sponsors</span>
           </TabsTrigger>
         </TabsList>
         <div className="relative mt-4 h-[350px] sm:h-[400px] md:h-[450px] overflow-hidden rounded-lg bg-card/50 backdrop-blur-sm">
@@ -144,6 +152,11 @@ export function HeroTabs() {
           <TabsContent value="schedule" forceMount className={cn(tabContentBaseClasses, activeTab === 'schedule' ? 'opacity-100' : 'opacity-0 pointer-events-none')}>
             <div className="h-full flex items-center p-4">
               <Timeline condensed setApi={setScheduleApi} />
+            </div>
+          </TabsContent>
+          <TabsContent value="sponsors" forceMount className={cn(tabContentBaseClasses, activeTab === 'sponsors' ? 'opacity-100' : 'opacity-0 pointer-events-none')}>
+            <div className="h-full flex items-center p-4">
+              <Sponsors condensed setApi={setSponsorsApi} />
             </div>
           </TabsContent>
         </div>
