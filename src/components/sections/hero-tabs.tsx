@@ -104,7 +104,7 @@ export function HeroTabs() {
         }
       }
       setActiveTab(tabs[nextIndex]);
-    }, 3000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [isCycling, activeTab, direction, isMounted]);
@@ -114,7 +114,7 @@ export function HeroTabs() {
     setActiveTab(value);
   }
 
-  const tabContentBaseClasses = "absolute top-0 left-0 w-full h-full transition-opacity duration-500 ease-in-out";
+  const tabContentBaseClasses = "absolute top-0 left-0 w-full h-full transition-opacity duration-700 ease-in-out";
 
   if (!isMounted) {
     return (
