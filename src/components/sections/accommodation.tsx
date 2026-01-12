@@ -1,21 +1,14 @@
 
 'use client';
 
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Card, CardContent } from '../ui/card';
 import { AccommodationForm } from '../accommodation-form';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Skeleton } from '../ui/skeleton';
 import Image from 'next/image';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../ui/carousel';
-import Autoplay from "embla-carousel-autoplay";
+import { Card, CardContent } from '../ui/card';
 
 export function Accommodation() {
   const [isMounted, setIsMounted] = useState(false);
-  const roomImages = PlaceHolderImages.filter(p => p.id.startsWith('room-'));
-  const plugin = useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: true })
-  );
   
   useEffect(() => {
     setIsMounted(true);
@@ -75,38 +68,6 @@ export function Accommodation() {
                 </p>
             </div>
             
-            {roomImages.length > 0 && (
-                <Carousel
-                    plugins={[plugin.current]}
-                    className="w-full max-w-sm"
-                    onMouseEnter={plugin.current.stop}
-                    onMouseLeave={plugin.current.reset}
-                >
-                    <CarouselContent>
-                    {roomImages.map((image) => (
-                        <CarouselItem key={image.id}>
-                        <div className="p-1">
-                            <Card className='overflow-hidden'>
-                                <CardContent className="flex aspect-video items-center justify-center p-0">
-                                    <Image 
-                                        src={image.imageUrl}
-                                        alt={image.description}
-                                        width={1280}
-                                        height={720}
-                                        className='object-cover w-full h-full'
-                                        data-ai-hint={image.imageHint}
-                                    />
-                                </CardContent>
-                            </Card>
-                        </div>
-                        </CarouselItem>
-                    ))}
-                    </CarouselContent>
-                    <CarouselPrevious />
-                    <CarouselNext />
-                </Carousel>
-            )}
-
             <p className="w-full max-w-md text-sm text-slate-300 drop-shadow-md">
                 We offer on-campus hostel rooms on a shared basis.<br/>Fill out the form and we'll contact you with booking details.
             </p>
