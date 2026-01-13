@@ -7,14 +7,18 @@ import { Skeleton } from '../ui/skeleton';
 import Image from 'next/image';
 import { Card, CardContent } from '../ui/card';
 
-export function Accommodation() {
+type AccommodationProps = {
+  condensed?: boolean;
+}
+
+export function Accommodation({ condensed = false }: AccommodationProps) {
   const [isMounted, setIsMounted] = useState(false);
   
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  if (!isMounted) {
+  if (!isMounted && !condensed) {
     return (
         <section id="accommodation" className="py-16 md:py-24 bg-background/50 backdrop-blur-sm border-y">
             <div className="container grid md:grid-cols-2 gap-12 items-center">
@@ -43,6 +47,20 @@ export function Accommodation() {
                 </div>
             </div>
         </section>
+    )
+  }
+
+  if (condensed) {
+    return (
+      <div className='w-full h-full flex items-center justify-center'>
+        <div className='w-full max-w-md mx-auto'>
+            <Card className='bg-slate-950/50 backdrop-blur-md border-slate-700'>
+                <CardContent className="p-6">
+                    <AccommodationForm />
+                </CardContent>
+            </Card>
+        </div>
+      </div>
     )
   }
 
