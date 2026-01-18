@@ -1,0 +1,70 @@
+{
+  "placeholderImages": [
+    {
+      "id": "hero-background",
+      "description": "The entrance of a modern college building with orange and grey accents.",
+      "imageUrl": "https://storage.googleapis.com/aai-web-samples/nextjs/nisadya/background.png",
+      "imageHint": "college campus"
+    },
+    {
+      "id": "room-1",
+      "description": "A modern and clean hotel room.",
+      "imageUrl": "https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "imageHint": "hotel room"
+    },
+    {
+      "id": "room-2",
+      "description": "A cozy shared hostel room.",
+      "imageUrl": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "imageHint": "hotel bedroom"
+    },
+    {
+      "id": "room-3",
+      "description": "A hotel room with a view of the city.",
+      "imageUrl": "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "imageHint": "hotel pool"
+    },
+    {
+      "id": "room-4",
+      "description": "Luxurious hotel lobby",
+      "imageUrl": "https://images.unsplash.com/photo-1542314831-068cd1dbb5eb?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "imageHint": "hotel lobby"
+    },
+    {
+      "id": "sponsor-1",
+      "description": "Sponsor logo 1",
+      "imageUrl": "https://images.unsplash.com/photo-1619551734325-81aaf323686c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxjb21wYW55JTIwbG9nb3xlbnwwfHx8fDE3Njc5NzMxMjh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "company logo"
+    },
+    {
+      "id": "sponsor-2",
+      "description": "Sponsor logo 2",
+      "imageUrl": "https://images.unsplash.com/photo-1760037028517-e5cc6e3ebd3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMGxvZ298ZW58MHx8fHwxNzY3OTgyMDE5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "abstract logo"
+    },
+    {
+      "id": "sponsor-3",
+      "description": "Sponsor logo 3",
+      "imageUrl": "https://images.unsplash.com/photo-1663124178709-08bcffc5ae89?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx0ZWNoJTIwbG9nb3xlbnwwfHx8fDE3Njc5NTI2MjR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tech logo"
+    },
+    {
+      "id": "sponsor-4",
+      "description": "Sponsor logo 4",
+      "imageUrl": "https://images.unsplash.com/photo-1697295774731-f29bd48664ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzdGFydHVwJTIwbG9nb3xlbnwwfHx8fDE3NjgwMzk2NjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "startup logo"
+    },
+    {
+      "id": "sponsor-5",
+      "description": "Sponsor logo 5",
+      "imageUrl": "https://images.unsplash.com/photo-1660602880433-dd978d9ec9f9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxicmFuZCUyMGxvZ298ZW58MHx8fHwxNzY4MDAwNzEyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "brand logo"
+    },
+    {
+      "id": "sponsor-6",
+      "description": "Sponsor logo 6",
+      "imageUrl": "https://images.unsplash.com/photo-1743683780813-bb865a8aed94?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjaXJjbGUlMjBsb2dvfGVufDB8fHx8MTc2Nzk5Mzk1Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "circle logo"
+    }
+  ]
+}

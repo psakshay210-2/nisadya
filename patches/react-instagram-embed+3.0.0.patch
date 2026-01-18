@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-instagram-embed/package.json b/node_modules/react-instagram-embed/package.json
+index 4786f84..a218f4a 100644
+--- a/node_modules/react-instagram-embed/package.json
++++ b/node_modules/react-instagram-embed/package.json
+@@ -53,6 +53,6 @@
+     "react-test-renderer": "^16.8.6"
+   },
+   "peerDependencies": {
+-    "react": "^17.0.0 || ^16.0.0 || ^15.0.0 || ~0.14.0"
++    "react": "^17.0.0 || ^16.0.0 || ^15.0.0 || ~0.14.0 || ^18.0.0"
+   }
+ }
