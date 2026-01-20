@@ -34,11 +34,6 @@
 
   body {
     @apply bg-background text-foreground;
-    background-image: url('/background.png');
-    background-attachment: fixed;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
     font-size: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
     min-height: 100vh;
     min-height: 100dvh;
@@ -133,12 +128,49 @@
     text-wrap: balance;
   }
 
+  /* Custom Selection Color for that "Cute/Outstanding" feel */
+  ::selection {
+    @apply bg-primary/30 text-white;
+  }
+
+  /* Modern Slim Scrollbar */
   ::-webkit-scrollbar {
-    width: 0px;
+    width: 8px;
+    height: 8px;
     background: transparent;
   }
 
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
   ::-webkit-scrollbar-thumb {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    /* Creates padding effect */
+    background-clip: content-box;
+    transition: background-color 0.2s;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+    background-clip: content-box;
+  }
+
+  /* Marquee Mask */
+  .mask-gradient-x {
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+
+  /* Hide Scrollbar */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }

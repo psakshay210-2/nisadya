@@ -1,6 +1,6 @@
 'use client';
 
-import { useEvents } from '@/hooks/use-events';
+import { events } from '@/lib/data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
@@ -8,27 +8,14 @@ import { Calendar, MapPin, ArrowRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { EventCard } from '@/components/event-card'; // Reuse the dialog logic/content if possible, or rebuild
-// Actually, EventCard has the dialog built-in. I might want to reuse the dialog content but provide a new trigger.
-// For now, let's rebuild the card UI but keep the same data.
 
 export function ModernEvents({ condensed }: { condensed?: boolean }) {
-    const { events, loading } = useEvents(condensed ? 5 : undefined);
-
-    if (loading) {
-        return (
-            <div className="flex gap-4 overflow-x-hidden px-4 w-full justify-center">
-                {[1, 2, 3].map((i) => (
-                    <div key={i} className="w-[280px] h-[360px] rounded-2xl bg-white/5 animate-pulse" />
-                ))}
-            </div>
-        );
-    }
+    const displayEvents = condensed ? events.slice(0, 5) : events;
 
     return (
         <div className="w-full flex items-center justify-center">
             <div className="flex gap-4 sm:gap-6 overflow-x-auto px-4 pb-6 w-full snap-x snap-mandatory no-scrollbar pt-6">
-                {events.map((event) => (
+                {displayEvents.map((event) => (
                     <ModernEventCard key={event.id} event={event} />
                 ))}
             </div>
@@ -36,13 +23,10 @@ export function ModernEvents({ condensed }: { condensed?: boolean }) {
     );
 }
 
-function ModernEventCard({ event }: { event: any }) {
-    const placeholder = PlaceHolderImages.find(p => p.id === event.imageId) || PlaceHolderImages[0];
+import type { Event } from '@/lib/types';
 
-    // We can wrap this in the existing Dialog logic if we want standard behavior, 
-    // or just make it purely visual for the 'redesign' request if interactivity isn't specified as 'opening a modal'.
-    // User said "interactive", so modal is good. I'll use a simple Trigger wrapper if I can import standard EventCard.
-    // Standard EventCard is a bit coupled. I'll implement a fresh card look.
+function ModernEventCard({ event }: { event: Event }) {
+    const placeholder = PlaceHolderImages.find(p => p.id === event.imageId) || PlaceHolderImages[0];
 
     return (
         <Dialog>
@@ -73,11 +57,9 @@ function ModernEventCard({ event }: { event: any }) {
                             <div className="flex items-center gap-1 bg-black/30 backdrop-blur-sm px-2 py-1 rounded-full">
                                 <Calendar className="w-3 h-3" />
                                 <span>
-                                    {(() => {
-                                        if (!event.startDate) return 'Date TBA';
-                                        const d = new Date(event.startDate);
-                                        return isNaN(d.getTime()) ? event.startDate : d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-                                    })()}
+                                    {event.startDate && !isNaN(new Date(event.startDate).getTime())
+                                        ? new Date(event.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+                                        : 'TBA'}
                                 </span>
                             </div>
                             <div className="flex items-center gap-1 bg-black/30 backdrop-blur-sm px-2 py-1 rounded-full">
@@ -99,12 +81,6 @@ function ModernEventCard({ event }: { event: any }) {
                 </div>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden bg-card/95 backdrop-blur-xl border-white/10">
-                {/* Reusing standard event card content structure essentially, but we can't easily import just the body. 
-                     For this demo prototype, I'll put a placeholder content or basic info. 
-                     Ideally, I'd extract EventDialogContent from event-card.tsx.
-                     
-                     Fix: I will just render a simplified view here to avoid duplication complexity for now.
-                 */}
                 <div className="relative h-48 w-full">
                     <Image
                         src={event.imageUrl || placeholder.imageUrl}
@@ -121,7 +97,7 @@ function ModernEventCard({ event }: { event: any }) {
                     <div className="flex justify-between items-center text-sm text-muted-foreground">
                         <div className="flex items-center gap-2">
                             <Calendar className="w-4 h-4" />
-                            {new Date(event.date).toLocaleDateString()}
+                            {event.startDate}
                         </div>
                         <div className="flex items-center gap-2">
                             <MapPin className="w-4 h-4" />

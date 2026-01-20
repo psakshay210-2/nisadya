@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
@@ -7,81 +8,113 @@ import { Badge } from '@/components/ui/badge';
 import { sponsors } from '@/lib/data';
 
 // Copying necessary data structure if not exported
-type Sponsor = {
-    id: string;
-    name: string;
-    type: 'Title' | 'Gold' | 'Silver' | 'Bronze' | 'Other';
-    imageId: string;
-    description?: string;
-};
-
-// Assuming data comes from a prop or I need to fetch it.
-// Checking existing sponsors.tsx, it seems data might be hardcoded or passed. 
-// Existing component gets data from somewhere. Let's assume standard prop pattern or internal data.
-// Wait, looking at previous viewed files, `sponsors.tsx` had `sponsors` array inside or imported?
-// I see `import { sponsors } ...` in my thought but I need to verify.
-// Let's create a visual component that accepts data or uses the same source.
-
-const modernSponsors: Sponsor[] = [
-    {
-        id: "1",
-        name: "Innovate Corp",
-        type: "Title",
-        imageId: "tech-1",
-        description: "Pioneering the future of technology with cutting-edge AI solutions."
-    },
-    {
-        id: "2",
-        name: "QuantumLeap",
-        type: "Gold",
-        imageId: "tech-2",
-        description: "Accelerating startups with funding and mentorship."
-    },
-    {
-        id: "3",
-        name: "TechVibe",
-        type: "Gold",
-        imageId: "social-1",
-        description: "The leading online community for developers and tech enthusiasts."
-    },
-    {
-        id: "4",
-        name: "GreenEarth",
-        type: "Silver",
-        imageId: "nature-1",
-        description: "Sustainable energy solutions for a greener planet."
-    },
-    {
-        id: "5",
-        name: "CyberShield",
-        type: "Silver",
-        imageId: "tech-3",
-        description: "Advanced cybersecurity implementation for enterprise."
-    },
-    {
-        id: "6",
-        name: "CodeCraft",
-        type: "Bronze",
-        imageId: "abstract-1",
-        description: "Tools for the modern developer workflow."
-    }
-];
-
+import type { Sponsor } from '@/lib/types';
 
 export function ModernSponsors({ condensed }: { condensed?: boolean }) {
-    // If condensed (checking for home page tab view), show a horizontal scrollable strip
-    // If full page, grid.
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const displaySponsors = condensed ? sponsors.slice(0, 5) : sponsors;
 
-    const displaySponsors = condensed ? modernSponsors.slice(0, 5) : modernSponsors;
+    // Triple duplicate for seamless infinite scroll
+    const marqueeSponsors = [...displaySponsors, ...displaySponsors, ...displaySponsors];
 
-    // Duplicate sponsors for seamless scrolling
-    const marqueeSponsors = [...displaySponsors, ...displaySponsors];
+    useEffect(() => {
+        const scrollContainer = scrollRef.current;
+        if (!scrollContainer) return;
+
+        let animationId: number;
+        let isUserInteracting = false;
+
+        // Calculate the width of one set of sponsors
+        const calculateSetWidth = () => {
+            if (!scrollContainer) return 0;
+            return scrollContainer.scrollWidth / 3;
+        };
+
+        // Auto-scroll function
+        const autoScroll = () => {
+            if (!isUserInteracting && scrollContainer) {
+                scrollContainer.scrollLeft += 1; // Scroll speed
+
+                const singleSetWidth = calculateSetWidth();
+
+                // When we've scrolled past the second set (middle), reset to start of second set
+                // This keeps us in the "infinite middle" zone
+                if (scrollContainer.scrollLeft >= singleSetWidth * 2) {
+                    scrollContainer.scrollLeft = singleSetWidth;
+                }
+            }
+            animationId = requestAnimationFrame(autoScroll);
+        };
+
+        // Handle manual scroll to create infinite loop
+        const handleScroll = () => {
+            if (!scrollContainer) return;
+
+            const singleSetWidth = calculateSetWidth();
+            const scrollLeft = scrollContainer.scrollLeft;
+            const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+
+            // If user scrolls to the end, loop back to the middle set
+            if (scrollLeft >= maxScroll - 10) {
+                scrollContainer.scrollLeft = singleSetWidth;
+            }
+            // If user scrolls to the beginning, loop to the middle set
+            else if (scrollLeft <= 10) {
+                scrollContainer.scrollLeft = singleSetWidth;
+            }
+        };
+
+        // Pause on user interaction
+        const handleInteractionStart = () => {
+            isUserInteracting = true;
+        };
+
+        const handleInteractionEnd = () => {
+            setTimeout(() => {
+                isUserInteracting = false;
+            }, 1000); // Resume after 1 second
+        };
+
+        // Add event listeners
+        scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+        scrollContainer.addEventListener('touchstart', handleInteractionStart, { passive: true });
+        scrollContainer.addEventListener('touchend', handleInteractionEnd);
+        scrollContainer.addEventListener('mouseenter', handleInteractionStart);
+        scrollContainer.addEventListener('mouseleave', handleInteractionEnd);
+        scrollContainer.addEventListener('wheel', handleInteractionStart, { passive: true });
+
+        // Set initial scroll position to middle set
+        scrollContainer.scrollLeft = calculateSetWidth();
+
+        // Start auto-scroll
+        animationId = requestAnimationFrame(autoScroll);
+
+        return () => {
+            cancelAnimationFrame(animationId);
+            scrollContainer.removeEventListener('scroll', handleScroll);
+            scrollContainer.removeEventListener('touchstart', handleInteractionStart);
+            scrollContainer.removeEventListener('touchend', handleInteractionEnd);
+            scrollContainer.removeEventListener('mouseenter', handleInteractionStart);
+            scrollContainer.removeEventListener('mouseleave', handleInteractionEnd);
+            scrollContainer.removeEventListener('wheel', handleInteractionStart);
+        };
+    }, [displaySponsors]);
 
     return (
-        <div className="w-full flex items-center justify-center overflow-hidden mask-gradient-x">
-            <div className="flex gap-4 sm:gap-6 animate-scroll hover:paused w-max px-4">
+        <div className="w-full relative overflow-hidden mask-gradient-x">
+            <div
+                ref={scrollRef}
+                className="flex gap-4 sm:gap-6 overflow-x-scroll scrollbar-hide"
+                style={{
+                    WebkitOverflowScrolling: 'touch',
+                    scrollbarWidth: 'none',
+                    msOverflowStyle: 'none'
+                }}
+            >
                 {marqueeSponsors.map((sponsor, index) => (
-                    <ModernSponsorCard key={`${sponsor.id}-${index}`} sponsor={sponsor} />
+                    <div key={`${sponsor.id}-${index}`} className="flex-shrink-0">
+                        <ModernSponsorCard sponsor={sponsor} />
+                    </div>
                 ))}
             </div>
         </div>

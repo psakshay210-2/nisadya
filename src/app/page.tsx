@@ -1,6 +1,4 @@
-
 import { Footer } from '@/components/layout/footer';
-import { Accommodation } from '@/components/sections/accommodation';
 import { ModernHeroTabs } from '@/components/sections/modern-hero-tabs';
 import { InstagramFeed } from '@/components/sections/instagram-feed';
 import Image from 'next/image';
@@ -11,7 +9,7 @@ export default function Home() {
       {/* Fixed Background Image */}
       <div className="fixed inset-0 z-[-1]">
         <Image
-          src="/ceac77654caff7ad2ea74b7b22cccfa5_1768686012.png"
+          src="/bg-optimized.jpg"
           alt="Background"
           fill
           className="object-cover"

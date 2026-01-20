@@ -1,5 +1,109 @@
 import { Bot, Gamepad2, Code, Mic, Film, Music, Paintbrush } from "lucide-react";
-import type { Sponsor, ScheduleItem } from "./types";
+import type { Sponsor, ScheduleItem, Event } from "./types";
+
+export const events: Event[] = [
+    {
+        id: "1",
+        title: "Quantum Leap Hackathon",
+        description: "A 24-hour coding marathon where innovation meets execution. Build the future.",
+        startDate: "2024-03-15",
+        endDate: "2024-03-16",
+        location: "Barn Hall",
+        category: "Technical",
+        registrationLink: "#",
+        imageUrl: "/placeholder-event.jpg", // Replace with real image
+        imageId: "tech-1" // For placeholder fallback
+    },
+    {
+        id: "2",
+        title: "Robo-Wars",
+        description: "The ultimate clash of metal and code. Witness the fiercest robots battle for supremacy.",
+        startDate: "2024-03-16",
+        location: "Main Auditorium",
+        category: "Technical",
+        registrationLink: "#",
+        imageUrl: "/placeholder-event.jpg",
+        imageId: "tech-2"
+    },
+    {
+        id: "3",
+        title: "Stellaris: Battle of Bands",
+        description: "Electrifying performances from the best college bands in the region.",
+        startDate: "2024-03-15",
+        location: "Open Air Theatre",
+        category: "Cultural",
+        registrationLink: "#",
+        imageUrl: "/placeholder-event.jpg",
+        imageId: "social-1"
+    },
+    {
+        id: "4",
+        title: "Enigma Hunt",
+        description: "A campus-wide treasure hunt that will test your wits and logic.",
+        startDate: "2024-03-16",
+        location: "Campus Grounds",
+        category: "Fun",
+        registrationLink: "#",
+        imageUrl: "/placeholder-event.jpg",
+        imageId: "abstract-1"
+    },
+    {
+        id: "5",
+        title: "Nritya",
+        description: "A spectacular showcase of dance forms, from classical to contemporary.",
+        startDate: "2024-03-16",
+        location: "Main Auditorium",
+        category: "Cultural",
+        registrationLink: "#",
+        imageUrl: "/placeholder-event.jpg",
+        imageId: "art-1"
+    }
+];
+
+export const sponsors: Sponsor[] = [
+    {
+        id: "1",
+        name: "Innovate Corp",
+        type: "Title",
+        imageId: "tech-1",
+        description: "Pioneering the future of technology with cutting-edge AI solutions."
+    },
+    {
+        id: "2",
+        name: "QuantumLeap",
+        type: "Gold",
+        imageId: "tech-2",
+        description: "Accelerating startups with funding and mentorship."
+    },
+    {
+        id: "3",
+        name: "TechVibe",
+        type: "Gold",
+        imageId: "social-1",
+        description: "The leading online community for developers and tech enthusiasts."
+    },
+    {
+        id: "4",
+        name: "GreenEarth",
+        type: "Silver",
+        imageId: "nature-1",
+        description: "Sustainable energy solutions for a greener planet."
+    },
+    {
+        id: "5",
+        name: "CyberShield",
+        type: "Silver",
+        imageId: "tech-3",
+        description: "Advanced cybersecurity implementation for enterprise."
+    },
+    {
+        id: "6",
+        name: "CodeCraft",
+        type: "Bronze",
+        imageId: "abstract-1",
+        description: "Tools for the modern developer workflow."
+    }
+];
 
 export const schedule: ScheduleItem[] = [
     {
@@ -50,13 +154,4 @@ export const schedule: ScheduleItem[] = [
         description: 'Concluding the fest with awards and a final showcase.',
         icon: Film,
     }
-];
-
-export const sponsors: Sponsor[] = [
-  { id: '1', name: 'Innovate Corp', imageId: 'sponsor-1', type: 'Title Sponsor', description: 'Pioneering the future of technology with cutting-edge AI solutions.' },
-  { id: '2', name: 'QuantumLeap', imageId: 'sponsor-2', type: 'Gold Sponsor', description: 'Accelerating startups with funding and mentorship.' },
-  { id: '3', name: 'TechVibe', imageId: 'sponsor-3', type: 'Gold Sponsor', description: 'The leading online community for developers and tech enthusiasts.' },
-  { id: '4', name: 'Synergy Systems', imageId: 'sponsor-4', type: 'Silver Sponsor', description: 'Providing scalable cloud infrastructure for enterprises.' },
-  { id: '5', name: 'Creative Minds', imageId: 'sponsor-5', type: 'Silver Sponsor', description: 'A design agency that brings ideas to life with stunning visuals.' },
-  { id: '6', name: 'NextGen Gaming', imageId: 'sponsor-6', type: 'Gaming Partner', description: 'Building immersive worlds and next-generation gaming experiences.' },
 ];

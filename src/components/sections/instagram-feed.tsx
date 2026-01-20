@@ -1,12 +1,10 @@
 
 'use client';
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { ExternalLink, Loader2, Camera, RefreshCw } from 'lucide-react';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '../ui/carousel';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Camera, Loader2, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '../ui/button';
-import Autoplay from "embla-carousel-autoplay";
 
 const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTsFJbgfDgI-OTKglkjmEnXAV_HisTESw51KXJGhKzrYFJaIAFJ75a6CTkD6zdPveUYPugJuifL0C5r/pub?output=csv";
 
@@ -76,12 +74,6 @@ export function InstagramFeed() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(false);
-  const [api, setApi] = useState<CarouselApi>()
-  const [current, setCurrent] = useState(0)
-
-  const autoplayPlugin = useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true, stopOnMouseEnter: true })
-  );
 
   useEffect(() => {
     setIsMounted(true);
@@ -126,20 +118,7 @@ export function InstagramFeed() {
     }
   }, [isMounted, fetchData]);
 
-  useEffect(() => {
-    if (!api) return;
 
-    const handleSelect = () => {
-      setCurrent(api.selectedScrollSnap());
-    };
-
-    handleSelect();
-    api.on('select', handleSelect);
-
-    return () => {
-      api.off('select', handleSelect);
-    };
-  }, [api]);
 
   if (!isMounted) {
     return null;
@@ -190,28 +169,19 @@ export function InstagramFeed() {
         )}
 
         {!loading && !error && links.length > 0 && (
-          <Carousel
-            setApi={setApi}
-            opts={{ align: 'center', loop: true }}
-            plugins={[autoplayPlugin.current]}
-            className="w-full max-w-[1400px] mx-auto"
-          >
-            <CarouselContent className="-ml-4 sm:-ml-6 md:-ml-8 items-center">
-              {links.map((link, index) => (
-                <CarouselItem
+          <div className="w-full overflow-hidden mask-gradient-x py-10">
+            {/* 
+                We create two sets of the links to create the seamless infinite scroll.
+                If links are few, we multiply them to fill width.
+             */}
+            <div className="flex gap-6 animate-scroll hover:paused w-max px-4">
+              {[...links, ...links, ...links].map((link, index) => (
+                <div
                   key={`${link}-${index}`}
-                  className="pl-4 sm:pl-6 md:pl-8 basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4 2xl:basis-1/5 py-10"
+                  className="flex-shrink-0 w-[300px] sm:w-[350px]"
                 >
-                  <div className={cn(
-                    "relative transition-all duration-500 ease-out transform-gpu",
-                    index === current
-                      ? "scale-105 opacity-100 z-10"
-                      : "scale-95 opacity-50 hover:opacity-100 hover:scale-100 grayscale hover:grayscale-0 blur-[1px] hover:blur-none"
-                  )}>
-                    <div className={cn(
-                      "group relative overflow-hidden rounded-3xl bg-gray-900/40 backdrop-blur-xl border border-white/10 shadow-2xl transition-all duration-500",
-                      index === current ? "ring-1 ring-white/20 shadow-primary/10" : "hover:ring-1 hover:ring-white/10"
-                    )}>
+                  <div className="relative transition-all duration-500 ease-out transform-gpu scale-95 opacity-80 hover:opacity-100 hover:scale-100 grayscale-[0.2] hover:grayscale-0">
+                    <div className="group relative overflow-hidden rounded-3xl bg-gray-900/40 backdrop-blur-xl border border-white/10 shadow-2xl transition-all duration-500 hover:ring-1 hover:ring-white/10 hover:shadow-primary/10">
                       {/* Glass Glare Effect */}
                       <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20" />
 
@@ -220,16 +190,10 @@ export function InstagramFeed() {
                       </div>
                     </div>
                   </div>
-                </CarouselItem>
+                </div>
               ))}
-            </CarouselContent>
-
-            {/* Custom Navigation Controls */}
-            <div className="hidden sm:flex justify-center gap-4 mt-8">
-              <CarouselPrevious className="static translate-y-0 bg-white/5 border-white/10 hover:bg-white/10 hover:border-primary/50 text-white transition-all duration-300 hover:scale-110" />
-              <CarouselNext className="static translate-y-0 bg-white/5 border-white/10 hover:bg-white/10 hover:border-primary/50 text-white transition-all duration-300 hover:scale-110" />
             </div>
-          </Carousel>
+          </div>
         )}
 
         {!loading && !error && links.length === 0 && (

@@ -11,12 +11,15 @@ export type Event = {
   title: string;
   description: string;
   startDate: string;
-  endDate: string;
-  registrationLink: string;
+  endDate?: string;
+  location: string;
+  category: string;
+  registrationLink?: string;
   imageUrl: string;
-  coordinator: string;
-  contact: string;
-  details: string; // This might be the same as description
+  imageId: string; // for placeholders
+  coordinator?: string;
+  contact?: string;
+  details?: string;
 };
 
 export type Sponsor = {
