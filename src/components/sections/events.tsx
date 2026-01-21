@@ -111,11 +111,9 @@ export function Events({ condensed = false, setApi }: EventsProps) {
             </p>
           </div>
         )}
-        <div className="grid gap-3 xs:gap-4 sm:gap-5 md:gap-6 lg:gap-8 grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 justify-items-center">
+        <div className="grid gap-4 xs:gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {events.map((event) => (
-            <div key={event.id} className="w-full max-w-sm">
-              <EventCard event={event} />
-            </div>
+            <EventCard key={event.id} event={event} />
           ))}
         </div>
       </div>

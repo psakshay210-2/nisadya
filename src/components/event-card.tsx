@@ -7,14 +7,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
 } from './ui/dialog';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from './ui/card';
 import { Button } from './ui/button';
 import { RegistrationForm } from './registration-form';
 import type { Event } from '@/lib/types';
@@ -22,6 +16,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { format, parse, isValid } from 'date-fns';
 import { Calendar, ArrowRight } from 'lucide-react';
+import { ScrollArea } from './ui/scroll-area';
 
 export function EventCard({ event }: { event: Event }) {
   const formatFullDate = (dateString: string) => {
@@ -39,86 +34,84 @@ export function EventCard({ event }: { event: Event }) {
     }
   };
 
-  const formatShortDate = (dateString: string) => {
-    if (!dateString) return 'TBA';
-    try {
-      const date = parse(dateString, 'dd/MM/yyyy', new Date());
-      if (!isValid(date)) return dateString;
-      return format(date, 'do MMM');
-    } catch (error) {
-      return dateString;
-    }
-  };
-
   const formattedFullStartDate = formatFullDate(event.startDate);
   const formattedFullEndDate = event.endDate ? formatFullDate(event.endDate) : '';
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Card className="h-full w-full cursor-pointer overflow-hidden relative group border-white/10 bg-black/30 backdrop-blur-xl transition-all duration-300 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-1">
-          <CardHeader className="p-0 relative">
-            <div className="relative aspect-[16/10] w-full overflow-hidden">
-              {event.imageUrl && (
-                <Image
-                  src={event.imageUrl}
-                  alt={event.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              )}
-               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
+        <div className="w-full cursor-pointer overflow-hidden relative group border-white/10 bg-black/30 backdrop-blur-xl transition-all duration-300 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-1 rounded-2xl aspect-[4/3]">
+          <div className="relative h-full w-full">
+            {event.imageUrl && (
+              <Image
+                src={event.imageUrl}
+                alt={event.title}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            )}
+            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span className="text-white font-semibold flex items-center gap-2 bg-black/50 backdrop-blur-sm px-4 py-2 rounded-lg">
+                View Details <ArrowRight className="w-4 h-4" />
+              </span>
             </div>
-          </CardHeader>
-          <CardContent className="p-4 flex flex-col flex-grow">
-             <CardTitle className="font-headline text-lg sm:text-xl text-white group-hover:text-primary transition-colors duration-300 line-clamp-2 leading-snug">
-                {event.title}
-             </CardTitle>
-             <p className="text-xs sm:text-sm text-gray-400 mt-2 line-clamp-3 flex-grow">
-                {event.description}
-             </p>
-          </CardContent>
-          <CardFooter className="p-4 pt-0 flex justify-between items-center text-xs text-gray-300">
-            <div className="flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-primary" />
-                <span className="font-medium">{formatShortDate(event.startDate)}</span>
-            </div>
-            <span className="text-primary font-semibold flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                Details <ArrowRight className="w-3.5 h-3.5" />
-            </span>
-          </CardFooter>
-        </Card>
+          </div>
+        </div>
       </DialogTrigger>
-      <DialogContent className="max-w-[96vw] xs:max-w-[92vw] sm:max-w-[85vw] md:max-w-lg max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="font-headline text-xl xs:text-2xl sm:text-fluid-3xl mb-2">{event.title}</DialogTitle>
-          <p className="text-xs xs:text-sm font-bold text-primary">{formattedFullStartDate}{formattedFullEndDate && formattedFullEndDate !== formattedFullStartDate ? ` - ${formattedFullEndDate}` : ''}</p>
-          <DialogDescription className='text-xs xs:text-sm sm:text-base pt-2'>{event.details}</DialogDescription>
-        </DialogHeader>
-        {event.registrationLink ? (
-          <Button asChild className="w-full min-h-[44px]">
-            <Link href={event.registrationLink} target="_blank" rel="noopener noreferrer">
-              Register
-            </Link>
-          </Button>
-        ) : (
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="w-full min-h-[44px]">Register</Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-[96vw] xs:max-w-[92vw] sm:max-w-[85vw] md:max-w-lg max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle className="font-headline text-lg xs:text-xl sm:text-2xl">
-                  Register for {event.title}
-                </DialogTitle>
-                <DialogDescription>
-                  Fill out the form below to register for this event.
-                </DialogDescription>
+      <DialogContent className="max-w-[96vw] sm:max-w-4xl p-0 overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-2 h-full max-h-[90vh]">
+          {/* Left Side: Image */}
+          <div className="relative h-64 md:h-full w-full">
+            <Image
+              src={event.imageUrl}
+              alt={event.title}
+              fill
+              className="object-cover"
+            />
+          </div>
+
+          {/* Right Side: Details */}
+          <div className="flex flex-col p-6 sm:p-8">
+            <ScrollArea className="flex-grow pr-4 -mr-4">
+              <DialogHeader className="text-left mb-4">
+                <DialogTitle className="font-headline text-xl sm:text-2xl lg:text-3xl mb-2">{event.title}</DialogTitle>
+                <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-primary">
+                  <Calendar className="w-4 h-4" />
+                  <span>{formattedFullStartDate}{formattedFullEndDate && formattedFullEndDate !== formattedFullStartDate ? ` - ${formattedFullEndDate}` : ''}</span>
+                </div>
               </DialogHeader>
-              <RegistrationForm eventName={event.title} />
-            </DialogContent>
-          </Dialog>
-        )}
+              <DialogDescription className='text-sm sm:text-base text-muted-foreground'>
+                {event.details || event.description}
+              </DialogDescription>
+            </ScrollArea>
+            <DialogFooter className="mt-auto pt-6 border-t border-border">
+              {event.registrationLink ? (
+                <Button asChild className="w-full min-h-[44px]">
+                  <Link href={event.registrationLink} target="_blank" rel="noopener noreferrer">
+                    Register
+                  </Link>
+                </Button>
+              ) : (
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="w-full min-h-[44px]">Register</Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-[96vw] xs:max-w-[92vw] sm:max-w-[85vw] md:max-w-lg max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle className="font-headline text-lg xs:text-xl sm:text-2xl">
+                        Register for {event.title}
+                      </DialogTitle>
+                      <DialogDescription>
+                        Fill out the form below to register for this event.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <RegistrationForm eventName={event.title} />
+                  </DialogContent>
+                </Dialog>
+              )}
+            </DialogFooter>
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );
