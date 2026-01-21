@@ -1,5 +1,5 @@
 import { Footer } from '@/components/layout/footer';
-import { HeroTabs } from '@/components/sections/hero-tabs';
+import { Events } from '@/components/sections/events';
 import { InstagramFeed } from '@/components/sections/instagram-feed';
 import Image from 'next/image';
 
@@ -64,11 +64,7 @@ export default function Home() {
             </div>
           </section>
           
-          <section className="py-12 md:py-20 lg:py-24">
-            <div className="container">
-              <HeroTabs />
-            </div>
-          </section>
+          <Events />
 
           <InstagramFeed />
         </main>
