@@ -55,7 +55,7 @@ export function Events({ condensed = false, setApi }: EventsProps) {
           </div>
           <div className="grid gap-4 xs:gap-6 sm:gap-8 grid-cols-1 xs:grid-cols-2 lg:grid-cols-3">
             {eventSkeletons.map((_, index) => (
-              <Skeleton key={index} className="w-full aspect-[3/4] rounded-lg" />
+              <Skeleton key={index} className="w-full h-96 rounded-lg" />
             ))}
           </div>
         </div>
@@ -113,7 +113,7 @@ export function Events({ condensed = false, setApi }: EventsProps) {
         )}
         <div className="grid gap-3 xs:gap-4 sm:gap-5 md:gap-6 lg:gap-8 grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 justify-items-center">
           {events.map((event) => (
-            <div key={event.id} className="aspect-[3/4] w-full max-w-sm">
+            <div key={event.id} className="w-full max-w-sm">
               <EventCard event={event} />
             </div>
           ))}
