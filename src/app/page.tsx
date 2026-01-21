@@ -1,4 +1,5 @@
 import { Footer } from '@/components/layout/footer';
+import { HeroTabs } from '@/components/sections/hero-tabs';
 import { InstagramFeed } from '@/components/sections/instagram-feed';
 import Image from 'next/image';
 
@@ -60,6 +61,12 @@ export default function Home() {
               <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 text-center text-white w-10 md:w-12 font-headline text-2xl md:text-3xl opacity-50 group-hover:opacity-100 transition-opacity transform rotate-180">
                 N
               </div>
+            </div>
+          </section>
+          
+          <section className="py-12 md:py-20 lg:py-24">
+            <div className="container">
+              <HeroTabs />
             </div>
           </section>
 
