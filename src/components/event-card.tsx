@@ -40,7 +40,7 @@ export function EventCard({ event }: { event: Event }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="w-full cursor-pointer overflow-hidden relative group border-white/10 bg-black/30 backdrop-blur-xl transition-all duration-300 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-1 rounded-2xl aspect-[4/3]">
+        <div className="w-full cursor-pointer overflow-hidden relative group border-white/10 bg-black/30 backdrop-blur-xl transition-all duration-300 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-1 rounded-2xl aspect-[9/14]">
           <div className="relative h-full w-full">
             {event.imageUrl && (
               <Image
