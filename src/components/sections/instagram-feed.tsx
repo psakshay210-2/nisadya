@@ -68,6 +68,111 @@ const InstagramCard = ({ url }: { url: string; }) => {
   );
 };
 
+function InstagramScrollContainer({ links }: { links: string[] }) {
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+
+  // Triple links for seamless loop
+  const displayLinks = [...links, ...links, ...links];
+
+  useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
+
+    let animationId: number;
+    let isUserInteracting = false;
+
+    const calculateSetWidth = () => {
+      if (!scrollContainer) return 0;
+      return scrollContainer.scrollWidth / 3;
+    };
+
+    const autoScroll = () => {
+      if (!isUserInteracting && scrollContainer) {
+        scrollContainer.scrollLeft += 1;
+        const singleSetWidth = calculateSetWidth();
+        if (scrollContainer.scrollLeft >= singleSetWidth * 2) {
+          scrollContainer.scrollLeft = singleSetWidth;
+        }
+      }
+      animationId = requestAnimationFrame(autoScroll);
+    };
+
+    const handleScroll = () => {
+      if (!scrollContainer) return;
+      const singleSetWidth = calculateSetWidth();
+      const scrollLeft = scrollContainer.scrollLeft;
+      const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+
+      if (scrollLeft >= maxScroll - 10) {
+        scrollContainer.scrollLeft = singleSetWidth;
+      } else if (scrollLeft <= 10) {
+        scrollContainer.scrollLeft = singleSetWidth;
+      }
+    };
+
+    const handleInteractionStart = () => { isUserInteracting = true; };
+    const handleInteractionEnd = () => {
+      setTimeout(() => { isUserInteracting = false; }, 1000);
+    };
+
+    scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+    scrollContainer.addEventListener('touchstart', handleInteractionStart, { passive: true });
+    scrollContainer.addEventListener('touchend', handleInteractionEnd);
+    scrollContainer.addEventListener('mouseenter', handleInteractionStart);
+    scrollContainer.addEventListener('mouseleave', handleInteractionEnd);
+    scrollContainer.addEventListener('wheel', handleInteractionStart, { passive: true });
+
+    // Initial position
+    setTimeout(() => {
+      if (scrollContainer) scrollContainer.scrollLeft = calculateSetWidth();
+    }, 100);
+
+    animationId = requestAnimationFrame(autoScroll);
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      if (scrollContainer) {
+        scrollContainer.removeEventListener('scroll', handleScroll);
+        scrollContainer.removeEventListener('touchstart', handleInteractionStart);
+        scrollContainer.removeEventListener('touchend', handleInteractionEnd);
+        scrollContainer.removeEventListener('mouseenter', handleInteractionStart);
+        scrollContainer.removeEventListener('mouseleave', handleInteractionEnd);
+        scrollContainer.removeEventListener('wheel', handleInteractionStart);
+      }
+    };
+  }, [links]);
+
+  return (
+    <div className="w-full relative overflow-hidden mask-gradient-x py-10">
+      <div
+        ref={scrollRef}
+        className="flex gap-6 overflow-x-scroll scrollbar-hide px-4"
+        style={{
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none'
+        }}
+      >
+        {displayLinks.map((link, index) => (
+          <div
+            key={`${link}-${index}`}
+            className="flex-shrink-0 w-[300px] sm:w-[350px]"
+          >
+            <div className="relative transition-all duration-500 ease-out transform-gpu scale-95 opacity-80 hover:opacity-100 hover:scale-100 grayscale-[0.2] hover:grayscale-0">
+              <div className="group relative overflow-hidden rounded-3xl bg-gray-900/40 backdrop-blur-xl border border-white/10 shadow-2xl transition-all duration-500 hover:ring-1 hover:ring-white/10 hover:shadow-primary/10">
+                <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20" />
+                <div className="p-2 sm:p-3">
+                  <InstagramCard url={link} />
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 
 export function InstagramFeed() {
   const [links, setLinks] = useState<string[]>([]);
@@ -169,31 +274,7 @@ export function InstagramFeed() {
         )}
 
         {!loading && !error && links.length > 0 && (
-          <div className="w-full overflow-hidden mask-gradient-x py-10">
-            {/* 
-                We create two sets of the links to create the seamless infinite scroll.
-                If links are few, we multiply them to fill width.
-             */}
-            <div className="flex gap-6 animate-scroll hover:paused w-max px-4">
-              {[...links, ...links, ...links].map((link, index) => (
-                <div
-                  key={`${link}-${index}`}
-                  className="flex-shrink-0 w-[300px] sm:w-[350px]"
-                >
-                  <div className="relative transition-all duration-500 ease-out transform-gpu scale-95 opacity-80 hover:opacity-100 hover:scale-100 grayscale-[0.2] hover:grayscale-0">
-                    <div className="group relative overflow-hidden rounded-3xl bg-gray-900/40 backdrop-blur-xl border border-white/10 shadow-2xl transition-all duration-500 hover:ring-1 hover:ring-white/10 hover:shadow-primary/10">
-                      {/* Glass Glare Effect */}
-                      <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20" />
-
-                      <div className="p-2 sm:p-3">
-                        <InstagramCard url={link} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <InstagramScrollContainer links={links} />
         )}
 
         {!loading && !error && links.length === 0 && (
