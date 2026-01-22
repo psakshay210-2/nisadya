@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Camera, Loader2, RefreshCw } from 'lucide-react';
+import { Camera, Loader2, RefreshCw, ArrowLeft, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '../ui/button';
 
@@ -29,149 +29,49 @@ const InstagramCard = ({ url }: { url: string; }) => {
   if (!embedUrl) return null;
 
   return (
-    <div
-      className={cn(
-        "relative h-[480px] xs:h-[500px] w-full max-w-sm rounded-2xl overflow-hidden bg-black/20"
-      )}
-    >
-      {!isLoaded && !hasError && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-gray-900/80 backdrop-blur-sm">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        </div>
-      )}
-
-      {hasError && (
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-gray-900/90 p-6 text-center">
-          <Camera className="h-8 w-8 text-gray-500 mb-2" />
-          <p className="text-sm text-gray-400">Unavailable</p>
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2 text-xs text-primary hover:underline"
-          >
-            Visit Link
-          </a>
-        </div>
-      )}
-
-      <iframe
-        src={embedUrl}
-        className={`h-full w-full border-0 transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-        scrolling="no"
-        allow="encrypted-media"
-        onLoad={() => setIsLoaded(true)}
-        onError={() => setHasError(true)}
-        title="Instagram Post"
-      />
-    </div>
-  );
-};
-
-function InstagramScrollContainer({ links }: { links: string[] }) {
-  const scrollRef = React.useRef<HTMLDivElement>(null);
-
-  // Triple links for seamless loop
-  const displayLinks = [...links, ...links, ...links];
-
-  useEffect(() => {
-    const scrollContainer = scrollRef.current;
-    if (!scrollContainer) return;
-
-    let animationId: number;
-    let isUserInteracting = false;
-
-    const calculateSetWidth = () => {
-      if (!scrollContainer) return 0;
-      return scrollContainer.scrollWidth / 3;
-    };
-
-    const autoScroll = () => {
-      if (!isUserInteracting && scrollContainer) {
-        scrollContainer.scrollLeft += 1;
-        const singleSetWidth = calculateSetWidth();
-        if (scrollContainer.scrollLeft >= singleSetWidth * 2) {
-          scrollContainer.scrollLeft = singleSetWidth;
-        }
-      }
-      animationId = requestAnimationFrame(autoScroll);
-    };
-
-    const handleScroll = () => {
-      if (!scrollContainer) return;
-      const singleSetWidth = calculateSetWidth();
-      const scrollLeft = scrollContainer.scrollLeft;
-      const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-
-      if (scrollLeft >= maxScroll - 10) {
-        scrollContainer.scrollLeft = singleSetWidth;
-      } else if (scrollLeft <= 10) {
-        scrollContainer.scrollLeft = singleSetWidth;
-      }
-    };
-
-    const handleInteractionStart = () => { isUserInteracting = true; };
-    const handleInteractionEnd = () => {
-      setTimeout(() => { isUserInteracting = false; }, 1000);
-    };
-
-    scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
-    scrollContainer.addEventListener('touchstart', handleInteractionStart, { passive: true });
-    scrollContainer.addEventListener('touchend', handleInteractionEnd);
-    scrollContainer.addEventListener('mouseenter', handleInteractionStart);
-    scrollContainer.addEventListener('mouseleave', handleInteractionEnd);
-    scrollContainer.addEventListener('wheel', handleInteractionStart, { passive: true });
-
-    // Initial position
-    setTimeout(() => {
-      if (scrollContainer) scrollContainer.scrollLeft = calculateSetWidth();
-    }, 100);
-
-    animationId = requestAnimationFrame(autoScroll);
-
-    return () => {
-      cancelAnimationFrame(animationId);
-      if (scrollContainer) {
-        scrollContainer.removeEventListener('scroll', handleScroll);
-        scrollContainer.removeEventListener('touchstart', handleInteractionStart);
-        scrollContainer.removeEventListener('touchend', handleInteractionEnd);
-        scrollContainer.removeEventListener('mouseenter', handleInteractionStart);
-        scrollContainer.removeEventListener('mouseleave', handleInteractionEnd);
-        scrollContainer.removeEventListener('wheel', handleInteractionStart);
-      }
-    };
-  }, [links]);
-
-  return (
-    <div className="w-full relative overflow-hidden mask-gradient-x py-10">
-      <div
-        ref={scrollRef}
-        className="flex gap-6 overflow-x-scroll scrollbar-hide px-4"
-        style={{
-          WebkitOverflowScrolling: 'touch',
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none'
-        }}
-      >
-        {displayLinks.map((link, index) => (
-          <div
-            key={`${link}-${index}`}
-            className="flex-shrink-0 w-[300px] sm:w-[350px]"
-          >
-            <div className="relative transition-all duration-500 ease-out transform-gpu scale-95 opacity-80 hover:opacity-100 hover:scale-100 grayscale-[0.2] hover:grayscale-0">
-              <div className="group relative overflow-hidden rounded-3xl bg-gray-900/40 backdrop-blur-xl border border-white/10 shadow-2xl transition-all duration-500 hover:ring-1 hover:ring-white/10 hover:shadow-primary/10">
-                <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20" />
-                <div className="p-2 sm:p-3">
-                  <InstagramCard url={link} />
-                </div>
-              </div>
+    <div className="group relative overflow-hidden rounded-3xl bg-gray-900/40 backdrop-blur-xl border border-white/10 shadow-2xl transition-all duration-500 hover:ring-1 hover:ring-white/10 hover:shadow-primary/10">
+      <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20" />
+      <div className="p-2 sm:p-3">
+        <div
+          className={cn(
+            "relative h-[480px] xs:h-[500px] w-full rounded-2xl overflow-hidden bg-black/20"
+          )}
+        >
+          {!isLoaded && !hasError && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center bg-gray-900/80 backdrop-blur-sm">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
-          </div>
-        ))}
+          )}
+
+          {hasError && (
+            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-gray-900/90 p-6 text-center">
+              <Camera className="h-8 w-8 text-gray-500 mb-2" />
+              <p className="text-sm text-gray-400">Unavailable</p>
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 text-xs text-primary hover:underline"
+              >
+                Visit Link
+              </a>
+            </div>
+          )}
+
+          <iframe
+            src={embedUrl}
+            className={`h-full w-full border-0 transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+            scrolling="no"
+            allow="encrypted-media"
+            onLoad={() => setIsLoaded(true)}
+            onError={() => setHasError(true)}
+            title="Instagram Post"
+          />
+        </div>
       </div>
     </div>
   );
-}
+};
 
 
 export function InstagramFeed() {
@@ -179,6 +79,7 @@ export function InstagramFeed() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     setIsMounted(true);
@@ -224,13 +125,25 @@ export function InstagramFeed() {
   }, [isMounted, fetchData]);
 
 
+  const goNext = () => {
+    setActiveIndex((prevIndex) => prevIndex + 1);
+  };
+
+  const goPrev = () => {
+    setActiveIndex((prevIndex) => prevIndex - 1);
+  };
+
+  const displayLinks = links.slice(0, 6);
+  const canGoNext = activeIndex < displayLinks.length - 1;
+  const canGoPrev = activeIndex > 0;
+
 
   if (!isMounted) {
     return null;
   }
 
   return (
-    <section id="instagram" className="relative py-20 xs:py-24 sm:py-32 border-t border-white/10 overflow-hidden flex items-center justify-center">
+    <section id="instagram" className="relative py-20 xs:py-24 sm:py-32 border-t border-white/10 overflow-hidden">
       {/* Decorative Background Elements */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[128px] pointer-events-none opacity-30" />
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-[128px] pointer-events-none opacity-30" />
@@ -274,7 +187,83 @@ export function InstagramFeed() {
         )}
 
         {!loading && !error && links.length > 0 && (
-          <InstagramScrollContainer links={links} />
+          <>
+            <div className="relative w-full min-h-[550px] md:min-h-[600px] flex items-center justify-center">
+              {/* Mobile View: Stacked Deck */}
+              <div className="md:hidden w-full h-full relative">
+                {displayLinks.map((link, index) => {
+                  const offset = index - activeIndex;
+                  const isVisible = Math.abs(offset) <= 2;
+
+                  if (!isVisible) return null;
+
+                  let style: React.CSSProperties = {
+                    transform: `translateY(${offset * 10}px) scale(${1 - Math.abs(offset) * 0.1})`,
+                    zIndex: displayLinks.length - Math.abs(offset),
+                    opacity: offset === 0 ? 1 : 0.5,
+                    pointerEvents: offset === 0 ? 'auto' : 'none',
+                    transition: 'all 0.4s ease-out',
+                  };
+                  
+                  if (offset < 0) {
+                      style.transform = `translateX(-120%) scale(0.8) rotate(-15deg)`;
+                      style.opacity = 0;
+                  }
+                  
+                  return (
+                      <div key={`${link}-${index}`} className="absolute inset-0 flex items-center justify-center" style={style}>
+                          <div className="w-[300px] sm:w-[350px]">
+                            <InstagramCard url={link} />
+                          </div>
+                      </div>
+                  );
+                })}
+              </div>
+
+              {/* Desktop View: Spread */}
+              <div className="hidden md:flex relative w-full h-full items-center justify-center">
+                {displayLinks.map((link, index) => {
+                  const desktopTransforms = [
+                    { transform: 'translateX(-40%) rotate(-8deg)', zIndex: 1 },
+                    { transform: 'translateX(-13%) rotate(-4deg)', zIndex: 2 },
+                    { transform: 'translateX(13%) rotate(4deg)', zIndex: 3 },
+                    { transform: 'translateX(40%) rotate(8deg)', zIndex: 4 },
+                  ];
+
+                  let style: React.CSSProperties = {};
+                  if (index < 4) {
+                    style = desktopTransforms[index];
+                  } else {
+                    style = {
+                      ...desktopTransforms[3],
+                      transform: `${desktopTransforms[3].transform} translateY(${(index - 3) * 12}px)`,
+                      zIndex: 4 - (index - 3),
+                    };
+                  }
+
+                  return (
+                    <div 
+                      key={`${link}-${index}`} 
+                      className="absolute w-[350px] transition-all duration-300 ease-out hover:!z-10 hover:-translate-y-4 hover:scale-105"
+                      style={style}
+                    >
+                      <InstagramCard url={link} />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Mobile Navigation */}
+            <div className="md:hidden flex items-center justify-center gap-4 mt-8">
+              <Button onClick={goPrev} disabled={!canGoPrev} variant="outline" size="icon" className="disabled:opacity-30 rounded-full h-12 w-12 bg-black/30 backdrop-blur-sm border-white/20">
+                <ArrowLeft className="w-5 h-5" />
+              </Button>
+              <Button onClick={goNext} disabled={!canGoNext} variant="outline" size="icon" className="disabled:opacity-30 rounded-full h-12 w-12 bg-black/30 backdrop-blur-sm border-white/20">
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+            </div>
+          </>
         )}
 
         {!loading && !error && links.length === 0 && (
