@@ -5,58 +5,45 @@ import { EventCard } from "../event-card";
 import { fetchEvents } from "@/lib/events-loader";
 import type { Event } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "../ui/carousel";
 import { Skeleton } from '../ui/skeleton';
-import { Frown } from 'lucide-react';
+import { Frown, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Button } from '../ui/button';
 
-type EventsProps = {
-  condensed?: boolean;
-  setApi?: (api: CarouselApi) => void;
-}
-
-export function Events({ condensed = false, setApi }: EventsProps) {
+export function Events() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const loadEvents = async () => {
       setLoading(true);
       const fetchedEvents = await fetchEvents();
-      setEvents(fetchedEvents);
+      // Limiting to 6 for a more visible stack on desktop demo
+      setEvents(fetchedEvents.slice(0, 6));
       setLoading(false);
     };
     loadEvents();
   }, []);
 
-  const eventSkeletons = Array.from({ length: condensed ? 3 : 6 });
+  const goNext = () => {
+    setActiveIndex((prevIndex) => prevIndex + 1);
+  };
+
+  const goPrev = () => {
+    setActiveIndex((prevIndex) => prevIndex - 1);
+  };
+
+  const canGoNext = activeIndex < events.length - 1;
+  const canGoPrev = activeIndex > 0;
 
   if (loading) {
-    if (condensed) {
-      return (
-        <div className="w-full flex space-x-2 xs:space-x-3 sm:space-x-4">
-          {eventSkeletons.map((_, index) => (
-            <div key={index} className="p-1 h-full min-w-0 shrink-0 grow-0 basis-full xs:basis-4/5 sm:basis-3/4 md:basis-1/2 lg:basis-1/3">
-              <Skeleton className="w-full aspect-[3/4] rounded-lg" />
-            </div>
-          ))}
-        </div>
-      );
-    }
     return (
       <section id="events" className="py-12 sm:py-16 md:py-24 bg-transparent">
-        <div className="container">
-          <div className="mb-8 sm:mb-10 md:mb-12 text-center">
-            <h2 className="font-headline text-fluid-4xl font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
-              Featured Events
-            </h2>
-            <p className="mx-auto mt-3 sm:mt-4 max-w-2xl text-fluid-base text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
-              Explore the highlights of Nisadya.
-            </p>
-          </div>
-          <div className="grid gap-4 xs:gap-6 sm:gap-8 grid-cols-1 xs:grid-cols-2 lg:grid-cols-3">
-            {eventSkeletons.map((_, index) => (
-              <Skeleton key={index} className="w-full h-96 rounded-lg" />
-            ))}
+        <div className="container text-center">
+          <h2 className="font-headline text-fluid-4xl font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">Featured Events</h2>
+          <p className="mx-auto mt-3 sm:mt-4 max-w-2xl text-fluid-base text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">Explore the highlights of Nisadya.</p>
+          <div className="relative w-full min-h-[550px] flex items-center justify-center mt-8">
+            <Skeleton className="w-[280px] h-[448px] rounded-2xl" />
           </div>
         </div>
       </section>
@@ -73,48 +60,94 @@ export function Events({ condensed = false, setApi }: EventsProps) {
     )
   }
 
-  if (condensed) {
-    return (
-      <Carousel
-        setApi={setApi}
-        opts={{
-          align: "start",
-          loop: true,
-        }}
-        className="w-full"
-      >
-        <CarouselContent className="pr-4">
-          {events.map((event) => (
-            <CarouselItem key={event.id} className="basis-full xs:basis-4/5 sm:basis-3/4 md:basis-1/2 lg:basis-1/3">
-              <div className="h-full flex justify-center py-2">
-                <EventCard event={event} />
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious className="hidden sm:flex" />
-        <CarouselNext className="hidden sm:flex" />
-      </Carousel>
-    )
-  }
-
   return (
-    <section id="events" className={cn("py-10 xs:py-12 sm:py-14 md:py-16 lg:py-20 xl:py-24 bg-transparent", condensed && "p-0 py-0 md:py-0")}>
-      <div className={cn("container", condensed && "px-0")}>
-        {!condensed && (
-          <div className="mb-6 xs:mb-7 sm:mb-8 md:mb-10 lg:mb-12 text-center">
-            <h2 className="font-headline text-fluid-4xl font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
-              Featured Events
-            </h2>
-            <p className="mx-auto mt-2 xs:mt-2.5 sm:mt-3 md:mt-4 max-w-2xl text-fluid-base text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
-              Explore the highlights of Nisadya.
-            </p>
+    <section id="events" className={cn("py-10 xs:py-12 sm:py-14 md:py-16 lg:py-20 xl:py-24 bg-transparent overflow-x-clip")}>
+      <div className={cn("container")}>
+        <div className="mb-10 xs:mb-12 sm:mb-16 text-center">
+          <h2 className="font-headline text-fluid-4xl font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
+            Featured Events
+          </h2>
+          <p className="mx-auto mt-2 xs:mt-2.5 sm:mt-3 md:mt-4 max-w-2xl text-fluid-base text-muted-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.7)]">
+            Explore the highlights of Nisadya.
+          </p>
+        </div>
+        
+        {/* Card Stack Container */}
+        <div className="relative w-full min-h-[550px] md:min-h-[500px] flex items-center justify-center">
+          
+          {/* Mobile View: Stacked Deck */}
+          <div className="md:hidden w-full h-full relative">
+            {events.map((event, index) => {
+              const offset = index - activeIndex;
+              const isVisible = Math.abs(offset) <= 2;
+
+              if (!isVisible) return null;
+
+              let style: React.CSSProperties = {
+                transform: `translateY(${offset * 10}px) scale(${1 - Math.abs(offset) * 0.1})`,
+                zIndex: events.length - Math.abs(offset),
+                opacity: offset === 0 ? 1 : 0.5,
+                pointerEvents: offset === 0 ? 'auto' : 'none',
+                transition: 'all 0.4s ease-out',
+              };
+              
+              if (offset < 0) {
+                   style.transform = `translateX(-120%) scale(0.8) rotate(-15deg)`;
+                   style.opacity = 0;
+              }
+              
+              return (
+                  <div key={event.id} className="absolute inset-0 flex items-center justify-center" style={style}>
+                      <div className="w-[280px]">
+                          <EventCard event={event} />
+                      </div>
+                  </div>
+              );
+            })}
           </div>
-        )}
-        <div className="grid gap-4 xs:gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {events.map((event) => (
-            <EventCard key={event.id} event={event} />
-          ))}
+
+          {/* Desktop View: Spread */}
+          <div className="hidden md:flex relative w-full h-full items-center justify-center">
+            {events.map((event, index) => {
+              const desktopTransforms = [
+                { transform: 'translateX(-40%) rotate(-8deg)', zIndex: 1 },
+                { transform: 'translateX(-13%) rotate(-4deg)', zIndex: 2 },
+                { transform: 'translateX(13%) rotate(4deg)', zIndex: 3 },
+                { transform: 'translateX(40%) rotate(8deg)', zIndex: 4 },
+              ];
+
+              let style: React.CSSProperties = {};
+              if (index < 4) {
+                style = desktopTransforms[index];
+              } else {
+                style = {
+                  ...desktopTransforms[3],
+                  transform: `${desktopTransforms[3].transform} translateY(${(index - 3) * 12}px)`,
+                  zIndex: 4 - (index - 3),
+                };
+              }
+
+              return (
+                <div 
+                  key={event.id} 
+                  className="absolute w-[280px] transition-all duration-300 ease-out hover:!z-10 hover:-translate-y-4 hover:scale-105"
+                  style={style}
+                >
+                  <EventCard event={event} />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Mobile Navigation */}
+        <div className="md:hidden flex items-center justify-center gap-4 mt-8">
+          <Button onClick={goPrev} disabled={!canGoPrev} variant="outline" size="icon" className="disabled:opacity-30 rounded-full h-12 w-12 bg-black/30 backdrop-blur-sm border-white/20">
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+          <Button onClick={goNext} disabled={!canGoNext} variant="outline" size="icon" className="disabled:opacity-30 rounded-full h-12 w-12 bg-black/30 backdrop-blur-sm border-white/20">
+            <ArrowRight className="w-5 h-5" />
+          </Button>
         </div>
       </div>
     </section>
