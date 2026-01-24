@@ -11,14 +11,14 @@ interface InstagramPost {
     postLink: string;
 }
 
-const InstagramCard = ({ post, isActive, isSpread }: { post: InstagramPost, isActive: boolean, isSpread: boolean }) => (
+const InstagramCard = ({ post, isActive, isSpread, index }: { post: InstagramPost, isActive: boolean, isSpread: boolean, index: number }) => (
     <Link href={post.postLink} target="_blank" rel="noopener noreferrer" className="block w-full h-full">
         <div className={`relative w-full h-full rounded-3xl overflow-hidden shadow-2xl border-2 transition-all duration-500
             ${isSpread ? 'border-transparent group-hover:border-primary' : (isActive ? 'border-primary' : 'border-transparent')}
             bg-white/5 dark:bg-slate-900/40 backdrop-blur-md
         `}>
             <Image
-                src={`https://picsum.photos/seed/insta${post.postLink.slice(-10)}/400/400`}
+                src={`https://picsum.photos/seed/nisadya-insta-${index}/400/400`}
                 alt='Instagram Post'
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -128,7 +128,7 @@ const Instagram = () => {
                                         zIndex: 99
                                     } : {}}
                                 >
-                                    <InstagramCard post={post} isActive={false} isSpread={true} />
+                                    <InstagramCard post={post} isActive={false} isSpread={true} index={index} />
                                 </motion.div>
                             );
                         })}
@@ -152,7 +152,7 @@ const Instagram = () => {
                                     }}
                                     transition={{ type: 'spring', stiffness: 200, damping: 25 }}
                                 >
-                                    <InstagramCard post={post} isActive={offset === 0} isSpread={false} />
+                                    <InstagramCard post={post} isActive={offset === 0} isSpread={false} index={index} />
                                 </motion.div>
                             )
                         })}
