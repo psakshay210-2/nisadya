@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useState, useEffect } from 'react';
 import { fetchSheetData, GIDS } from '@/lib/gsheet';
-import Image from 'next/image';
 import Link from 'next/link';
 
 interface InstagramPost {
@@ -12,26 +11,44 @@ interface InstagramPost {
 }
 
 const InstagramCard = ({ post, isActive, isSpread, index }: { post: InstagramPost, isActive: boolean, isSpread: boolean, index: number }) => (
-    <Link href={post.postLink} target="_blank" rel="noopener noreferrer" className="block w-full h-full">
+    <Link href={post.postLink} target="_blank" rel="noopener noreferrer" className="block w-full h-full group">
         <div className={`relative w-full h-full rounded-3xl overflow-hidden shadow-2xl border-2 transition-all duration-500
-            ${isSpread ? 'border-transparent group-hover:border-primary' : (isActive ? 'border-primary' : 'border-transparent')}
-            bg-white/5 dark:bg-slate-900/40 backdrop-blur-md
+            ${isSpread ? 'border-transparent group-hover:border-primary/50' : (isActive ? 'border-primary' : 'border-transparent')}
+            bg-white/5 dark:bg-slate-900/40 backdrop-blur-md flex flex-col
         `}>
-            <Image
-                src={`https://picsum.photos/seed/nisadya-insta-${index}/400/400`}
-                alt='Instagram Post'
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-            <div className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center bg-black/50 backdrop-blur-sm rounded-full border border-white/20">
-                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.703.01 5.556 0 5.829 0 8s.01 2.444.048 3.297c.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.556 15.99 5.829 16 8 16s2.444-.01 3.297-.048c.852-.04 1.433-.174 1.942-.372.526-.205.972-.478 1.417-.923.445-.444.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.444 16 10.171 16 8s-.01-2.444-.048-3.297c-.04-.852-.174-1.433-.372-1.942a3.916 3.916 0 0 0-.923-1.417A3.916 3.916 0 0 0 13.24.42c-.51-.198-1.09-.333-1.942-.372C10.444.01 10.171 0 8 0zm0 1.44c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.282.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.282.11-.705.24-1.485.276-.843.038-1.096.047-3.232.047s-2.389-.009-3.232-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.231s.008-2.389.046-3.232c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.843-.038 1.096-.047 3.232-.047zM8 4.888a3.112 3.112 0 1 0 0 6.224 3.112 3.112 0 0 0 0-6.224zM8 9.555a1.556 1.556 0 1 1 0-3.11 1.556 1.556 0 0 1 0 3.11zm4.556-5.833a.833.833 0 1 0 0-1.666.833.833 0 0 0 0 1.666z"/>
+            {/* Header */}
+            <div className="flex items-center gap-3 p-4 border-b border-white/10 flex-shrink-0">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 p-0.5">
+                     <div className="bg-background dark:bg-slate-900 rounded-full w-full h-full p-1">
+                        <svg className="w-full h-full text-foreground" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.703.01 5.556 0 5.829 0 8s.01 2.444.048 3.297c.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.556 15.99 5.829 16 8 16s2.444-.01 3.297-.048c.852-.04 1.433-.174 1.942-.372.526-.205.972-.478 1.417-.923.445-.444.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.444 16 10.171 16 8s-.01-2.444-.048-3.297c-.04-.852-.174-1.433-.372-1.942a3.916 3.916 0 0 0-.923-1.417A3.916 3.916 0 0 0 13.24.42c-.51-.198-1.09-.333-1.942-.372C10.444.01 10.171 0 8 0zm0 1.44c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.282.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.282.11-.705.24-1.485.276-.843.038-1.096.047-3.232.047s-2.389-.009-3.232-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.231s.008-2.389.046-3.232c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.843-.038 1.096-.047 3.232-.047zM8 4.888a3.112 3.112 0 1 0 0 6.224 3.112 3.112 0 0 0 0-6.224zM8 9.555a1.556 1.556 0 1 1 0-3.11 1.556 1.556 0 0 1 0 3.11zm4.556-5.833a.833.833 0 1 0 0-1.666.833.833 0 0 0 0 1.666z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div className="font-semibold text-foreground text-sm">nisadya.nitt</div>
+            </div>
+            {/* Image Placeholder */}
+            <div className="flex-grow w-full bg-muted/30 dark:bg-muted/10 flex items-center justify-center">
+                 <svg className="w-16 h-16 text-muted-foreground/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
+            </div>
+            {/* Footer */}
+            <div className="p-4 border-t border-white/10 flex items-center gap-4 text-foreground flex-shrink-0">
+                <svg className="w-6 h-6 hover:text-red-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                <svg className="w-6 h-6 hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+                <svg className="w-6 h-6 hover:text-blue-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+            </div>
+             <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="p-4 rounded-full bg-black/50 backdrop-blur-sm text-white font-semibold">
+                    View on Instagram
+                </div>
             </div>
         </div>
     </Link>
 );
+
 
 const Instagram = () => {
     const [posts, setPosts] = useState<InstagramPost[]>([]);
