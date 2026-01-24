@@ -146,12 +146,8 @@ const Hero = () => {
                         initial={{ opacity: 1, y: 0 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.6 }}
-                        className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full sm:w-auto"
+                        className="flex justify-center"
                     >
-                        <button className="btn-primary text-lg px-10 py-4 shadow-xl shadow-primary/20 hover:shadow-primary/40 relative overflow-hidden group">
-                            <span className="relative z-10">Register Now</span>
-                            <div className="absolute inset-0 bg-white/20 transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
-                        </button>
                         <button
                             onClick={handleScrollToEvents}
                             className="btn-outline text-lg px-10 py-4 glass hover:bg-primary/5 dark:hover:bg-white/5 border-primary/50"

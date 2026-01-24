@@ -76,9 +76,6 @@ const Navbar = () => {
                             </Link>
                         ))}
                         <ThemeToggle />
-                        <button className="btn-primary">
-                            Register Now
-                        </button>
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -125,9 +122,6 @@ const Navbar = () => {
                             <div className="py-2">
                                 <ThemeToggle />
                             </div>
-                            <button className="btn-primary w-full">
-                                Register Now
-                            </button>
                         </div>
                     </motion.div>
                 )}
