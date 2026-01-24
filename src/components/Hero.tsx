@@ -45,6 +45,13 @@ const Hero = () => {
         { label: 'Seconds', value: timeLeft.seconds }
     ];
 
+    const handleScrollToEvents = () => {
+        const element = document.getElementById('events');
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     return (
         <section
             id="home"
@@ -145,7 +152,10 @@ const Hero = () => {
                             <span className="relative z-10">Register Now</span>
                             <div className="absolute inset-0 bg-white/20 transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
                         </button>
-                        <button className="btn-outline text-lg px-10 py-4 glass hover:bg-primary/5 dark:hover:bg-white/5 border-primary/50">
+                        <button
+                            onClick={handleScrollToEvents}
+                            className="btn-outline text-lg px-10 py-4 glass hover:bg-primary/5 dark:hover:bg-white/5 border-primary/50"
+                        >
                             Explore Events
                         </button>
                     </motion.div>
