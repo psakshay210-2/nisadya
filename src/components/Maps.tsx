@@ -45,7 +45,7 @@ const Maps = () => {
                         className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/20 dark:border-white/10 group h-[500px]"
                     >
                         {/* Placeholder Map - using a dark themed map image would be ideal, but falling back to style */}
-                        <div className="absolute inset-0 bg-slate-900 bg-[url('https://api.mapbox.com/styles/v1/mapbox/dark-v10/static/77.5946,12.9716,14,0/800x600?access_token=PLACEHOLDER')] bg-cover bg-center grayscale opacity-50 group-hover:grayscale-0 transition-all duration-500"></div>
+                        <div className="absolute inset-0 bg-slate-900 bg-[url('https://picsum.photos/seed/map/800/600')] bg-cover bg-center grayscale opacity-50 group-hover:grayscale-0 transition-all duration-500"></div>
 
                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                             <div className="relative">

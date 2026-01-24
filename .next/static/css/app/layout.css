@@ -1048,9 +1048,6 @@ video {
 .w-full {
   width: 100%;
 }
-.min-w-\[80px\] {
-  min-width: 80px;
-}
 .max-w-2xl {
   max-width: 42rem;
 }
@@ -1363,9 +1360,6 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
-.bg-white\/10 {
-  background-color: rgb(255 255 255 / 0.1);
-}
 .bg-white\/20 {
   background-color: rgb(255 255 255 / 0.2);
 }
@@ -1381,8 +1375,8 @@ video {
 .bg-\[radial-gradient\(circle_at_center\2c transparent_10\%\2c rgba\(255\2c 253\2c 245\2c 0\.8\)_100\%\)\] {
   background-image: radial-gradient(circle at center,transparent 10%,rgba(255,253,245,0.8) 100%);
 }
-.bg-\[url\(\'https\:\/\/api\.mapbox\.com\/styles\/v1\/mapbox\/dark-v10\/static\/77\.5946\2c 12\.9716\2c 14\2c 0\/800x600\?access_token\=PLACEHOLDER\'\)\] {
-  background-image: url('https://api.mapbox.com/styles/v1/mapbox/dark-v10/static/77.5946,12.9716,14,0/800x600?access_token=PLACEHOLDER');
+.bg-\[url\(\'https\:\/\/picsum\.photos\/seed\/map\/800\/600\'\)\] {
+  background-image: url('https://picsum.photos/seed/map/800/600');
 }
 .bg-gradient-to-b {
   background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
@@ -1757,9 +1751,6 @@ video {
 }
 .text-white\/60 {
   color: rgb(255 255 255 / 0.6);
-}
-.text-white\/80 {
-  color: rgb(255 255 255 / 0.8);
 }
 .text-yellow-500 {
   --tw-text-opacity: 1;
@@ -2451,10 +2442,6 @@ body {
     width: 10rem;
   }
 
-  .md\:min-w-\[120px\] {
-    min-width: 120px;
-  }
-
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2469,10 +2456,6 @@ body {
 
   .md\:flex-row {
     flex-direction: row;
-  }
-
-  .md\:gap-4 {
-    gap: 1rem;
   }
 
   .md\:gap-8 {
@@ -2510,11 +2493,6 @@ body {
   .md\:text-8xl {
     font-size: 6rem;
     line-height: 1;
-  }
-
-  .md\:text-base {
-    font-size: 1rem;
-    line-height: 1.5rem;
   }
 
   .md\:text-sm {
