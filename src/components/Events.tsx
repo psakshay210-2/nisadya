@@ -2,8 +2,9 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { useRef, MouseEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { fetchSheetData, getDriveImage } from '@/lib/gsheet';
 
 interface EventData {
     name: string;
@@ -16,45 +17,7 @@ interface EventData {
     contact: string;
 }
 
-const parseCSV = (text: string) => {
-    const rows: string[][] = [];
-    let currentRow: string[] = [];
-    let currentCell = '';
-    let insideQuotes = false;
-
-    for (let i = 0; i < text.length; i++) {
-        const char = text[i];
-        const nextChar = text[i + 1];
-
-        if (char === '"') {
-            if (insideQuotes && nextChar === '"') {
-                currentCell += '"';
-                i++;
-            } else {
-                insideQuotes = !insideQuotes;
-            }
-        } else if (char === ',' && !insideQuotes) {
-            currentRow.push(currentCell.trim());
-            currentCell = '';
-        } else if ((char === '\r' || char === '\n') && !insideQuotes) {
-            if (char === '\r' && nextChar === '\n') i++;
-            currentRow.push(currentCell.trim());
-            if (currentRow.length > 1) rows.push(currentRow);
-            currentRow = [];
-            currentCell = '';
-        } else {
-            currentCell += char;
-        }
-    }
-    if (currentCell) currentRow.push(currentCell.trim());
-    if (currentRow.length > 1) rows.push(currentRow);
-    return rows;
-};
-
-const getDriveImage = (link: string) => {
-    const match = link.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    return match ? `https://lh3.googleusercontent.com/d/${match[1]}` : link;
-};
+const EVENTS_SHEET_GID = '0';
 
 const Events = () => {
     const [events, setEvents] = useState<EventData[]>([]);
@@ -66,34 +29,27 @@ const Events = () => {
     });
 
     useEffect(() => {
-        const fetchEvents = async () => {
-            try {
-                const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vT7vRAeLIaAsM9SJYgjA8F0wb40RsDp712u8QRhRqB9oUVdfxh8kpkoAZ1RNsFQgwaBex_HcnkoUBEn/pub?output=csv');
-                const text = await response.text();
-                const parsedData = parseCSV(text);
-
-                // Remove header row and map to object
-                const headers = parsedData[0];
-                const data = parsedData.slice(1).map(row => ({
-                    name: row[0],
-                    description: row[1],
-                    startDate: row[2],
-                    endDate: row[3],
-                    unstopLink: row[4],
-                    imageLink: row[5],
-                    coordinator: row[6],
-                    contact: row[7]
-                })).filter(event => event.name && event.name.trim() !== ''); // Filter empty rows
-
-                setEvents(data);
-            } catch (error) {
-                console.error('Error fetching events:', error);
-            } finally {
-                setLoading(false);
-            }
+        const loadEvents = async () => {
+            setLoading(true);
+            const data = await fetchSheetData(EVENTS_SHEET_GID, (headers, row) => {
+                const event: EventData = {
+                    name: row[headers.indexOf('event name')] || '',
+                    description: row[headers.indexOf('description')] || '',
+                    startDate: row[headers.indexOf('start date')] || '',
+                    endDate: row[headers.indexOf('end date')] || '',
+                    unstopLink: row[headers.indexOf('unstop link')] || '',
+                    imageLink: row[headers.indexOf('image link')] || '',
+                    coordinator: row[headers.indexOf('coordinator')] || '',
+                    contact: row[headers.indexOf('contact')] || ''
+                };
+                if (!event.name) return null;
+                return event;
+            });
+            setEvents(data as EventData[]);
+            setLoading(false);
         };
 
-        fetchEvents();
+        loadEvents();
     }, []);
 
     useEffect(() => {
@@ -116,7 +72,6 @@ const Events = () => {
 
     return (
         <section id="events" className="relative py-24 sm:py-32 overflow-hidden bg-background">
-            {/* Background Decoration */}
             <div className="absolute inset-0 z-0 opacity-30 dark:opacity-20 pointer-events-none overflow-hidden">
                 <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3" />
                 <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-secondary/20 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/3" />
@@ -199,9 +154,8 @@ const Events = () => {
             </div>
 
             <AnimatePresence>
-                {selectedId !== null && (
+                {selectedId !== null && events[selectedId] && (
                     <>
-                        {/* Backdrop */}
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -210,13 +164,11 @@ const Events = () => {
                             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
                         />
 
-                        {/* Expanded Card Modal */}
                         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 pointer-events-none">
                             <motion.div
                                 layoutId={`card-${selectedId}`}
                                 className="w-full max-w-2xl bg-background dark:bg-slate-900 rounded-3xl overflow-hidden shadow-2xl relative pointer-events-auto flex flex-col max-h-[90vh]"
                             >
-                                {/* Close Button */}
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation();
@@ -227,7 +179,6 @@ const Events = () => {
                                     ✕
                                 </button>
 
-                                {/* Image Header */}
                                 <div className="relative w-full h-64 sm:h-80 flex-shrink-0">
                                     {events[selectedId].imageLink ? (
                                         <Image
@@ -264,8 +215,7 @@ const Events = () => {
                                     </div>
                                 </div>
 
-                                {/* Content Scrollable Area */}
-                                <div className="p-6 sm:p-8 overflow-y-auto custom-scrollbar">
+                                <div className="p-6 sm:p-8 overflow-y-auto">
                                     <motion.div
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}

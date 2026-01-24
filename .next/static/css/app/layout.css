@@ -789,6 +789,12 @@ video {
 .top-\[40\%\] {
   top: 40%;
 }
+.right-3 {
+  right: 0.75rem;
+}
+.top-3 {
+  top: 0.75rem;
+}
 .z-0 {
   z-index: 0;
 }
@@ -885,6 +891,9 @@ video {
 }
 .aspect-\[4\/3\] {
   aspect-ratio: 4/3;
+}
+.aspect-square {
+  aspect-ratio: 1 / 1;
 }
 .h-0\.5 {
   height: 0.125rem;
@@ -1315,6 +1324,9 @@ video {
 .border-white\/50 {
   border-color: rgb(255 255 255 / 0.5);
 }
+.border-secondary {
+  border-color: var(--secondary);
+}
 .border-t-transparent {
   border-top-color: transparent;
 }
@@ -1365,6 +1377,9 @@ video {
 }
 .bg-white\/5 {
   background-color: rgb(255 255 255 / 0.05);
+}
+.bg-black\/40 {
+  background-color: rgb(0 0 0 / 0.4);
 }
 .bg-\[linear-gradient\(to_right\2c \#80808008_1px\2c transparent_1px\)\2c linear-gradient\(to_bottom\2c \#80808008_1px\2c transparent_1px\)\] {
   background-image: linear-gradient(to right,#80808008 1px,transparent 1px),linear-gradient(to bottom,#80808008 1px,transparent 1px);
@@ -1439,6 +1454,11 @@ video {
 .from-white\/15 {
   --tw-gradient-from: rgb(255 255 255 / 0.15) var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-black\/70 {
+  --tw-gradient-from: rgb(0 0 0 / 0.7) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(0 0 0 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 .via-background {
@@ -2540,5 +2560,11 @@ body {
   .lg\:text-9xl {
     font-size: 8rem;
     line-height: 1;
+  }
+}
+@media (min-width: 1280px) {
+
+  .xl\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }

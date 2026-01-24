@@ -4,6 +4,7 @@ import About from '@/components/About';
 import Events from '@/components/Events';
 import Schedule from '@/components/Schedule';
 import Sponsors from '@/components/Sponsors';
+import Instagram from '@/components/Instagram';
 import Stay from '@/components/Stay';
 import Maps from '@/components/Maps';
 import Footer from '@/components/Footer';
@@ -20,6 +21,7 @@ export default function Home() {
             <Events />
             <Schedule />
             <Sponsors />
+            <Instagram />
             <Stay />
             <Maps />
             <Footer />
