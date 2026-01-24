@@ -1,6 +1,12 @@
 const SPREADSHEET_ID = '2PACX-1vT7vRAeLIaAsM9SJYgjA8F0wb40RsDp712u8QRhRqB9oUVdfxh8kpkoAZ1RNsFQgwaBex_HcnkoUBEn';
 const BASE_URL = `https://docs.google.com/spreadsheets/d/e/${SPREADSHEET_ID}/pub`;
 
+export const GIDS = {
+    EVENTS: '0',
+    SCHEDULE: '1510343470',
+    INSTAGRAM: '1824479930',
+};
+
 const parseCSV = (text: string): string[][] => {
     const rows: string[][] = [];
     let currentRow: string[] = [];

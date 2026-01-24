@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useState, useEffect } from 'react';
-import { fetchSheetData, getDriveImage } from '@/lib/gsheet';
+import { fetchSheetData, getDriveImage, GIDS } from '@/lib/gsheet';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -12,8 +12,6 @@ interface InstagramPost {
     imageLink: string;
     caption: string;
 }
-
-const INSTAGRAM_SHEET_GID = '1824479930';
 
 const Instagram = () => {
     const [posts, setPosts] = useState<InstagramPost[]>([]);
@@ -25,7 +23,7 @@ const Instagram = () => {
 
     useEffect(() => {
         const loadPosts = async () => {
-            const data = await fetchSheetData(INSTAGRAM_SHEET_GID, (headers, row) => {
+            const data = await fetchSheetData(GIDS.INSTAGRAM, (headers, row) => {
                 const post: InstagramPost = {
                     postLink: row[headers.indexOf('post link')] || '',
                     imageLink: row[headers.indexOf('image link')] || '',

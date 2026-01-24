@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useState, useEffect } from 'react';
-import { fetchSheetData } from '@/lib/gsheet';
+import { fetchSheetData, GIDS } from '@/lib/gsheet';
 
 interface ScheduleEvent {
     time: string;
@@ -27,9 +27,6 @@ interface RawScheduleRow {
     category: string;
 }
 
-const SCHEDULE_SHEET_GID = '1510343470';
-
-
 const Schedule = () => {
     const [schedule, setSchedule] = useState<ScheduleDay[]>([]);
     const [loading, setLoading] = useState(true);
@@ -40,7 +37,7 @@ const Schedule = () => {
 
     useEffect(() => {
         const loadSchedule = async () => {
-            const rawData = await fetchSheetData(SCHEDULE_SHEET_GID, (headers, row) => {
+            const rawData = await fetchSheetData(GIDS.SCHEDULE, (headers, row) => {
                 const item: RawScheduleRow = {
                     day: row[headers.indexOf('day')] || '',
                     date: row[headers.indexOf('date')] || '',

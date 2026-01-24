@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { fetchSheetData, getDriveImage } from '@/lib/gsheet';
+import { fetchSheetData, getDriveImage, GIDS } from '@/lib/gsheet';
 
 interface EventData {
     name: string;
@@ -16,8 +16,6 @@ interface EventData {
     coordinator: string;
     contact: string;
 }
-
-const EVENTS_SHEET_GID = '0';
 
 const Events = () => {
     const [events, setEvents] = useState<EventData[]>([]);
@@ -31,7 +29,7 @@ const Events = () => {
     useEffect(() => {
         const loadEvents = async () => {
             setLoading(true);
-            const data = await fetchSheetData(EVENTS_SHEET_GID, (headers, row) => {
+            const data = await fetchSheetData(GIDS.EVENTS, (headers, row) => {
                 const event: EventData = {
                     name: row[headers.indexOf('event name')] || '',
                     description: row[headers.indexOf('description')] || '',
