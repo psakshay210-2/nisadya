@@ -37,12 +37,13 @@ const Schedule = () => {
 
     useEffect(() => {
         const loadSchedule = async () => {
+            setLoading(true);
             const rawData = await fetchSheetData(GIDS.SCHEDULE, (headers, row) => {
                 const item: RawScheduleRow = {
                     day: row[headers.indexOf('day')] || '',
                     date: row[headers.indexOf('date')] || '',
                     time: row[headers.indexOf('time')] || '',
-                    title: row[headers.indexOf('title')] || '',
+                    title: row[headers.indexOf('event name')] || '',
                     venue: row[headers.indexOf('venue')] || '',
                     category: row[headers.indexOf('category')] || ''
                 };
@@ -52,11 +53,13 @@ const Schedule = () => {
 
             // Group raw data by day
             const groupedByDay = (rawData as RawScheduleRow[]).reduce((acc, current) => {
-                const dayKey = current.day;
+                if (!current.day) return acc;
+
+                const dayKey = `Day ${current.day}`;
                 if (!acc[dayKey]) {
                     acc[dayKey] = {
-                        day: current.day,
-                        date: current.date,
+                        day: dayKey,
+                        date: current.date, // Will be empty if 'date' column doesn't exist
                         events: [],
                     };
                 }
@@ -69,7 +72,7 @@ const Schedule = () => {
                 return acc;
             }, {} as Record<string, ScheduleDay>);
 
-            const finalSchedule = Object.values(groupedByDay);
+            const finalSchedule = Object.values(groupedByDay).sort((a, b) => a.day.localeCompare(b.day, undefined, { numeric: true }));
             setSchedule(finalSchedule);
             setLoading(false);
         };

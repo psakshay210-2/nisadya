@@ -3,8 +3,8 @@ const BASE_URL = `https://docs.google.com/spreadsheets/d/e/${SPREADSHEET_ID}/pub
 
 export const GIDS = {
     EVENTS: '0',
-    SCHEDULE: '1510343470',
-    INSTAGRAM: '1824479930',
+    SCHEDULE: '104413209',
+    INSTAGRAM: '1758100385',
 };
 
 const parseCSV = (text: string): string[][] => {
