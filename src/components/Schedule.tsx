@@ -125,7 +125,7 @@ const Schedule = () => {
                         initial="hidden"
                         animate={inView ? 'visible' : 'hidden'}
                         variants={containerVariants}
-                        className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+                        className="flex flex-wrap justify-center gap-8"
                     >
                         {schedule.map((day, dayIndex) => (
                             <motion.div
@@ -134,28 +134,28 @@ const Schedule = () => {
                                     hidden: { opacity: 0, y: 50 },
                                     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
                                 }}
-                                className="relative group"
+                                className="relative group w-full max-w-md mx-4 sm:mx-0"
                             >
-                                <div className="h-full glass p-8 rounded-3xl border-t border-white/50 dark:border-white/10 relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-                                    <div className="absolute -right-4 -top-4 text-9xl font-black text-foreground/5 select-none pointer-events-none">
+                                <div className="h-full glass p-4 sm:p-5 md:p-8 rounded-2xl sm:rounded-3xl border-t border-white/50 dark:border-white/10 relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                                    <div className="absolute -right-2 -top-2 sm:-right-4 sm:-top-4 text-7xl sm:text-8xl md:text-9xl font-black text-foreground/[0.04] sm:text-foreground/5 select-none pointer-events-none">
                                         {String(dayIndex + 1).padStart(2, '0')}
                                     </div>
 
-                                    <div className="relative z-10 mb-8">
-                                        <h3 className="text-3xl font-bold mb-2 text-primary">{day.day}</h3>
+                                    <div className="relative z-10 mb-4 sm:mb-6 md:mb-8">
+                                        <h3 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 text-primary">{day.day}</h3>
                                         <p className="text-muted-foreground font-medium uppercase tracking-widest text-sm">{day.date}</p>
                                     </div>
 
-                                    <div className="relative space-y-8 pl-6 border-l-2 border-primary/20">
+                                    <div className="relative space-y-5 sm:space-y-6 md:space-y-8 pl-4 sm:pl-6 border-l-2 border-primary/20">
                                         {day.events.map((event, eventIndex) => (
                                             <div key={eventIndex} className="relative group/event">
-                                                <span className="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full border-4 border-background bg-primary transition-all duration-300 group-hover/event:scale-125" />
+                                                <span className="absolute -left-[21px] sm:-left-[29px] top-1.5 w-3 h-3 sm:w-4 sm:h-4 rounded-full border-4 border-background bg-primary transition-all duration-300 group-hover/event:scale-125" />
 
                                                 <div className="transform transition-transform duration-300 group-hover/event:translate-x-2">
                                                     <span className="text-xs font-bold text-secondary uppercase tracking-wider mb-1 block">
                                                         {event.time}
                                                     </span>
-                                                    <h4 className="text-lg font-bold text-foreground mb-1 group-hover/event:text-primary transition-colors">
+                                                    <h4 className="text-base sm:text-lg font-bold text-foreground mb-1 group-hover/event:text-primary transition-colors">
                                                         {event.title}
                                                     </h4>
                                                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
