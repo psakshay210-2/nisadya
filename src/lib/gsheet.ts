@@ -5,6 +5,7 @@ export const GIDS = {
     EVENTS: '0',
     SCHEDULE: '104413209',
     INSTAGRAM: '1758100385',
+    CONFIG: '545694281',
 };
 
 const parseCSV = (text: string): string[][] => {
@@ -49,7 +50,11 @@ const parseCSV = (text: string): string[][] => {
 export async function fetchSheetData<T>(gid: string, rowMapper: (headers: string[], row: string[]) => T | null): Promise<T[]> {
     try {
         const url = `${BASE_URL}?output=csv&gid=${gid}`;
-        const response = await fetch(url, { next: { revalidate: 3600 } }); // Revalidate every hour
+        // Add cache: 'no-store' for client-side usage, keep next: revalidate for server-side
+        const response = await fetch(url, {
+            cache: 'no-store',
+            next: { revalidate: 30 }
+        });
         if (!response.ok) {
             throw new Error(`Failed to fetch sheet with GID ${gid}: ${response.statusText}`);
         }
@@ -69,6 +74,37 @@ export async function fetchSheetData<T>(gid: string, rowMapper: (headers: string
         console.error(`Error fetching or parsing sheet with GID ${gid}:`, error);
         return [];
     }
+}
+
+export interface SiteConfig {
+    hero_title?: string;
+    hero_subtitle?: string;
+    hero_date?: string;
+    hero_description?: string;
+    registration_link?: string;
+    about_title?: string;
+    about_description?: string;
+    [key: string]: string | undefined;
+}
+
+export async function fetchSiteConfig(): Promise<SiteConfig> {
+    interface ConfigRow {
+        key: string;
+        value: string;
+    }
+
+    const rows = await fetchSheetData<ConfigRow>(GIDS.CONFIG, (headers, row) => {
+        // Use index 0 for key and index 1 for value to be robust against header naming changes
+        const key = row[0];
+        const value = row[1];
+        if (!key) return null;
+        return { key: key.trim(), value: value || '' };
+    });
+
+    return rows.reduce((acc, current) => {
+        acc[current.key] = current.value;
+        return acc;
+    }, {} as SiteConfig);
 }
 
 export const getDriveImage = (link: string | undefined): string => {

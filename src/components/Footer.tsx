@@ -3,8 +3,20 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { fetchSiteConfig, SiteConfig, getDriveImage } from '@/lib/gsheet';
 
 const Footer = () => {
+    const [config, setConfig] = useState<SiteConfig | null>(null);
+
+    useEffect(() => {
+        const loadConfig = async () => {
+            const data = await fetchSiteConfig();
+            setConfig(data);
+        };
+        loadConfig();
+    }, []);
+
     const quickLinks = [
         { name: 'Home', href: '#home' },
         { name: 'Events', href: '#events' },
@@ -40,7 +52,7 @@ const Footer = () => {
                     <div className="lg:col-span-2 space-y-6">
                         <Link href="#home" className="block relative w-48 h-16">
                             <Image
-                                src="/fest_main_logo.png"
+                                src={config?.logo_url ? getDriveImage(config.logo_url) : "/fest_main_logo.png"}
                                 alt="Nisadya Logo"
                                 fill
                                 className="object-contain object-left brightness-0 invert"
@@ -96,14 +108,14 @@ const Footer = () => {
                             </li>
                             <li className="flex items-center gap-4">
                                 <span className="text-2xl">📧</span>
-                                <a href="mailto:fest@nisadya.com" className="hover:text-primary transition-colors">
-                                    fest@nisadya.com
+                                <a href={`mailto:${config?.contact_email || 'fest@nisadya.com'}`} className="hover:text-primary transition-colors">
+                                    {config?.contact_email || 'fest@nisadya.com'}
                                 </a>
                             </li>
                             <li className="flex items-center gap-4">
                                 <span className="text-2xl">📞</span>
-                                <a href="tel:+911234567890" className="hover:text-primary transition-colors">
-                                    +91 123 456 7890
+                                <a href={`tel:${config?.contact_phone || '+911234567890'}`} className="hover:text-primary transition-colors">
+                                    {config?.contact_phone || '+91 123 456 7890'}
                                 </a>
                             </li>
                         </ul>
