@@ -82,49 +82,38 @@ const Maps = () => {
                                 <div>
                                     <h3 className="text-xl font-bold mb-3">Address</h3>
                                     <p className="text-muted-foreground leading-relaxed">
-                                        Nisadya Fest Grounds,<br />
-                                        University of Technology,<br />
-                                        Knowledge Park III, Greater Noida - 201306
+                                        National Institute of Technology,<br />
+                                        Tanjore Main Road, National Highway 83,<br />
+                                        Tiruchirappalli - 620015,<br />
+                                        Tamil Nadu, India.
                                     </p>
                                 </div>
                             </div>
                         </div>
 
                         {/* Transport Grid */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
                             <div className="glass rounded-3xl p-6 border border-white/20 dark:border-white/5 hover:-translate-y-1 transition-transform duration-300">
-                                <div className="text-3xl mb-4">🚇</div>
-                                <h3 className="font-bold mb-2">Metro</h3>
-                                <p className="text-sm text-muted-foreground">Nearest Station: Knowledge Park II (Aqua Line) - 500m away</p>
+                                <div className="text-3xl mb-4">✈️</div>
+                                <h3 className="font-bold mb-2">Airport (TRZ)</h3>
+                                <p className="text-sm text-muted-foreground">~25km away. Taxi/Cab services readily available to reach the campus.</p>
                             </div>
                             <div className="glass rounded-3xl p-6 border border-white/20 dark:border-white/5 hover:-translate-y-1 transition-transform duration-300">
+                                <div className="text-3xl mb-4">🚂</div>
+                                <h3 className="font-bold mb-2">Railway Station</h3>
+                                <p className="text-sm text-muted-foreground">TPJ Junction (~22km). Direct buses to Thuvakudi stop at NIT Main Gate.</p>
+                            </div>
+                            <div className="glass rounded-3xl p-6 border border-white/20 dark:border-white/5 hover:-translate-y-1 transition-transform duration-300 sm:col-span-2">
                                 <div className="text-3xl mb-4">🚌</div>
-                                <h3 className="font-bold mb-2">Bus</h3>
-                                <p className="text-sm text-muted-foreground">Direct buses available from Pari Chowk and Botanical Garden</p>
+                                <h3 className="font-bold mb-2">Bus Terminals</h3>
+                                <p className="text-sm text-muted-foreground">
+                                    <strong>Central Bus Stand:</strong> ~22km | <strong>Chatram Bus Stand:</strong> ~18km<br />
+                                    Frequent town buses (Route #128, #100 series) towards Thuvakudi/BHEL connect both terminals to NIT.
+                                </p>
                             </div>
                         </div>
 
-                        {/* Landmarks */}
-                        <div className="glass rounded-3xl p-8 border border-white/20 dark:border-white/5">
-                            <h3 className="font-bold mb-4 flex items-center gap-2">
-                                <span className="w-2 h-2 rounded-full bg-secondary"></span>
-                                Nearby Landmarks
-                            </h3>
-                            <ul className="space-y-3 text-sm text-muted-foreground">
-                                <li className="flex justify-between items-center pb-2 border-b border-white/5">
-                                    <span>Expo Mart</span>
-                                    <span className="font-semibold text-foreground">1.2 km</span>
-                                </li>
-                                <li className="flex justify-between items-center pb-2 border-b border-white/5">
-                                    <span>Pari Chowk</span>
-                                    <span className="font-semibold text-foreground">2.5 km</span>
-                                </li>
-                                <li className="flex justify-between items-center">
-                                    <span>Grand Venice Mall</span>
-                                    <span className="font-semibold text-foreground">3.0 km</span>
-                                </li>
-                            </ul>
-                        </div>
+
                     </motion.div>
                 </div>
             </div>

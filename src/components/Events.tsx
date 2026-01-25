@@ -165,19 +165,19 @@ const Events = () => {
                         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 pointer-events-none">
                             <motion.div
                                 layoutId={`card-${selectedId}`}
-                                className="w-full max-w-2xl bg-background dark:bg-slate-900 rounded-3xl overflow-hidden shadow-2xl relative pointer-events-auto flex flex-col max-h-[90vh]"
+                                className="w-full max-w-lg sm:max-w-2xl mx-4 sm:mx-0 bg-background dark:bg-slate-900 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl relative pointer-events-auto flex flex-col max-h-[75vh] sm:max-h-[85vh]"
                             >
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         setSelectedId(null);
                                     }}
-                                    className="absolute top-4 right-4 z-20 w-10 h-10 bg-black/50 hover:bg-black/70 backdrop-blur-md border border-white/20 text-white rounded-full flex items-center justify-center transition-colors"
+                                    className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-8 h-8 sm:w-10 sm:h-10 bg-black/50 hover:bg-black/70 backdrop-blur-md border border-white/20 text-white rounded-full flex items-center justify-center transition-colors text-sm sm:text-base"
                                 >
                                     ✕
                                 </button>
 
-                                <div className="relative w-full h-64 sm:h-80 flex-shrink-0">
+                                <div className="relative w-full h-32 sm:h-48 md:h-64 flex-shrink-0">
                                     {events[selectedId].imageLink ? (
                                         <Image
                                             src={getDriveImage(events[selectedId].imageLink)}
@@ -190,12 +190,12 @@ const Events = () => {
                                     )}
                                     <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
 
-                                    <div className="absolute bottom-6 left-6 right-6">
+                                    <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6">
                                         <motion.h3
                                             initial={{ opacity: 0, y: 20 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: 0.2 }}
-                                            className="text-3xl sm:text-4xl font-black text-foreground dark:text-white mb-2"
+                                            className="text-lg sm:text-2xl md:text-3xl font-black text-foreground dark:text-white mb-1 line-clamp-1"
                                         >
                                             {events[selectedId].name}
                                         </motion.h3>
@@ -205,7 +205,7 @@ const Events = () => {
                                             transition={{ delay: 0.3 }}
                                             className="flex flex-wrap gap-3"
                                         >
-                                            <span className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm font-bold border border-primary/20">
+                                            <span className="px-2 py-0.5 sm:px-3 sm:py-1 bg-primary/20 text-primary rounded-full text-xs sm:text-sm font-bold border border-primary/20">
                                                 {events[selectedId].startDate}
                                                 {events[selectedId].endDate && ` - ${events[selectedId].endDate}`}
                                             </span>
@@ -213,24 +213,24 @@ const Events = () => {
                                     </div>
                                 </div>
 
-                                <div className="p-6 sm:p-8 overflow-y-auto">
+                                <div className="p-4 sm:p-6 md:p-8 overflow-y-auto">
                                     <motion.div
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         transition={{ delay: 0.4 }}
-                                        className="space-y-8"
+                                        className="space-y-4 sm:space-y-6 md:space-y-8"
                                     >
                                         <div>
-                                            <h4 className="text-lg font-bold mb-3 flex items-center gap-2">
-                                                <span className="w-1 h-6 bg-primary rounded-full"></span>
+                                            <h4 className="text-base sm:text-lg font-bold mb-2 sm:mb-3 flex items-center gap-2">
+                                                <span className="w-1 h-5 sm:h-6 bg-primary rounded-full"></span>
                                                 About the Event
                                             </h4>
-                                            <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                                            <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
                                                 {events[selectedId].description}
                                             </p>
                                         </div>
 
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-secondary/5 p-6 rounded-2xl border border-secondary/10">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 bg-secondary/5 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-secondary/10">
                                             <div>
                                                 <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Coordinator</div>
                                                 <div className="font-semibold text-foreground">{events[selectedId].coordinator}</div>
@@ -241,12 +241,12 @@ const Events = () => {
                                             </div>
                                         </div>
 
-                                        <div className="pt-4">
+                                        <div className="pt-2 sm:pt-4">
                                             <a
                                                 href={events[selectedId].unstopLink}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="block w-full bg-primary hover:bg-primary/90 text-white text-center font-bold py-4 rounded-xl shadow-lg shadow-primary/25 transition-all hover:-translate-y-1 active:scale-95"
+                                                className="block w-full bg-primary hover:bg-primary/90 text-white text-center font-bold py-3 sm:py-4 rounded-xl shadow-lg shadow-primary/25 transition-all hover:-translate-y-1 active:scale-95 text-sm sm:text-base"
                                             >
                                                 Register on Unstop
                                             </a>

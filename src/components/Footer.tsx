@@ -9,8 +9,6 @@ const Footer = () => {
         { name: 'Home', href: '#home' },
         { name: 'Events', href: '#events' },
         { name: 'Schedule', href: '#schedule' },
-        { name: 'Sponsors', href: '#sponsors' },
-        { name: 'Stay', href: '#stay' },
     ];
 
     const socialLinks = [

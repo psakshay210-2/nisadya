@@ -24,9 +24,7 @@ const Navbar = () => {
         { name: 'About', href: '#about' },
         { name: 'Events', href: '#events' },
         { name: 'Schedule', href: '#schedule' },
-        { name: 'Sponsors', href: '#sponsors' },
         { name: 'Instagram', href: '#instagram' },
-        { name: 'Stay', href: '#stay' },
         { name: 'Location', href: '#location' },
     ];
 
@@ -100,29 +98,69 @@ const Navbar = () => {
                 </div>
             </div>
 
-            {/* Mobile Menu */}
+            {/* Mobile Menu Overlay */}
             <AnimatePresence>
                 {isMobileMenuOpen && (
                     <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden glass"
+                        initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+                        animate={{ opacity: 1, backdropFilter: 'blur(20px)' }}
+                        exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+                        transition={{ duration: 0.4 }}
+                        className="fixed inset-0 z-[60] bg-background/60 dark:bg-slate-900/60 flex flex-col"
                     >
-                        <div className="px-4 py-6 space-y-4 flex flex-col items-center">
-                            {navLinks.map((link) => (
-                                <Link
-                                    key={link.name}
-                                    href={link.href}
-                                    onClick={(e) => scrollToSection(e, link.href)}
-                                    className="block py-2 text-foreground hover:text-primary font-medium transition-colors"
+                        <div className="w-full border-b border-white/10">
+                            <div className="container-custom flex items-center justify-between h-20 px-4">
+                                {/* Logo in Menu */}
+                                <div className="relative w-32 h-12">
+                                    <Image
+                                        src="/fest_main_logo.png"
+                                        alt="Nisadya Logo"
+                                        fill
+                                        className="object-contain invert dark:invert-0"
+                                    />
+                                </div>
+
+                                {/* Close Button */}
+                                <button
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="p-2 -mr-2 rounded-lg hover:bg-white/10 transition-colors text-foreground"
                                 >
-                                    {link.name}
-                                </Link>
-                            ))}
-                            <div className="py-2">
-                                <ThemeToggle />
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
                             </div>
+                        </div>
+
+                        <div className="flex-1 flex flex-col items-center justify-center space-y-8">
+                            {navLinks.map((link, index) => (
+                                <motion.div
+                                    key={link.name}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: 20 }}
+                                    transition={{ delay: index * 0.1, duration: 0.4 }}
+                                >
+                                    <Link
+                                        href={link.href}
+                                        onClick={(e) => scrollToSection(e, link.href)}
+                                        className="text-3xl font-bold tracking-tight text-foreground/80 hover:text-primary transition-colors"
+                                    >
+                                        {link.name}
+                                    </Link>
+                                </motion.div>
+                            ))}
+
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 20 }}
+                                transition={{ delay: navLinks.length * 0.1, duration: 0.4 }}
+                                className="pt-8"
+                            >
+                                <ThemeToggle />
+                            </motion.div>
                         </div>
                     </motion.div>
                 )}

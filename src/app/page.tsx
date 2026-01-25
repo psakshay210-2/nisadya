@@ -3,9 +3,9 @@ import Hero from '@/components/Hero';
 import About from '@/components/About';
 import Events from '@/components/Events';
 import Schedule from '@/components/Schedule';
-import Sponsors from '@/components/Sponsors';
+// import Sponsors from '@/components/Sponsors';
 import Instagram from '@/components/Instagram';
-import Stay from '@/components/Stay';
+// import Stay from '@/components/Stay';
 import Maps from '@/components/Maps';
 import Footer from '@/components/Footer';
 import ScrollProgress from '@/components/ScrollProgress';
@@ -20,9 +20,9 @@ export default function Home() {
             <About />
             <Events />
             <Schedule />
-            <Sponsors />
+            {/* <Sponsors /> */}
             <Instagram />
-            <Stay />
+            {/* <Stay /> */}
             <Maps />
             <Footer />
             <BackToTop />

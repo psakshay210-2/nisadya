@@ -1,7 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
+import { motion, useMotionValue, useTransform, useAnimation, PanInfo, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { fetchSheetData, GIDS } from '@/lib/gsheet';
 import Link from 'next/link';
@@ -10,54 +9,11 @@ interface InstagramPost {
     postLink: string;
 }
 
-const InstagramCard = ({ post, isActive, isSpread, index }: { post: InstagramPost, isActive: boolean, isSpread: boolean, index: number }) => (
-    <Link href={post.postLink} target="_blank" rel="noopener noreferrer" className="block w-full h-full group">
-        <div className={`relative w-full h-full rounded-3xl overflow-hidden shadow-2xl border-2 transition-all duration-500
-            ${isSpread ? 'border-transparent group-hover:border-primary/50' : (isActive ? 'border-primary' : 'border-transparent')}
-            bg-white/5 dark:bg-slate-900/40 backdrop-blur-md flex flex-col
-        `}>
-            {/* Header */}
-            <div className="flex items-center gap-3 p-4 border-b border-white/10 flex-shrink-0">
-                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 p-0.5">
-                     <div className="bg-background dark:bg-slate-900 rounded-full w-full h-full p-1">
-                        <svg className="w-full h-full text-foreground" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.703.01 5.556 0 5.829 0 8s.01 2.444.048 3.297c.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.556 15.99 5.829 16 8 16s2.444-.01 3.297-.048c.852-.04 1.433-.174 1.942-.372.526-.205.972-.478 1.417-.923.445-.444.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.444 16 10.171 16 8s-.01-2.444-.048-3.297c-.04-.852-.174-1.433-.372-1.942a3.916 3.916 0 0 0-.923-1.417A3.916 3.916 0 0 0 13.24.42c-.51-.198-1.09-.333-1.942-.372C10.444.01 10.171 0 8 0zm0 1.44c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.282.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.282.11-.705.24-1.485.276-.843.038-1.096.047-3.232.047s-2.389-.009-3.232-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.231s.008-2.389.046-3.232c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.843-.038 1.096-.047 3.232-.047zM8 4.888a3.112 3.112 0 1 0 0 6.224 3.112 3.112 0 0 0 0-6.224zM8 9.555a1.556 1.556 0 1 1 0-3.11 1.556 1.556 0 0 1 0 3.11zm4.556-5.833a.833.833 0 1 0 0-1.666.833.833 0 0 0 0 1.666z"/>
-                        </svg>
-                    </div>
-                </div>
-                <div className="font-semibold text-foreground text-sm">nisadya.nitt</div>
-            </div>
-            {/* Image Placeholder */}
-            <div className="flex-grow w-full bg-muted/30 dark:bg-muted/10 flex items-center justify-center">
-                 <svg className="w-16 h-16 text-muted-foreground/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-            </div>
-            {/* Footer */}
-            <div className="p-4 border-t border-white/10 flex items-center gap-4 text-foreground flex-shrink-0">
-                <svg className="w-6 h-6 hover:text-red-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
-                <svg className="w-6 h-6 hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
-                <svg className="w-6 h-6 hover:text-blue-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
-            </div>
-             <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="p-4 rounded-full bg-black/50 backdrop-blur-sm text-white font-semibold">
-                    View on Instagram
-                </div>
-            </div>
-        </div>
-    </Link>
-);
-
-
 const Instagram = () => {
     const [posts, setPosts] = useState<InstagramPost[]>([]);
     const [loading, setLoading] = useState(true);
-    const [activeIndex, setActiveIndex] = useState(0);
-    const [ref, inView] = useInView({
-        triggerOnce: true,
-        threshold: 0.1,
-    });
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [exitX, setExitX] = useState<number | null>(null);
 
     useEffect(() => {
         const loadPosts = async () => {
@@ -68,124 +24,199 @@ const Instagram = () => {
                 if (!post.postLink) return null;
                 return post;
             });
-            setPosts(data as InstagramPost[]);
+            // Duplicate posts if fewer than 3 to ensure stack always works
+            let safePosts = data as InstagramPost[];
+            if (safePosts.length > 0 && safePosts.length < 3) {
+                while (safePosts.length < 3) {
+                    safePosts = [...safePosts, ...safePosts];
+                }
+            }
+            setPosts(safePosts);
             setLoading(false);
         };
         loadPosts();
     }, []);
 
-    const nextCard = () => setActiveIndex((prev) => (prev + 1) % posts.length);
-    const prevCard = () => setActiveIndex((prev) => (prev - 1 + posts.length) % posts.length);
+    const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+        if (info.offset.x > 100) {
+            setExitX(200);
+            setTimeout(() => {
+                setCurrentIndex((prev) => (prev + 1) % posts.length);
+                setExitX(null);
+            }, 200);
+        } else if (info.offset.x < -100) {
+            setExitX(-200);
+            setTimeout(() => {
+                setCurrentIndex((prev) => (prev + 1) % posts.length);
+                setExitX(null);
+            }, 200);
+        }
+    };
 
     if (loading) {
         return (
-            <section id="instagram" className="relative py-24 sm:py-32 bg-background overflow-hidden">
-                <div className="container-custom px-4 text-center">
-                    <div className="flex justify-center items-center py-20">
-                        <div className="w-16 h-16 border-4 border-secondary border-t-transparent rounded-full animate-spin" />
-                    </div>
-                </div>
+            <section id="instagram" className="relative py-24 sm:py-32 bg-background overflow-hidden flex justify-center items-center min-h-[600px]">
+                <div className="w-16 h-16 border-4 border-secondary border-t-transparent rounded-full animate-spin" />
             </section>
-        )
+        );
     }
 
     return (
-        <section id="instagram" className="relative py-24 sm:py-32 bg-background overflow-hidden">
-            <div className="absolute inset-0 z-0 opacity-30 dark:opacity-20 pointer-events-none overflow-hidden">
-                <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-secondary/20 rounded-full blur-[100px] -translate-y-1/2 -translate-x-1/3" />
-                <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[100px] translate-y-1/2 translate-x-1/3" />
+        <section id="instagram" className="relative py-24 sm:py-32 bg-background overflow-hidden min-h-[800px] flex flex-col items-center">
+            {/* Background Effects */}
+            <div className="absolute inset-0 z-0 opacity-40 dark:opacity-30 pointer-events-none overflow-hidden">
+                <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-secondary/20 rounded-full blur-[120px] mix-blend-screen animate-pulse-slow" />
+                <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] mix-blend-screen animate-pulse-slow [animation-delay:2s]" />
             </div>
 
-            <div className="container-custom relative z-10 px-4">
-                <motion.div
-                    ref={ref}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={inView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.6 }}
-                    className="text-center mb-16 sm:mb-20"
-                >
-                    <span className="inline-block py-1 px-3 rounded-full bg-secondary/10 text-secondary text-sm font-semibold tracking-wider uppercase mb-4">
-                        Follow Us
+            <div className="container-custom relative z-10 px-4 w-full flex flex-col items-center">
+
+                {/* Header */}
+                <div className="text-center mb-12 sm:mb-20 space-y-4">
+                    <span className="inline-flex items-center gap-2 py-1 px-3 rounded-full bg-secondary/10 border border-secondary/20 text-secondary text-sm font-semibold tracking-wider uppercase backdrop-blur-md">
+                        <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
+                        Swipe to Explore
                     </span>
-                    <h2 className="text-4xl md:text-5xl font-black mb-6 text-foreground tracking-tight">
-                        On The <span className="gradient-text">Gram</span>
+                    <h2 className="text-4xl md:text-6xl font-black text-foreground tracking-tight">
+                        On The <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600">Gram</span>
                     </h2>
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                        Catch the latest moments and behind-the-scenes action from Nisadya.
+                    <p className="text-lg text-muted-foreground/80 max-w-xl mx-auto font-medium">
+                        Swipe left or right to discover our latest moments.
                     </p>
-                </motion.div>
+                </div>
 
-                {/* Card Stack */}
-                <div className="relative h-[600px] max-w-sm mx-auto md:max-w-4xl">
-                    {/* Desktop: Spread Layout */}
-                    <div className="hidden md:block">
-                        {posts.map((post, index) => {
-                            const isSpread = index < 4;
-                            const isStacked = index >= 4;
-                            const pos = index - activeIndex;
+                {/* 3D Card Stack Container */}
+                <div className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[360px] md:max-w-[420px] h-[550px] sm:h-[600px] flex items-center justify-center perspective-1000">
 
-                            return (
-                                <motion.div
-                                    key={post.postLink}
-                                    className="absolute w-72 h-[448px] group"
-                                    initial={{ scale: 0, opacity: 0 }}
-                                    animate={{
-                                        scale: 1,
-                                        opacity: 1,
-                                        x: isSpread ? (index - 1.5) * 240 : 2.5 * 240,
-                                        y: isStacked ? (index - 4) * 12 : 0,
-                                        rotate: isSpread ? (index - 1.5) * 8 : 12,
-                                        zIndex: isStacked ? -index : (posts.length - Math.abs(pos)),
-                                    }}
-                                    transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-                                    whileHover={ isSpread ? {
-                                        y: -20,
-                                        rotate: (index - 1.5) * 4,
-                                        scale: 1.05,
-                                        zIndex: 99
-                                    } : {}}
-                                >
-                                    <InstagramCard post={post} isActive={false} isSpread={true} index={index} />
-                                </motion.div>
-                            );
-                        })}
-                    </div>
+                    {/* Render ALL posts, but visually hide the ones far back. 
+                        Using stable keys (post.postLink) ensures iframes don't reload when index changes. */}
+                    {posts.map((post, i) => {
+                        // Calculate circular distance
+                        const length = posts.length;
+                        // Distance from current index (0 to length-1)
+                        // If currentIndex is 0, i=0 is offset 0.
+                        // If currentIndex is 1, i=0 is offset -1 -> wrap to length-1 (Back of stack / Exit position)
 
-                    {/* Mobile: Flipper Layout */}
-                    <div className="md:hidden relative w-full h-full">
-                        {posts.map((post, index) => {
-                            const offset = index - activeIndex;
-                            if (Math.abs(offset) > 1) return null; // Render only current, next, and prev
+                        // We want: 
+                        // i === currentIndex => offset 0 (Front)
+                        // i === currentIndex + 1 => offset 1 (Back Left)
+                        // i === currentIndex + 2 => offset 2 (Back Right)
 
-                            return (
-                                <motion.div
-                                    key={post.postLink}
-                                    className="absolute w-full h-full"
-                                    initial={{ x: `${offset * 100}%`, scale: offset === 0 ? 1 : 0.8 }}
-                                    animate={{
-                                        x: `${offset * 100}%`,
-                                        scale: offset === 0 ? 1 : 0.8,
-                                        zIndex: posts.length - Math.abs(offset)
-                                    }}
-                                    transition={{ type: 'spring', stiffness: 200, damping: 25 }}
-                                >
-                                    <InstagramCard post={post} isActive={offset === 0} isSpread={false} index={index} />
-                                </motion.div>
-                            )
-                        })}
+                        let offset = (i - currentIndex) % length;
+                        if (offset < 0) offset += length;
+
+                        const isFront = offset === 0;
+                        const isVisible = offset < 3; // Show 0, 1, 2. Hide 3, 4, etc.
+
+                        return (
+                            <motion.div
+                                key={post.postLink}
+                                className="absolute w-full h-full cursor-grab active:cursor-grabbing"
+                                style={{
+                                    // Visual Layering
+                                    zIndex: isFront ? 10 : (isVisible ? 10 - offset : 0),
+                                    display: offset > 2 ? 'none' : 'block', // Hide non-visible cards to save GPU, but keep DOM
+                                }}
+                                initial={false}
+                                animate={{
+                                    // Scale: 1 -> 0.95 -> 0.9
+                                    scale: isFront ? 1 : 1 - (offset * 0.05),
+
+                                    // Vertical stack effect
+                                    y: isFront ? 0 : offset * -15,
+
+                                    // Fanning (Left / Right)
+                                    x: isFront ? (exitX || 0) : (offset === 1 ? -20 : offset === 2 ? 20 : 0),
+
+                                    // Rotation
+                                    rotate: isFront ? (exitX ? (exitX / 10) : 0) : (offset === 1 ? -5 : offset === 2 ? 5 : 0),
+
+                                    // Opacity
+                                    opacity: isFront ? 1 : 1 - (offset * 0.1),
+                                }}
+                                transition={{
+                                    type: "spring",
+                                    stiffness: 180, // Smooth spring
+                                    damping: 25
+                                }}
+                                drag={isFront ? "x" : false}
+                                dragConstraints={{ left: 0, right: 0 }}
+                                dragElastic={0.6}
+                                onDragEnd={isFront ? handleDragEnd : undefined}
+                                whileDrag={{ scale: 1.05 }}
+                            >
+                                <div className="relative w-full h-full rounded-3xl overflow-hidden bg-black/40 backdrop-blur-xl border border-white/10 shadow-2xl">
+                                    <div className="h-full w-full bg-white/5 relative">
+                                        <iframe
+                                            src={post.postLink.split('?')[0].replace(/\/$/, '') + '/embed/captioned'}
+                                            className="w-full h-full border-none pointer-events-none"
+                                            scrolling="no"
+                                            title={`Instagram Post`}
+                                        />
+                                        <div className="absolute inset-0 z-50 bg-transparent" />
+                                        <Link
+                                            href={post.postLink}
+                                            target="_blank"
+                                            className="absolute bottom-6 left-1/2 -translate-x-1/2 z-50 py-2 px-6 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white font-medium text-sm transition-all flex items-center gap-2 pointer-events-auto hover:scale-105 active:scale-95"
+                                        >
+                                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.688-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                                            </svg>
+                                            View Post
+                                        </Link>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        );
+                    })}
+                </div>
+
+                {/* Controls Text */}
+                <div className="mt-8 text-center">
+                    <div className="flex items-center justify-center gap-6">
+                        <button
+                            onClick={() => {
+                                setExitX(-200);
+                                setTimeout(() => {
+                                    setCurrentIndex((prev) => (prev + 1) % posts.length);
+                                    setExitX(null);
+                                }, 200);
+                            }}
+                            className="p-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-primary/50 text-white transition-all hover:scale-110 active:scale-90 group"
+                            aria-label="Swipe Left"
+                        >
+                            <svg className="w-6 h-6 group-hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                        </button>
+
+                        <div className="flex flex-col items-center gap-1">
+                            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary uppercase tracking-widest">
+                                SWIPE
+                            </span>
+                        </div>
+
+                        <button
+                            onClick={() => {
+                                setExitX(200);
+                                setTimeout(() => {
+                                    setCurrentIndex((prev) => (prev + 1) % posts.length);
+                                    setExitX(null);
+                                }, 200);
+                            }}
+                            className="p-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-secondary/50 text-white transition-all hover:scale-110 active:scale-90 group"
+                            aria-label="Swipe Right"
+                        >
+                            <svg className="w-6 h-6 group-hover:text-secondary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
 
-                {/* Mobile Navigation */}
-                <div className="md:hidden flex justify-center items-center gap-4 mt-8">
-                    <button onClick={prevCard} className="w-14 h-14 rounded-full glass flex items-center justify-center text-2xl active:scale-95">‹</button>
-                    <div className="text-sm font-semibold text-muted-foreground">
-                        {activeIndex + 1} / {posts.length}
-                    </div>
-                    <button onClick={nextCard} className="w-14 h-14 rounded-full glass flex items-center justify-center text-2xl active:scale-95">›</button>
-                </div>
             </div>
         </section>
     );
 };
+
 export default Instagram;

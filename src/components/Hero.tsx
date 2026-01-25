@@ -18,8 +18,8 @@ const Hero = () => {
     const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
     useEffect(() => {
-        // Target date: March 15, 2026
-        const targetDate = new Date('2026-03-15T09:00:00').getTime();
+        // Target date: February 28, 2026
+        const targetDate = new Date('2026-02-28T09:00:00').getTime();
 
         const interval = setInterval(() => {
             const now = new Date().getTime();
