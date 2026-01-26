@@ -1,10 +1,11 @@
-'use client';
-
+"use client";
 import { useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
+import { fetchSiteConfig, SiteConfig, getDriveImage } from '@/lib/gsheet';
 
 const Hero = () => {
+    const [config, setConfig] = useState<SiteConfig | null>(null);
     const [timeLeft, setTimeLeft] = useState({
         days: 0,
         hours: 0,
@@ -18,8 +19,31 @@ const Hero = () => {
     const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
     useEffect(() => {
-        // Target date: February 28, 2026
-        const targetDate = new Date('2026-02-28T09:00:00').getTime();
+        const loadConfig = async () => {
+            const data = await fetchSiteConfig();
+            setConfig(data);
+        };
+        loadConfig();
+    }, []);
+
+    useEffect(() => {
+        // Target date: Configured date or Default (Feb 28, 2026)
+        let dateStr = config?.hero_date || '2026-02-28';
+
+        // Handle common date formats
+        // If DD/MM/YYYY or DD-MM-YYYY
+        if (dateStr.match(/^\d{2}[\/-]\d{2}[\/-]\d{4}$/)) {
+            const [d, m, y] = dateStr.split(/[\/-]/);
+            dateStr = `${y}-${m}-${d}`;
+        }
+
+        let targetDate = new Date(`${dateStr}T09:00:00`).getTime();
+
+        // Fallback if date is invalid
+        if (isNaN(targetDate)) {
+            console.warn('Invalid hero_date format:', dateStr);
+            targetDate = new Date('2026-02-28T09:00:00').getTime();
+        }
 
         const interval = setInterval(() => {
             const now = new Date().getTime();
@@ -36,7 +60,7 @@ const Hero = () => {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [config]);
 
     const timeUnits = [
         { label: 'Days', value: timeLeft.days },
@@ -62,7 +86,7 @@ const Hero = () => {
                 {/* Background Image */}
                 <div className="absolute inset-0 z-[-1]">
                     <Image
-                        src="/bg.png"
+                        src={config?.background_image_url ? getDriveImage(config.background_image_url) : "/bg-optimized.jpg"}
                         alt="Background"
                         fill
                         className="object-cover opacity-80 dark:opacity-70"
@@ -102,12 +126,12 @@ const Hero = () => {
                         </motion.div>
 
                         <h2 className="text-xl md:text-2xl font-bold tracking-[0.2em] text-secondary dark:text-secondary-light mb-4 uppercase">
-                            The Ultimate College Fest
+                            {config?.hero_subtitle || 'The Ultimate College Fest'}
                         </h2>
                         <h1 className="text-6xl md:text-8xl lg:text-9xl font-extrabold tracking-tight mb-6 relative z-10">
                             <span className="gradient-text drop-shadow-sm">NISADYA</span>
                             <span className="block text-4xl md:text-6xl lg:text-7xl mt-2 text-foreground/90 dark:text-white/90 font-heading">
-                                2026
+                                {config?.hero_year || '2026'}
                             </span>
                         </h1>
                     </motion.div>
@@ -118,7 +142,7 @@ const Hero = () => {
                         transition={{ duration: 0.8, delay: 0.2 }}
                         className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-12 leading-relaxed"
                     >
-                        Unleash your potential at the biggest cultural and technical extravaganza of the year. Join us for 3 days of innovation, creativity, and fun.
+                        {config?.hero_description || config?.about_description || 'Unleash your potential at the biggest cultural and technical extravaganza of the year. Join us for 3 days of innovation, creativity, and fun.'}
                     </motion.p>
 
                     <motion.div
@@ -146,7 +170,7 @@ const Hero = () => {
                         initial={{ opacity: 1, y: 0 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.6 }}
-                        className="flex justify-center"
+                        className="flex flex-col sm:flex-row gap-4 justify-center"
                     >
                         <button
                             onClick={handleScrollToEvents}
@@ -154,6 +178,16 @@ const Hero = () => {
                         >
                             Explore Events
                         </button>
+                        {config?.registration_link && (
+                            <a
+                                href={config.registration_link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn-primary text-lg px-10 py-4 shadow-xl shadow-primary/20 hover:shadow-primary/40"
+                            >
+                                Register Now
+                            </a>
+                        )}
                     </motion.div>
                 </div>
             </div>

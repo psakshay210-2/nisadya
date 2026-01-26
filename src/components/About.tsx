@@ -2,12 +2,23 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { useEffect, useState } from 'react';
+import { fetchSiteConfig, SiteConfig } from '@/lib/gsheet';
 
 const About = () => {
+    const [config, setConfig] = useState<SiteConfig | null>(null);
     const [ref, inView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
     });
+
+    useEffect(() => {
+        const loadConfig = async () => {
+            const data = await fetchSiteConfig();
+            setConfig(data);
+        };
+        loadConfig();
+    }, []);
 
     return (
         <section id="about" className="relative py-24 sm:py-32 bg-gradient-to-b from-background via-background to-background overflow-hidden">
@@ -162,7 +173,7 @@ const About = () => {
                                         </motion.div>
                                         <div>
                                             <h3 className="text-2xl sm:text-3xl font-black bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
-                                                Nisadya '26
+                                                {config?.about_title || "Nisadya '26"}
                                             </h3>
                                             <p className="text-xs text-secondary font-semibold uppercase tracking-wider mt-1">
                                                 Flagship Business Fest
@@ -175,7 +186,7 @@ const About = () => {
                                 <div className="space-y-4">
                                     <div className="h-1 w-12 bg-gradient-to-r from-secondary to-transparent rounded-full" />
                                     <p className="text-muted-foreground leading-relaxed text-base sm:text-lg">
-                                        Nisadya is the annual flagship business fest of the Department of Management Studies, NIT Tiruchirappalli. It is a vibrant convergence of ideas, insights, and entrepreneurial spirit, bringing together aspiring business leaders. Nisadya provides a dynamic platform for participants to compete, create, and collaborate with some of the brightest minds in management. Featuring a diverse range of events spanning multiple management domains, the fest enables tomorrow's managers to showcase their skills, test their strategic thinking, and engage with industry leaders.
+                                        {config?.about_description || "Nisadya is the annual flagship business fest of the Department of Management Studies, NIT Tiruchirappalli. It is a vibrant convergence of ideas, insights, and entrepreneurial spirit, bringing together aspiring business leaders. Nisadya provides a dynamic platform for participants to compete, create, and collaborate with some of the brightest minds in management. Featuring a diverse range of events spanning multiple management domains, the fest enables tomorrow's managers to showcase their skills, test their strategic thinking, and engage with industry leaders."}
                                     </p>
                                 </div>
 
