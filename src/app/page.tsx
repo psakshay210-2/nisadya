@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import About from '@/components/About';
@@ -13,6 +14,7 @@ import BackToTop from '@/components/BackToTop';
 import { getServerData } from '@/lib/server-data';
 
 export const revalidate = 30; // Revalidate every 30 seconds
+export const dynamic = 'force-dynamic'; // Force dynamic rendering for Google Sheets data
 
 export default async function Home() {
     // Fetch all data on the server
@@ -24,7 +26,15 @@ export default async function Home() {
             <Navbar config={serverData.config} />
             <Hero config={serverData.config} />
             <About config={serverData.config} />
-            <Events initialEvents={serverData.events} />
+            <Suspense fallback={
+                <section className="relative py-24 sm:py-32 bg-background">
+                    <div className="flex justify-center items-center py-20">
+                        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+                    </div>
+                </section>
+            }>
+                <Events initialEvents={serverData.events} />
+            </Suspense>
             <Schedule initialSchedule={serverData.schedule} />
             {/* <Sponsors /> */}
             <Instagram initialPosts={serverData.instagram} />
