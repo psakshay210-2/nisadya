@@ -5,21 +5,40 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
-import { fetchSiteConfig, SiteConfig, getDriveImage } from '@/lib/gsheet';
+import { SiteConfig, getDriveImage } from '@/lib/gsheet';
 
-const Navbar = () => {
+import { GlobalSearch } from './GlobalSearch';
+
+const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [config, setConfig] = useState<SiteConfig | null>(null);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [config] = useState<SiteConfig | null>(initialConfig || null);
+
+    // Lock body scroll when mobile menu is open
+    useEffect(() => {
+        if (isMobileMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, [isMobileMenuOpen]);
 
     useEffect(() => {
-        const loadConfig = async () => {
-            const data = await fetchSiteConfig();
-            setConfig(data);
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                setIsSearchOpen(prev => !prev);
+            }
         };
-        loadConfig();
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
 
+    // ... scroll effect ...
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 20);
@@ -47,22 +66,14 @@ const Navbar = () => {
         }
     };
 
-    useEffect(() => {
-        if (isMobileMenuOpen) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'auto';
-        }
-        return () => { document.body.style.overflow = 'auto'; };
-    }, [isMobileMenuOpen]);
-
     return (
         <>
+            <GlobalSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
             <motion.nav
                 initial={{ y: 0 }}
                 animate={{ y: 0 }}
                 transition={{ duration: 0.6 }}
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+                className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-300 ${isScrolled
                     ? 'glass'
                     : 'bg-transparent'
                     }`}
@@ -83,7 +94,7 @@ const Navbar = () => {
                         </Link>
 
                         {/* Desktop Navigation */}
-                        <div className="hidden md:flex items-center space-x-8">
+                        <div className="hidden md:flex items-center space-x-6">
                             {navLinks.map((link) => (
                                 <Link
                                     key={link.name}
@@ -94,27 +105,58 @@ const Navbar = () => {
                                     {link.name}
                                 </Link>
                             ))}
+
+                            {/* Search Button */}
+                            <button
+                                onClick={() => {
+                                    if (!isSearchOpen) setIsMobileMenuOpen(false);
+                                    setIsSearchOpen(!isSearchOpen);
+                                }}
+                                className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-all text-foreground/80 hover:text-primary"
+                                aria-label="Search"
+                            >
+                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </button>
+
                             <ThemeToggle />
                         </div>
 
-                        {/* Mobile Menu Button */}
-                        <button
-                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            className="md:hidden p-2 rounded-lg hover:bg-primary/10 transition-colors"
-                            aria-label="Toggle menu"
-                        >
-                            <div className="w-6 h-5 flex flex-col justify-between">
-                                <span
-                                    className={`block h-0.5 w-full transition-all duration-300 bg-foreground ${isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}
-                                />
-                                <span
-                                    className={`block h-0.5 w-full transition-all duration-300 bg-foreground ${isMobileMenuOpen ? 'opacity-0' : ''}`}
-                                />
-                                <span
-                                    className={`block h-0.5 w-full transition-all duration-300 bg-foreground ${isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}
-                                />
-                            </div>
-                        </button>
+                        {/* Mobile Menu & Search Button */}
+                        <div className="flex items-center gap-2 md:hidden">
+                            <button
+                                onClick={() => {
+                                    if (!isSearchOpen) setIsMobileMenuOpen(false);
+                                    setIsSearchOpen(!isSearchOpen);
+                                }}
+                                className="p-2 rounded-lg hover:bg-primary/10 transition-colors"
+                            >
+                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </button>
+                            <button
+                                onClick={() => {
+                                    if (!isMobileMenuOpen) setIsSearchOpen(false);
+                                    setIsMobileMenuOpen(!isMobileMenuOpen);
+                                }}
+                                className="md:hidden p-2 rounded-lg hover:bg-primary/10 transition-colors"
+                                aria-label="Toggle menu"
+                            >
+                                <div className="w-6 h-5 flex flex-col justify-between">
+                                    <span
+                                        className={`block h-0.5 w-full transition-all duration-300 bg-foreground ${isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}
+                                    />
+                                    <span
+                                        className={`block h-0.5 w-full transition-all duration-300 bg-foreground ${isMobileMenuOpen ? 'opacity-0' : ''}`}
+                                    />
+                                    <span
+                                        className={`block h-0.5 w-full transition-all duration-300 bg-foreground ${isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}
+                                    />
+                                </div>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </motion.nav>
@@ -130,32 +172,9 @@ const Navbar = () => {
                         className="fixed inset-0 z-[60] bg-background/60 dark:bg-slate-900/70 flex flex-col h-[100dvh] touch-none"
                         style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
                     >
-                        <div className="w-full border-b border-white/10">
-                            <div className="container-custom flex items-center justify-between h-20 px-4">
-                                {/* Logo in Menu */}
-                                <div className="relative w-32 h-12">
-                                    <Image
-                                        src={config?.logo_url ? getDriveImage(config.logo_url) : "/fest_main_logo.png"}
-                                        alt="Nisadya Logo"
-                                        fill
-                                        className="object-contain invert dark:invert-0"
-                                    />
-                                </div>
 
-                                {/* Close Button */}
-                                <button
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                    className="p-2 -mr-2 rounded-lg hover:bg-white/10 transition-colors text-foreground"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
 
-                        <div className="flex-1 flex flex-col items-center justify-start pt-20 space-y-8 overflow-y-auto w-full">
+                        <div className="flex-1 flex flex-col items-center justify-start pt-32 space-y-8 overflow-y-auto w-full">
                             {navLinks.map((link, index) => (
                                 <motion.div
                                     key={link.name}
