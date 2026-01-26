@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { getDriveImage } from '@/lib/gsheet';
+import { fetchSheetData, getDriveImage, GIDS } from '@/lib/gsheet';
 
 interface EventData {
     name: string;
@@ -17,33 +17,38 @@ interface EventData {
     contact: string;
 }
 
-import { useSearchParams } from 'next/navigation';
-
-const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
-    const [events] = useState<EventData[]>(initialEvents);
-    const [loading] = useState(false);
+const Events = () => {
+    const [events, setEvents] = useState<EventData[]>([]);
+    const [loading, setLoading] = useState(true);
     const [selectedId, setSelectedId] = useState<number | null>(null);
-    const searchParams = useSearchParams();
     const [ref, inView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
     });
 
-    // Handle Deep Linking
     useEffect(() => {
-        if (events.length > 0) {
-            const eventParam = searchParams.get('event');
-            if (eventParam) {
-                const index = events.findIndex(e => e.name.toLowerCase() === eventParam.toLowerCase());
-                if (index !== -1) {
-                    setSelectedId(index);
-                    // Optional: Scroll to events section if not already there
-                    // document.getElementById('events')?.scrollIntoView(); 
-                    // (Browser might handle fragment scroll, but we want to ensure modal opens)
-                }
-            }
-        }
-    }, [events, searchParams]);
+        const loadEvents = async () => {
+            setLoading(true);
+            const data = await fetchSheetData(GIDS.EVENTS, (headers, row) => {
+                const event: EventData = {
+                    name: row[headers.indexOf('event name')] || '',
+                    description: row[headers.indexOf('description')] || '',
+                    startDate: row[headers.indexOf('start date')] || '',
+                    endDate: row[headers.indexOf('end date')] || '',
+                    unstopLink: row[headers.indexOf('unstop link')] || '',
+                    imageLink: row[headers.indexOf('image link')] || '',
+                    coordinator: row[headers.indexOf('coordinator')] || '',
+                    contact: row[headers.indexOf('contact')] || ''
+                };
+                if (!event.name) return null;
+                return event;
+            });
+            setEvents(data as EventData[]);
+            setLoading(false);
+        };
+
+        loadEvents();
+    }, []);
 
     useEffect(() => {
         if (selectedId !== null) {
@@ -64,7 +69,7 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
     }, []);
 
     return (
-        <section id="events" className="relative py-24 sm:py-32 overflow-visible sm:overflow-hidden bg-background">
+        <section id="events" className="relative py-24 sm:py-32 overflow-hidden bg-background">
             <div className="absolute inset-0 z-0 opacity-30 dark:opacity-20 pointer-events-none overflow-hidden">
                 <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3" />
                 <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-secondary/20 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/3" />
@@ -89,88 +94,59 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                     </p>
                 </motion.div>
 
-                {events.length === 0 ? (
+                {loading ? (
                     <div className="flex justify-center items-center py-20">
-                        <p className="text-muted-foreground">No events available</p>
+                        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin" />
                     </div>
                 ) : (
-                    <div className="relative group/events">
-                        <div
-                            id="events-scroll-container"
-                            className="flex overflow-x-auto snap-x snap-mandatory gap-4 sm:gap-10 px-6 pb-12 pt-2 scroll-px-6 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:overflow-visible sm:px-0 sm:pt-0 sm:pb-0 sm:scroll-px-0 premium-scrollbar"
-                            onScroll={(e) => {
-                                const target = e.currentTarget;
-                                if (target.scrollLeft > 20) {
-                                    const arrow = document.getElementById('scroll-hint-arrow');
-                                    if (arrow) arrow.style.opacity = '0';
-                                } else {
-                                    // Optional: bring it back if scrolled all the way left?
-                                    // User said "fades away when user starts scrolling", implies one-time or threshold based.
-                                    const arrow = document.getElementById('scroll-hint-arrow');
-                                    if (arrow) arrow.style.opacity = '1';
-                                }
-                            }}
-                        >
-                            {events.map((event, index) => (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
+                        {events.map((event, index) => (
+                            <motion.div
+                                layoutId={`card-${index}`}
+                                key={index}
+                                onClick={() => setSelectedId(index)}
+                                className="cursor-pointer group h-full"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: index * 0.1 }}
+                            >
                                 <motion.div
-                                    layoutId={`card-${index}`}
-                                    key={index}
-                                    onClick={() => setSelectedId(index)}
-                                    className="snap-center shrink-0 w-[85vw] sm:w-auto cursor-pointer group h-full"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                                    className="relative h-full bg-white/5 dark:bg-slate-900/40 backdrop-blur-md border border-white/10 rounded-3xl overflow-hidden transition-all duration-300 group-hover:border-primary/50 group-hover:shadow-2xl group-hover:shadow-primary/10 group-hover:-translate-y-2"
                                 >
-                                    <motion.div
-                                        className="relative h-full bg-slate-100 dark:bg-[#020617] backdrop-blur-md border border-black/5 dark:border-white/10 rounded-3xl transition-all duration-300 shadow-lg shadow-black/5 dark:shadow-white/5 group-hover:border-primary/50 group-hover:shadow-2xl group-hover:shadow-primary/10 group-hover:-translate-y-2"
-                                    >
-                                            <div className="relative w-full aspect-[4/3] overflow-hidden rounded-3xl">
-                                            {event.imageLink ? (
-                                                <Image
-                                                    src={getDriveImage(event.imageLink)}
-                                                    alt={event.name}
-                                                    fill
-                                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                                                    <svg className="w-16 h-16 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                    </svg>
-                                                </div>
-                                            )}
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60" />
-                                            <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-md border border-white/20 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
-                                                {event.startDate}
+                                    <div className="relative w-full aspect-[4/3] overflow-hidden">
+                                        {event.imageLink ? (
+                                            <Image
+                                                src={getDriveImage(event.imageLink)}
+                                                alt={event.name}
+                                                fill
+                                                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                                                <svg className="w-16 h-16 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
                                             </div>
+                                        )}
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60" />
+                                        <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-md border border-white/20 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                                            {event.startDate}
                                         </div>
-                                        <div className="p-6">
-                                            <h3 className="text-xl font-bold text-foreground dark:text-white mb-2 line-clamp-1 group-hover:text-primary transition-colors">
-                                                {event.name}
-                                            </h3>
-                                            <p className="text-sm text-muted-foreground line-clamp-2">
-                                                {event.description}
-                                            </p>
-                                            <div className="mt-4 flex items-center text-primary text-sm font-medium opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-0 sm:translate-y-2 group-hover:translate-y-0">
-                                                View Details →
-                                            </div>
+                                    </div>
+                                    <div className="p-6">
+                                        <h3 className="text-xl font-bold text-foreground dark:text-white mb-2 line-clamp-1 group-hover:text-primary transition-colors">
+                                            {event.name}
+                                        </h3>
+                                        <p className="text-sm text-muted-foreground line-clamp-2">
+                                            {event.description}
+                                        </p>
+                                        <div className="mt-4 flex items-center text-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
+                                            View Details →
                                         </div>
-                                    </motion.div>
+                                    </div>
                                 </motion.div>
-                            ))}
-                        </div>
-
-                        {/* Scroll Hint Arrow */}
-                        <div
-                            id="scroll-hint-arrow"
-                            className="absolute right-2 top-1/2 -translate-y-1/2 z-30 pointer-events-none transition-opacity duration-500 sm:hidden"
-                        >
-                            <div className="w-12 h-12 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-lg border border-white/20 shadow-xl animate-pulse">
-                                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
-                            </div>
-                        </div>
+                            </motion.div>
+                        ))}
                     </div>
                 )}
             </div>
@@ -189,7 +165,7 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 pointer-events-none">
                             <motion.div
                                 layoutId={`card-${selectedId}`}
-                                className="w-full max-w-lg sm:max-w-2xl mx-4 sm:mx-0 bg-slate-100 dark:bg-[#020617] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl relative pointer-events-auto flex flex-col max-h-[75vh] sm:max-h-[85vh]"
+                                className="w-full max-w-lg sm:max-w-2xl mx-4 sm:mx-0 bg-background dark:bg-slate-900 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl relative pointer-events-auto flex flex-col max-h-[75vh] sm:max-h-[85vh]"
                             >
                                 <button
                                     onClick={(e) => {
@@ -282,7 +258,7 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                     </>
                 )}
             </AnimatePresence>
-        </section >
+        </section>
     );
 };
 

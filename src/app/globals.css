@@ -8,9 +8,6 @@
     --background: #FFF8F3;
     --foreground: #1a1a1a;
 
-    --scroll-track: #e5e7eb;
-    --scroll-thumb: #FF6B4A;
-
     --primary: #FF6B4A;
     --primary-light: #FFB399;
     --primary-dark: #E65539;
@@ -38,9 +35,6 @@
 .dark {
     --background: #0f172a;
     --foreground: #f8fafc;
-
-    --scroll-track: #111827;
-    --scroll-thumb: #FF6B4A;
 
     --primary: #FF6B4A;
     --primary-light: #FF8F75;
@@ -76,9 +70,6 @@
 
 html {
     scroll-behavior: smooth;
-    /* Keep scrollbar space reserved to prevent flicker when theme switches */
-    scrollbar-gutter: stable both-edges;
-    color-scheme: light;
 }
 
 body {
@@ -86,12 +77,7 @@ body {
     background-color: var(--background);
     color: var(--foreground);
     overflow-x: hidden;
-    overflow-y: scroll;
     transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.dark body, .dark {
-    color-scheme: dark;
 }
 
 @layer utilities {
@@ -109,45 +95,21 @@ body {
 }
 
 /* Custom scrollbar */
-/* Custom scrollbar */
 ::-webkit-scrollbar {
     width: 10px;
-    height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--scroll-track);
+    background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--scroll-thumb);
+    background: var(--primary);
     border-radius: 5px;
-    border: 2px solid var(--scroll-track);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: var(--primary-dark);
-}
-
-/* Premium Scrollbar for specific sections */
-.premium-scrollbar::-webkit-scrollbar {
-    height: 6px;
-    width: 6px;
-}
-
-.premium-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-    margin: 0 4px;
-}
-
-.premium-scrollbar::-webkit-scrollbar-thumb {
-    background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.premium-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: var(--primary);
+    background: var(--primary-dark);
 }
 
 /* Animations */

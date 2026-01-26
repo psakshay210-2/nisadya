@@ -2,11 +2,10 @@
 import { useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
-import { SiteConfig, getDriveImage } from '@/lib/gsheet';
-import { toast } from 'react-hot-toast';
+import { fetchSiteConfig, SiteConfig, getDriveImage } from '@/lib/gsheet';
 
-const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
-    const [config] = useState<SiteConfig | null>(initialConfig || null);
+const Hero = () => {
+    const [config, setConfig] = useState<SiteConfig | null>(null);
     const [timeLeft, setTimeLeft] = useState({
         days: 0,
         hours: 0,
@@ -18,6 +17,14 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
     const y1 = useTransform(scrollY, [0, 500], [0, 200]);
     const y2 = useTransform(scrollY, [0, 500], [0, -150]);
     const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+
+    useEffect(() => {
+        const loadConfig = async () => {
+            const data = await fetchSiteConfig();
+            setConfig(data);
+        };
+        loadConfig();
+    }, []);
 
     useEffect(() => {
         // Target date: Configured date or Default (Feb 28, 2026)
@@ -66,40 +73,6 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
         const element = document.getElementById('events');
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
-
-    const handleRegister = () => {
-        const element = document.getElementById('events');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-            toast.custom((t) => (
-                <motion.div
-                    initial={{ opacity: 0, y: 50, scale: 0.8 }}
-                    animate={{
-                        opacity: t.visible ? 1 : 0,
-                        y: t.visible ? 0 : 20,
-                        scale: t.visible ? 1 : 0.8
-                    }}
-                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                    className="max-w-md w-full bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border border-primary/20 shadow-2xl rounded-2xl pointer-events-auto flex items-center p-4 ring-1 ring-black/5 dark:ring-white/10"
-                >
-                    <div className="flex-shrink-0 text-3xl mr-4 animate-bounce">
-                        🎫
-                    </div>
-                    <div className="flex-1">
-                        <p className="text-base font-bold text-foreground">
-                            Ready to Register?
-                        </p>
-                        <p className="text-sm text-muted-foreground mt-1">
-                            Select an event to start your registration!
-                        </p>
-                    </div>
-                    <div className="flex-shrink-0 ml-4">
-                        <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                    </div>
-                </motion.div>
-            ), { position: 'bottom-center', duration: 4000 });
         }
     };
 
@@ -167,7 +140,7 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                         initial={{ opacity: 1, y: 0 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-8 md:mb-12 leading-relaxed"
+                        className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-12 leading-relaxed"
                     >
                         {config?.hero_description || config?.about_description || 'Unleash your potential at the biggest cultural and technical extravaganza of the year. Join us for 3 days of innovation, creativity, and fun.'}
                     </motion.p>
@@ -176,7 +149,7 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                         initial={{ opacity: 1, scale: 1 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
-                        className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mb-8 md:mb-16 w-full max-w-4xl"
+                        className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mb-16 w-full max-w-4xl"
                     >
                         {timeUnits.map((unit, index) => (
                             <div
@@ -205,14 +178,16 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                         >
                             Explore Events
                         </button>
-
-                        <button
-                            onClick={handleRegister}
-                            className="btn-primary text-lg px-10 py-4 shadow-xl shadow-primary/20 hover:shadow-primary/40 relative overflow-hidden group"
-                        >
-                            <span className="relative z-10">Register Now</span>
-                            <div className="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-500 ease-out -skew-x-12 -translate-x-[150%]" />
-                        </button>
+                        {config?.registration_link && (
+                            <a
+                                href={config.registration_link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn-primary text-lg px-10 py-4 shadow-xl shadow-primary/20 hover:shadow-primary/40"
+                            >
+                                Register Now
+                            </a>
+                        )}
                     </motion.div>
                 </div>
             </div>
@@ -220,9 +195,9 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
             {/* Scroll indicator */}
             <motion.div
                 style={{ opacity }}
-                className="absolute bottom-4 md:bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2"
+                className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2"
             >
-                <span className="hidden md:block text-xs font-medium text-muted-foreground/60 uppercase tracking-[0.2em]">scroll</span>
+                <span className="text-xs font-medium text-muted-foreground/60 uppercase tracking-[0.2em]">scroll</span>
                 <div className="w-5 h-9 border-2 border-muted-foreground/30 rounded-full flex justify-center p-1">
                     <motion.div
                         animate={{ y: [0, 12, 0] }}
