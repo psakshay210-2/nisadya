@@ -10,27 +10,21 @@ import Maps from '@/components/Maps';
 import Footer from '@/components/Footer';
 import ScrollProgress from '@/components/ScrollProgress';
 import BackToTop from '@/components/BackToTop';
-import { getServerData } from '@/lib/server-data';
 
-export const revalidate = 30; // Revalidate every 30 seconds
-
-export default async function Home() {
-    // Fetch all data on the server
-    const serverData = await getServerData();
-
+export default function Home() {
     return (
         <main className="relative">
             <ScrollProgress />
-            <Navbar config={serverData.config} />
-            <Hero config={serverData.config} />
-            <About config={serverData.config} />
-            <Events initialEvents={serverData.events} />
-            <Schedule initialSchedule={serverData.schedule} />
+            <Navbar />
+            <Hero />
+            <About />
+            <Events />
+            <Schedule />
             {/* <Sponsors /> */}
-            <Instagram initialPosts={serverData.instagram} />
+            <Instagram />
             {/* <Stay /> */}
             <Maps />
-            <Footer config={serverData.config} />
+            <Footer />
             <BackToTop />
         </main>
     );

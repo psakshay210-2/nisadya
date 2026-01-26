@@ -84,11 +84,6 @@ export interface SiteConfig {
     registration_link?: string;
     about_title?: string;
     about_description?: string;
-    contact_linkedin?: string;
-    contact_instagram?: string;
-    contact_twitter?: string;
-    contact_youtube?: string;
-    contact_location?: string;
     [key: string]: string | undefined;
 }
 
