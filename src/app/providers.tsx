@@ -2,6 +2,7 @@
 
 import { ThemeProvider } from 'next-themes';
 import { useEffect, useState } from 'react';
+import { Toaster } from 'react-hot-toast';
 
 export function Providers({ children }: { children: React.ReactNode }) {
     const [mounted, setMounted] = useState(false);
@@ -17,6 +18,19 @@ export function Providers({ children }: { children: React.ReactNode }) {
     return (
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
             {children}
+            <Toaster
+                position="bottom-center"
+                reverseOrder={false}
+                toastOptions={{
+                    className: '',
+                    style: {
+                        zIndex: 9999,
+                    },
+                }}
+                containerStyle={{
+                    zIndex: 9999,
+                }}
+            />
         </ThemeProvider>
     );
 }

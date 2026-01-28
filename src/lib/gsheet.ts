@@ -83,12 +83,21 @@ export interface SiteConfig {
     hero_description?: string;
     registration_link?: string;
     about_title?: string;
+    about_subtitle?: string;
     about_description?: string;
+    about_tagline?: string;
+    doms_title?: string;
+    doms_subtitle?: string;
+    doms_description?: string;
+    doms_tagline?: string;
     contact_linkedin?: string;
     contact_instagram?: string;
     contact_twitter?: string;
     contact_youtube?: string;
     contact_location?: string;
+    registration_status?: string; // 'PRE_REGISTRATION' | 'OPEN' | 'CLOSED'
+    registration_start_date?: string; // YYYY-MM-DD
+    registration_end_date?: string; // YYYY-MM-DD
     [key: string]: string | undefined;
 }
 

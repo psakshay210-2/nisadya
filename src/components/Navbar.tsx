@@ -79,19 +79,31 @@ const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
                     }`}
             >
                 <div className="container-custom">
-                    <div className="flex items-center justify-between h-20 px-4">
+                    <div className="flex items-center justify-between h-20 md:h-28 px-4">
                         {/* Logo */}
-                        <Link href="#home" onClick={(e) => scrollToSection(e, '#home')}>
-                            <div className="relative w-32 h-12 md:w-40 md:h-14">
+                        <div className="flex items-center gap-3 md:gap-4">
+                            <div className="relative w-12 h-12 md:w-16 md:h-16">
                                 <Image
-                                    src={config?.logo_url ? getDriveImage(config.logo_url) : "/fest_main_logo.png"}
-                                    alt="Nisadya Logo"
+                                    src="/college_logo.svg"
+                                    alt="College Logo"
                                     fill
-                                    className="object-contain invert dark:invert-0 transition-all duration-300"
+                                    className="object-contain transition-all duration-300"
                                     priority
                                 />
                             </div>
-                        </Link>
+                            <div className="w-[1px] h-6 md:h-8 bg-foreground/20" />
+                            <Link href="#home" onClick={(e) => scrollToSection(e, '#home')}>
+                                <div className="relative w-28 h-10 md:w-40 md:h-14">
+                                    <Image
+                                        src={config?.logo_url ? getDriveImage(config.logo_url) : "/fest_main_logo.png"}
+                                        alt="Nisadya Logo"
+                                        fill
+                                        className="object-contain invert dark:invert-0 transition-all duration-300"
+                                        priority
+                                    />
+                                </div>
+                            </Link>
+                        </div>
 
                         {/* Desktop Navigation */}
                         <div className="hidden md:flex items-center space-x-6">

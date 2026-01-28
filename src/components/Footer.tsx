@@ -16,11 +16,11 @@ const Footer = ({ config: initialConfig }: { config?: SiteConfig }) => {
     ];
 
     const socialLinks = [
-        { name: 'Instagram', href: config?.contact_instagram || '#' },
-        { name: 'Twitter', href: config?.contact_twitter || '#' },
-        { name: 'LinkedIn', href: config?.contact_linkedin || '#' },
-        { name: 'YouTube', href: config?.contact_youtube || '#' },
-    ];
+        { name: 'Instagram', href: config?.contact_instagram },
+        { name: 'Twitter', href: config?.contact_twitter },
+        { name: 'LinkedIn', href: config?.contact_linkedin },
+        { name: 'YouTube', href: config?.contact_youtube },
+    ].filter(link => link.href); // Filter out links that are undefined or empty string
 
     const getSocialIcon = (name: string) => {
         switch (name) {
@@ -73,14 +73,25 @@ const Footer = ({ config: initialConfig }: { config?: SiteConfig }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
                     {/* Brand Section */}
                     <div className="lg:col-span-2 space-y-6">
-                        <Link href="#home" className="block relative w-48 h-16">
-                            <Image
-                                src={config?.logo_url ? getDriveImage(config.logo_url) : "/fest_main_logo.png"}
-                                alt="Nisadya Logo"
-                                fill
-                                className="object-contain object-left brightness-0 invert"
-                            />
-                        </Link>
+                        <div className="flex items-center gap-4">
+                            <div className="relative w-14 h-14 md:w-16 md:h-16">
+                                <Image
+                                    src="/college_logo.svg"
+                                    alt="College Logo"
+                                    fill
+                                    className="object-contain object-left"
+                                />
+                            </div>
+                            <div className="w-[1px] h-10 bg-white/20" />
+                            <Link href="#home" className="block relative w-40 h-14 md:w-48 md:h-16">
+                                <Image
+                                    src={config?.logo_url ? getDriveImage(config.logo_url) : "/fest_main_logo.png"}
+                                    alt="Nisadya Logo"
+                                    fill
+                                    className="object-contain object-left brightness-0 invert"
+                                />
+                            </Link>
+                        </div>
                         <p className="text-slate-400 max-w-md leading-relaxed text-lg">
                             Nisadya is the annual cultural and technical fest that celebrates talent, creativity, and innovation. Join us for an unforgettable experience!
                         </p>
@@ -88,7 +99,7 @@ const Footer = ({ config: initialConfig }: { config?: SiteConfig }) => {
                             {socialLinks.map((social) => (
                                 <motion.a
                                     key={social.name}
-                                    href={social.href}
+                                    href={social.href!}
                                     whileHover={{ scale: 1.1, y: -2 }}
                                     className="w-12 h-12 bg-white/5 hover:bg-primary/20 border border-white/10 hover:border-primary/50 rounded-full flex items-center justify-center transition-all duration-300 text-slate-400 hover:text-primary"
                                     aria-label={social.name}
@@ -179,18 +190,18 @@ const Footer = ({ config: initialConfig }: { config?: SiteConfig }) => {
                         <span>Built with</span>
                         <span className="text-red-500 animate-pulse">❤️</span>
                         <span>by</span>
-                        <a 
-                            href="https://www.linkedin.com/in/priyansh-kumar-paswan-a0ba49133/" 
-                            target="_blank" 
+                        <a
+                            href="https://www.linkedin.com/in/priyansh-kumar-paswan-a0ba49133/"
+                            target="_blank"
                             rel="noopener noreferrer"
                             className="font-semibold text-white hover:text-primary transition-colors"
                         >
                             Priyansh
                         </a>
                         <span className="font-semibold text-white">&</span>
-                        <a 
-                            href="https://www.linkedin.com/in/p-s-akshay-955003b6/" 
-                            target="_blank" 
+                        <a
+                            href="https://www.linkedin.com/in/p-s-akshay-955003b6/"
+                            target="_blank"
                             rel="noopener noreferrer"
                             className="font-semibold text-white hover:text-primary transition-colors"
                         >
