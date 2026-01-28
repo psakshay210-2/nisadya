@@ -26,6 +26,9 @@ export const metadata: Metadata = {
         description: "Join us for an unforgettable celebration at Nisadya'26",
         type: "website",
     },
+    icons: {
+        icon: "/favicon.png",
+    },
 };
 
 export default function RootLayout({

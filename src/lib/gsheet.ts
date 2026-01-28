@@ -83,7 +83,13 @@ export interface SiteConfig {
     hero_description?: string;
     registration_link?: string;
     about_title?: string;
+    about_subtitle?: string;
     about_description?: string;
+    about_tagline?: string;
+    doms_title?: string;
+    doms_subtitle?: string;
+    doms_description?: string;
+    doms_tagline?: string;
     contact_linkedin?: string;
     contact_instagram?: string;
     contact_twitter?: string;

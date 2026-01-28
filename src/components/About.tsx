@@ -97,10 +97,10 @@ const About = ({ config: initialConfig }: { config?: SiteConfig }) => {
                                 <div className="flex items-start justify-between mb-8">
                                     <div>
                                         <h3 className="text-2xl sm:text-3xl font-black bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
-                                            DoMS NITT
+                                            {config?.doms_title || 'DoMS NITT'}
                                         </h3>
                                         <p className="text-xs text-primary font-semibold uppercase tracking-wider mt-1">
-                                            Since 1978
+                                            {config?.doms_subtitle || 'Since 1978'}
                                         </p>
                                     </div>
                                 </div>
@@ -113,16 +113,14 @@ const About = ({ config: initialConfig }: { config?: SiteConfig }) => {
                                         transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
                                     />
                                     <div className="relative">
-                                        <div 
-                                            className={`overflow-hidden lg:overflow-visible transition-[max-height] duration-[400ms] ease-out ${
-                                                isDomsExpanded ? 'max-h-[500px]' : 'max-h-[4.5rem]'
-                                            } lg:!max-h-none`}
+                                        <div
+                                            className={`overflow-hidden lg:overflow-visible transition-[max-height] duration-[400ms] ease-out ${isDomsExpanded ? 'max-h-[500px]' : 'max-h-[4.5rem]'
+                                                } lg:!max-h-none`}
                                             style={{ transform: 'translateZ(0)' }}
                                         >
-                                            <p className={`text-muted-foreground leading-relaxed text-base sm:text-lg transition-opacity duration-300 ${
-                                                isDomsExpanded ? 'opacity-100' : 'opacity-90'
-                                            }`}>
-                                                Since its inception in 1978, the Department of Management Studies at NIT Trichy (DoMS-NITT) has been a nexus of innovation and leadership, shaping the future of management professionals in India. As a department, under the Ministry of HRD, DoMS-NITT merges academic excellence with cutting-edge research to contribute to the nation's progress. It is set apart by its vibrant industry ties and an alumni network that continues to fuel growth through mentorship, offering students boundless learning opportunities and a roadmap to career success.
+                                            <p className={`text-muted-foreground leading-relaxed text-base sm:text-lg transition-opacity duration-300 ${isDomsExpanded ? 'opacity-100' : 'opacity-90'
+                                                }`}>
+                                                {config?.doms_description || "Since its inception in 1978, the Department of Management Studies at NIT Trichy (DoMS-NITT) has been a nexus of innovation and leadership, shaping the future of management professionals in India. As a department, under the Ministry of HRD, DoMS-NITT merges academic excellence with cutting-edge research to contribute to the nation's progress. It is set apart by its vibrant industry ties and an alumni network that continues to fuel growth through mentorship, offering students boundless learning opportunities and a roadmap to career success."}
                                             </p>
                                         </div>
 
@@ -151,7 +149,7 @@ const About = ({ config: initialConfig }: { config?: SiteConfig }) => {
                                     }}
                                 >
                                     <div className="flex-1 h-px bg-gradient-to-r from-primary/50 via-primary/20 to-transparent" />
-                                    <span className="text-xs text-primary font-bold">Excellence in Education</span>
+                                    <span className="text-xs text-primary font-bold">{config?.doms_tagline || 'Excellence in Education'}</span>
                                 </motion.div>
                             </div>
                         </div>
@@ -182,7 +180,7 @@ const About = ({ config: initialConfig }: { config?: SiteConfig }) => {
                                             {config?.about_title || "Nisadya '26"}
                                         </h3>
                                         <p className="text-xs text-secondary font-semibold uppercase tracking-wider mt-1">
-                                            Flagship Business Fest
+                                            {config?.about_subtitle || "Flagship Business Fest"}
                                         </p>
                                     </div>
                                 </div>
@@ -195,15 +193,13 @@ const About = ({ config: initialConfig }: { config?: SiteConfig }) => {
                                         transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
                                     />
                                     <div className="relative">
-                                        <div 
-                                            className={`overflow-hidden lg:overflow-visible transition-[max-height] duration-[400ms] ease-out ${
-                                                isNisadyaExpanded ? 'max-h-[500px]' : 'max-h-[4.5rem]'
-                                            } lg:!max-h-none`}
+                                        <div
+                                            className={`overflow-hidden lg:overflow-visible transition-[max-height] duration-[400ms] ease-out ${isNisadyaExpanded ? 'max-h-[500px]' : 'max-h-[4.5rem]'
+                                                } lg:!max-h-none`}
                                             style={{ transform: 'translateZ(0)' }}
                                         >
-                                            <p className={`text-muted-foreground leading-relaxed text-base sm:text-lg transition-opacity duration-300 ${
-                                                isNisadyaExpanded ? 'opacity-100' : 'opacity-90'
-                                            }`}>
+                                            <p className={`text-muted-foreground leading-relaxed text-base sm:text-lg transition-opacity duration-300 ${isNisadyaExpanded ? 'opacity-100' : 'opacity-90'
+                                                }`}>
                                                 {config?.about_description || "Nisadya is the annual flagship business fest of the Department of Management Studies, NIT Tiruchirappalli. It is a vibrant convergence of ideas, insights, and entrepreneurial spirit, bringing together aspiring business leaders. Nisadya provides a dynamic platform for participants to compete, create, and collaborate with some of the brightest minds in management. Featuring a diverse range of events spanning multiple management domains, the fest enables tomorrow's managers to showcase their skills, test their strategic thinking, and engage with industry leaders."}
                                             </p>
                                         </div>
@@ -233,7 +229,7 @@ const About = ({ config: initialConfig }: { config?: SiteConfig }) => {
                                     }}
                                 >
                                     <div className="flex-1 h-px bg-gradient-to-r from-secondary/50 via-secondary/20 to-transparent" />
-                                    <span className="text-xs text-secondary font-bold">Compete. Create. Collaborate</span>
+                                    <span className="text-xs text-secondary font-bold">{config?.about_tagline || 'Compete. Create. Collaborate'}</span>
                                 </motion.div>
                             </div>
                         </div>
