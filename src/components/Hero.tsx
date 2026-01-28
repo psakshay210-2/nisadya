@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import { SiteConfig, getDriveImage } from '@/lib/gsheet';
 import { toast } from 'react-hot-toast';
+import { Calendar, Hourglass, Ticket } from 'lucide-react';
 
 const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
     const [config] = useState<SiteConfig | null>({ ...initialConfig, registration_status: 'PRE_REGISTRATION' });
@@ -15,7 +16,7 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
     });
 
     const { scrollY } = useScroll();
-    const y1 = useTransform(scrollY, [0, 500], [0, 200]);
+    // y1 was unused
     const y2 = useTransform(scrollY, [0, 500], [0, -150]);
     const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
@@ -136,8 +137,8 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
                     className="max-w-md w-full bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border border-primary/20 shadow-2xl rounded-2xl pointer-events-auto flex items-center p-4 ring-1 ring-black/5 dark:ring-white/10"
                 >
-                    <div className="flex-shrink-0 text-3xl mr-4 animate-bounce">
-                        ⏳
+                    <div className="flex-shrink-0 mr-4">
+                        <Hourglass className="w-8 h-8 text-primary animate-pulse" />
                     </div>
                     <div className="flex-1">
                         <p className="text-base font-bold text-foreground">
@@ -164,15 +165,15 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
                     className="max-w-md w-full bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border border-primary/20 shadow-2xl rounded-2xl pointer-events-auto flex items-center p-4 ring-1 ring-black/5 dark:ring-white/10"
                 >
-                    <div className="flex-shrink-0 text-3xl mr-4 animate-bounce">
-                        📅
+                    <div className="flex-shrink-0 mr-4">
+                        <Calendar className="w-8 h-8 text-primary animate-bounce" />
                     </div>
                     <div className="flex-1">
                         <p className="text-base font-bold text-foreground">
                             Mark your calendars!
                         </p>
                         <p className="text-sm text-muted-foreground mt-1">
-                            Values registration starts from {startDateStr}.
+                            Registration starts from {startDateStr}.
                         </p>
                     </div>
                 </motion.div>
@@ -203,8 +204,8 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                         transition={{ type: "spring", stiffness: 300, damping: 25 }}
                         className="max-w-md w-full bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border border-primary/20 shadow-2xl rounded-2xl pointer-events-auto flex items-center p-4 ring-1 ring-black/5 dark:ring-white/10"
                     >
-                        <div className="flex-shrink-0 text-3xl mr-4 animate-bounce">
-                            🎫
+                        <div className="flex-shrink-0 mr-4">
+                            <Ticket className="w-8 h-8 text-primary animate-pulse" />
                         </div>
                         <div className="flex-1">
                             <p className="text-base font-bold text-foreground">
@@ -223,11 +224,21 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
         }
     };
 
+    const formatDate = (dateStr: string | undefined) => {
+        if (!dateStr) return '';
+        // Handle YYYY-MM-DD
+        if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            const [y, m, d] = dateStr.split('-');
+            return `${d}/${m}/${y}`;
+        }
+        return dateStr;
+    };
+
     const getRegisterButtonText = () => {
         const state = registrationState;
         switch (state) {
-            case 'NO_DATES': return 'Notify Me';
-            case 'BEFORE_START': return 'Notify Me';
+            case 'NO_DATES': return 'Coming Soon';
+            case 'BEFORE_START': return `Opens ${formatDate(config?.registration_start_date) || 'Soon'}`;
             case 'CLOSED': return 'Registration Closed';
             default: return 'Register Now'; // OPEN
         }
@@ -308,7 +319,7 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                         transition={{ duration: 0.8, delay: 0.4 }}
                         className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mb-8 md:mb-16 w-full max-w-4xl"
                     >
-                        {timeUnits.map((unit, index) => (
+                        {timeUnits.map((unit) => (
                             <div
                                 key={unit.label}
                                 className="glass group hover:bg-white/90 dark:hover:bg-slate-800/90 p-4 md:p-6 rounded-2xl flex flex-col items-center justify-center transition-all duration-300 transform hover:-translate-y-2 border-t border-white/40 dark:border-white/10"
