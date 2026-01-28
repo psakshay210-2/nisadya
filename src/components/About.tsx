@@ -118,10 +118,11 @@ const About = ({ config: initialConfig }: { config?: SiteConfig }) => {
                                                 } lg:!max-h-none`}
                                             style={{ transform: 'translateZ(0)' }}
                                         >
-                                            <p className={`text-muted-foreground leading-relaxed text-base sm:text-lg transition-opacity duration-300 ${isDomsExpanded ? 'opacity-100' : 'opacity-90'
-                                                }`}>
-                                                {config?.doms_description || "Since its inception in 1978, the Department of Management Studies at NIT Trichy (DoMS-NITT) has been a nexus of innovation and leadership, shaping the future of management professionals in India. As a department, under the Ministry of HRD, DoMS-NITT merges academic excellence with cutting-edge research to contribute to the nation's progress. It is set apart by its vibrant industry ties and an alumni network that continues to fuel growth through mentorship, offering students boundless learning opportunities and a roadmap to career success."}
-                                            </p>
+                                            <div
+                                                className={`text-muted-foreground leading-relaxed text-base sm:text-lg transition-opacity duration-300 whitespace-pre-wrap ${isDomsExpanded ? 'opacity-100' : 'opacity-90'}`}
+                                                style={{ textAlign: (config?.doms_description_alignment as any) || 'left' }}
+                                                dangerouslySetInnerHTML={{ __html: config?.doms_description || "Since its inception in 1978, the Department of Management Studies at NIT Trichy (DoMS-NITT) has been a nexus of innovation and leadership, shaping the future of management professionals in India. As a department, under the Ministry of HRD, DoMS-NITT merges academic excellence with cutting-edge research to contribute to the nation's progress. It is set apart by its vibrant industry ties and an alumni network that continues to fuel growth through mentorship, offering students boundless learning opportunities and a roadmap to career success." }}
+                                            />
                                         </div>
 
                                         <button
@@ -198,10 +199,11 @@ const About = ({ config: initialConfig }: { config?: SiteConfig }) => {
                                                 } lg:!max-h-none`}
                                             style={{ transform: 'translateZ(0)' }}
                                         >
-                                            <p className={`text-muted-foreground leading-relaxed text-base sm:text-lg transition-opacity duration-300 ${isNisadyaExpanded ? 'opacity-100' : 'opacity-90'
-                                                }`}>
-                                                {config?.about_description || "Nisadya is the annual flagship business fest of the Department of Management Studies, NIT Tiruchirappalli. It is a vibrant convergence of ideas, insights, and entrepreneurial spirit, bringing together aspiring business leaders. Nisadya provides a dynamic platform for participants to compete, create, and collaborate with some of the brightest minds in management. Featuring a diverse range of events spanning multiple management domains, the fest enables tomorrow's managers to showcase their skills, test their strategic thinking, and engage with industry leaders."}
-                                            </p>
+                                            <div
+                                                className={`text-muted-foreground leading-relaxed text-base sm:text-lg transition-opacity duration-300 whitespace-pre-wrap ${isNisadyaExpanded ? 'opacity-100' : 'opacity-90'}`}
+                                                style={{ textAlign: (config?.about_description_alignment as any) || 'left' }}
+                                                dangerouslySetInnerHTML={{ __html: config?.about_description || "Nisadya is the annual flagship business fest of the Department of Management Studies, NIT Tiruchirappalli. It is a vibrant convergence of ideas, insights, and entrepreneurial spirit, bringing together aspiring business leaders. Nisadya provides a dynamic platform for participants to compete, create, and collaborate with some of the brightest minds in management. Featuring a diverse range of events spanning multiple management domains, the fest enables tomorrow's managers to showcase their skills, test their strategic thinking, and engage with industry leaders." }}
+                                            />
                                         </div>
 
                                         <button

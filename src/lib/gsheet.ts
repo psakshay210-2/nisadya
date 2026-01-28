@@ -90,6 +90,8 @@ export interface SiteConfig {
     doms_subtitle?: string;
     doms_description?: string;
     doms_tagline?: string;
+    doms_description_alignment?: string; // center | left | right | justify
+    about_description_alignment?: string; // center | left | right | justify
     contact_linkedin?: string;
     contact_instagram?: string;
     contact_twitter?: string;
@@ -98,6 +100,7 @@ export interface SiteConfig {
     registration_status?: string; // 'PRE_REGISTRATION' | 'OPEN' | 'CLOSED'
     registration_start_date?: string; // YYYY-MM-DD
     registration_end_date?: string; // YYYY-MM-DD
+    members_contacts?: string; // JSON string of contacts
     [key: string]: string | undefined;
 }
 

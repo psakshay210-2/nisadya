@@ -6,8 +6,26 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { SiteConfig, getDriveImage } from '@/lib/gsheet';
 
-const Footer = ({ config: initialConfig }: { config?: SiteConfig }) => {
-    const [config] = useState<SiteConfig | null>(initialConfig || null);
+
+
+const Footer = ({ config }: { config?: SiteConfig }) => {
+
+
+    interface ContactMember {
+        name: string;
+        number: string;
+        description: string;
+    }
+
+    let memberContacts: ContactMember[] = [];
+    try {
+        if (config?.members_contacts) {
+            const parsed = JSON.parse(config.members_contacts);
+            memberContacts = Array.isArray(parsed) ? parsed : [parsed];
+        }
+    } catch (e) {
+        console.error("Failed to parse members_contacts", e);
+    }
 
     const quickLinks = [
         { name: 'Home', href: '#home' },
@@ -129,6 +147,30 @@ const Footer = ({ config: initialConfig }: { config?: SiteConfig }) => {
                         </ul>
                     </div>
 
+                    {/* Dynamic Team Contacts */}
+                    {memberContacts.length > 0 && (
+                        <div>
+                            <h3 className="text-xl font-bold mb-6 text-white inline-block border-b-2 border-primary pb-1">Team Contacts</h3>
+                            <ul className="space-y-4">
+                                {memberContacts.map((contact, idx) => (
+                                    <li key={idx} className="flex flex-col">
+                                        <span className="text-white font-medium">{contact.name}</span>
+                                        <span className="text-xs text-primary/80 uppercase tracking-wider mb-1">{contact.description}</span>
+                                        <a
+                                            href={`tel:${contact.number}`}
+                                            className="text-slate-400 hover:text-white transition-colors text-sm flex items-center gap-2 group"
+                                        >
+                                            <svg className="w-3 h-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                            </svg>
+                                            {contact.number}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
                     {/* Contact Info */}
                     <div>
                         <h3 className="text-xl font-bold mb-6 text-white inline-block border-b-2 border-primary pb-1">Contact Us</h3>
@@ -161,16 +203,7 @@ const Footer = ({ config: initialConfig }: { config?: SiteConfig }) => {
                                     {config?.contact_email || 'fest@nisadya.com'}
                                 </a>
                             </li>
-                            <li className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
-                                    <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                                    </svg>
-                                </div>
-                                <a href={`tel:${config?.contact_phone || '+911234567890'}`} className="hover:text-primary transition-colors">
-                                    {config?.contact_phone || '+91 123 456 7890'}
-                                </a>
-                            </li>
+
                         </ul>
                     </div>
                 </div>
