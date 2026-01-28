@@ -6,7 +6,7 @@ import { SiteConfig, getDriveImage } from '@/lib/gsheet';
 import { toast } from 'react-hot-toast';
 
 const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
-    const [config] = useState<SiteConfig | null>(initialConfig || null);
+    const [config] = useState<SiteConfig | null>({ ...initialConfig, registration_status: 'PRE_REGISTRATION' });
     const [timeLeft, setTimeLeft] = useState({
         days: 0,
         hours: 0,
@@ -69,10 +69,62 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
         }
     };
 
+    const getRegistrationState = () => {
+        const now = new Date();
+        const startDateStr = config?.registration_start_date;
+        const endDateStr = config?.registration_end_date;
+
+        // If no dates provided at all
+        if (!startDateStr && !endDateStr) {
+            return 'NO_DATES';
+        }
+
+        // Parse dates
+        // Handle common date formats DD/MM/YYYY or DD-MM-YYYY conversions if needed, 
+        // but assuming YYYY-MM-DD as per config or handling simpler parsing.
+        // Let's make a safe parser helper
+        const parseDate = (dateStr: string | undefined) => {
+            if (!dateStr) return null;
+            // Try standard constructor first
+            let date = new Date(dateStr);
+            // If invalid, try parsing generic formats
+            if (isNaN(date.getTime())) {
+                if (dateStr.match(/^\d{2}[\/-]\d{2}[\/-]\d{4}$/)) {
+                    const [d, m, y] = dateStr.split(/[\/-]/);
+                    date = new Date(`${y}-${m}-${d}`);
+                }
+            }
+            return isNaN(date.getTime()) ? null : date;
+        };
+
+        const startDate = parseDate(startDateStr);
+        const endDate = parseDate(endDateStr);
+
+        // State: Before Registration Start
+        // Case 1: Start date exists and is in future
+        if (startDate && now < startDate) {
+            return 'BEFORE_START';
+        }
+
+        // State: Registration Closed
+        // Case 1: End date exists and is in past
+        if (endDate && now > endDate) {
+            return 'CLOSED';
+        }
+
+        // State: Open
+        // If we are here, we are either between start and end, or only one boundary was defined and valid
+        return 'OPEN';
+    };
+
+    // Compute exact state for rendering
+    const registrationState = getRegistrationState();
+
     const handleRegister = () => {
-        const element = document.getElementById('events');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+        const state = registrationState;
+        const startDateStr = config?.registration_start_date || '';
+
+        if (state === 'NO_DATES') {
             toast.custom((t) => (
                 <motion.div
                     initial={{ opacity: 0, y: 50, scale: 0.8 }}
@@ -85,21 +137,99 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                     className="max-w-md w-full bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border border-primary/20 shadow-2xl rounded-2xl pointer-events-auto flex items-center p-4 ring-1 ring-black/5 dark:ring-white/10"
                 >
                     <div className="flex-shrink-0 text-3xl mr-4 animate-bounce">
-                        🎫
+                        ⏳
                     </div>
                     <div className="flex-1">
                         <p className="text-base font-bold text-foreground">
-                            Ready to Register?
+                            Coming Soon!
                         </p>
                         <p className="text-sm text-muted-foreground mt-1">
-                            Select an event to start your registration!
+                            Registrations will be opening soon. Stay tuned!
                         </p>
-                    </div>
-                    <div className="flex-shrink-0 ml-4">
-                        <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
                     </div>
                 </motion.div>
             ), { position: 'bottom-center', duration: 4000 });
+            return;
+        }
+
+        if (state === 'BEFORE_START') {
+            toast.custom((t) => (
+                <motion.div
+                    initial={{ opacity: 0, y: 50, scale: 0.8 }}
+                    animate={{
+                        opacity: t.visible ? 1 : 0,
+                        y: t.visible ? 0 : 20,
+                        scale: t.visible ? 1 : 0.8
+                    }}
+                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                    className="max-w-md w-full bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border border-primary/20 shadow-2xl rounded-2xl pointer-events-auto flex items-center p-4 ring-1 ring-black/5 dark:ring-white/10"
+                >
+                    <div className="flex-shrink-0 text-3xl mr-4 animate-bounce">
+                        📅
+                    </div>
+                    <div className="flex-1">
+                        <p className="text-base font-bold text-foreground">
+                            Mark your calendars!
+                        </p>
+                        <p className="text-sm text-muted-foreground mt-1">
+                            Values registration starts from {startDateStr}.
+                        </p>
+                    </div>
+                </motion.div>
+            ), { position: 'bottom-center', duration: 4000 });
+            return;
+        }
+
+        if (state === 'CLOSED') {
+            toast.error("Registrations have been closed.", { position: 'bottom-center' });
+            return;
+        }
+
+        // If OPEN
+        if (config?.registration_link) {
+            window.open(config.registration_link, '_blank');
+        } else {
+            const element = document.getElementById('events');
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+                toast.custom((t) => (
+                    <motion.div
+                        initial={{ opacity: 0, y: 50, scale: 0.8 }}
+                        animate={{
+                            opacity: t.visible ? 1 : 0,
+                            y: t.visible ? 0 : 20,
+                            scale: t.visible ? 1 : 0.8
+                        }}
+                        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                        className="max-w-md w-full bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border border-primary/20 shadow-2xl rounded-2xl pointer-events-auto flex items-center p-4 ring-1 ring-black/5 dark:ring-white/10"
+                    >
+                        <div className="flex-shrink-0 text-3xl mr-4 animate-bounce">
+                            🎫
+                        </div>
+                        <div className="flex-1">
+                            <p className="text-base font-bold text-foreground">
+                                Ready to Register?
+                            </p>
+                            <p className="text-sm text-muted-foreground mt-1">
+                                Select an event to start your registration!
+                            </p>
+                        </div>
+                        <div className="flex-shrink-0 ml-4">
+                            <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+                        </div>
+                    </motion.div>
+                ), { position: 'bottom-center', duration: 4000 });
+            }
+        }
+    };
+
+    const getRegisterButtonText = () => {
+        const state = registrationState;
+        switch (state) {
+            case 'NO_DATES': return 'Notify Me';
+            case 'BEFORE_START': return 'Notify Me';
+            case 'CLOSED': return 'Registration Closed';
+            default: return 'Register Now'; // OPEN
         }
     };
 
@@ -208,10 +338,13 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
 
                         <button
                             onClick={handleRegister}
-                            className="btn-primary text-lg px-10 py-4 shadow-xl shadow-primary/20 hover:shadow-primary/40 relative overflow-hidden group"
+                            className={`btn-primary text-lg px-10 py-4 shadow-xl shadow-primary/20 hover:shadow-primary/40 relative overflow-hidden group ${registrationState === 'CLOSED' ? 'opacity-80' : ''}`}
+                            disabled={registrationState === 'CLOSED'}
                         >
-                            <span className="relative z-10">Register Now</span>
-                            <div className="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-500 ease-out -skew-x-12 -translate-x-[150%]" />
+                            <span className="relative z-10">{getRegisterButtonText()}</span>
+                            {registrationState !== 'CLOSED' && (
+                                <div className="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-500 ease-out -skew-x-12 -translate-x-[150%]" />
+                            )}
                         </button>
                     </motion.div>
                 </div>

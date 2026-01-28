@@ -89,6 +89,9 @@ export interface SiteConfig {
     contact_twitter?: string;
     contact_youtube?: string;
     contact_location?: string;
+    registration_status?: string; // 'PRE_REGISTRATION' | 'OPEN' | 'CLOSED'
+    registration_start_date?: string; // YYYY-MM-DD
+    registration_end_date?: string; // YYYY-MM-DD
     [key: string]: string | undefined;
 }
 

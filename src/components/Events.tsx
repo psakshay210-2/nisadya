@@ -124,7 +124,7 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                                     <motion.div
                                         className="relative h-full bg-slate-100 dark:bg-[#020617] backdrop-blur-md border border-black/5 dark:border-white/10 rounded-3xl transition-all duration-300 shadow-lg shadow-black/5 dark:shadow-white/5 group-hover:border-primary/50 group-hover:shadow-2xl group-hover:shadow-primary/10 group-hover:-translate-y-2"
                                     >
-                                            <div className="relative w-full aspect-[4/3] overflow-hidden rounded-3xl">
+                                        <div className="relative w-full aspect-[4/3] overflow-hidden rounded-3xl">
                                             {event.imageLink ? (
                                                 <Image
                                                     src={getDriveImage(event.imageLink)}

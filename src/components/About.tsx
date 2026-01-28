@@ -110,49 +110,36 @@ const About = ({ config: initialConfig }: { config?: SiteConfig }) => {
                                     <motion.div
                                         className="h-1 w-12 bg-gradient-to-r from-primary to-transparent rounded-full"
                                         animate={{ width: isDomsExpanded ? 80 : 48 }}
-                                        transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                                        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
                                     />
-                                    <div className="relative overflow-hidden">
-                                        <motion.div
-                                            animate={{
-                                                height: isDomsExpanded ? 'auto' : '4.5rem',
-                                            }}
-                                            transition={{
-                                                duration: 0.6,
-                                                ease: [0.4, 0, 0.2, 1]
-                                            }}
-                                            className="overflow-hidden lg:!h-auto"
+                                    <div className="relative">
+                                        <div 
+                                            className={`overflow-hidden lg:overflow-visible transition-[max-height] duration-[400ms] ease-out ${
+                                                isDomsExpanded ? 'max-h-[500px]' : 'max-h-[4.5rem]'
+                                            } lg:!max-h-none`}
+                                            style={{ transform: 'translateZ(0)' }}
                                         >
-                                            <motion.p
-                                                className="text-muted-foreground leading-relaxed text-base sm:text-lg"
-                                                animate={{
-                                                    opacity: isDomsExpanded ? 1 : 0.9,
-                                                }}
-                                                transition={{ duration: 0.4 }}
-                                            >
+                                            <p className={`text-muted-foreground leading-relaxed text-base sm:text-lg transition-opacity duration-300 ${
+                                                isDomsExpanded ? 'opacity-100' : 'opacity-90'
+                                            }`}>
                                                 Since its inception in 1978, the Department of Management Studies at NIT Trichy (DoMS-NITT) has been a nexus of innovation and leadership, shaping the future of management professionals in India. As a department, under the Ministry of HRD, DoMS-NITT merges academic excellence with cutting-edge research to contribute to the nation's progress. It is set apart by its vibrant industry ties and an alumni network that continues to fuel growth through mentorship, offering students boundless learning opportunities and a roadmap to career success.
-                                            </motion.p>
-                                        </motion.div>
+                                            </p>
+                                        </div>
 
-                                        <motion.button
+                                        <button
                                             onClick={() => setIsDomsExpanded(!isDomsExpanded)}
-                                            className="lg:hidden mt-4 inline-flex items-center gap-2 px-3 py-2 rounded-full bg-primary/10 text-primary font-semibold text-sm border border-primary/30 shadow-sm hover:bg-primary/15 hover:border-primary/40 transition-all"
-                                            whileHover={{ scale: 1.05, x: 4 }}
-                                            whileTap={{ scale: 0.95 }}
-                                            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                                            className="lg:hidden mt-4 inline-flex items-center gap-2 px-3 py-2 rounded-full bg-primary/10 text-primary font-semibold text-sm border border-primary/30 shadow-sm active:scale-95 transition-transform touch-manipulation"
                                         >
                                             <span>{isDomsExpanded ? 'Read Less' : 'Read More'}</span>
-                                            <motion.svg
-                                                className="w-4 h-4"
+                                            <svg
+                                                className={`w-4 h-4 transition-transform duration-300 ${isDomsExpanded ? 'rotate-180' : 'rotate-0'}`}
                                                 fill="none"
                                                 viewBox="0 0 24 24"
                                                 stroke="currentColor"
-                                                animate={{ rotate: isDomsExpanded ? 180 : 0 }}
-                                                transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
                                             >
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                            </motion.svg>
-                                        </motion.button>
+                                            </svg>
+                                        </button>
                                     </div>
                                 </div>
 
@@ -205,49 +192,36 @@ const About = ({ config: initialConfig }: { config?: SiteConfig }) => {
                                     <motion.div
                                         className="h-1 w-12 bg-gradient-to-r from-secondary to-transparent rounded-full"
                                         animate={{ width: isNisadyaExpanded ? 80 : 48 }}
-                                        transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                                        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
                                     />
-                                    <div className="relative overflow-hidden">
-                                        <motion.div
-                                            animate={{
-                                                height: isNisadyaExpanded ? 'auto' : '4.5rem',
-                                            }}
-                                            transition={{
-                                                duration: 0.6,
-                                                ease: [0.4, 0, 0.2, 1]
-                                            }}
-                                            className="overflow-hidden lg:!h-auto"
+                                    <div className="relative">
+                                        <div 
+                                            className={`overflow-hidden lg:overflow-visible transition-[max-height] duration-[400ms] ease-out ${
+                                                isNisadyaExpanded ? 'max-h-[500px]' : 'max-h-[4.5rem]'
+                                            } lg:!max-h-none`}
+                                            style={{ transform: 'translateZ(0)' }}
                                         >
-                                            <motion.p
-                                                className="text-muted-foreground leading-relaxed text-base sm:text-lg"
-                                                animate={{
-                                                    opacity: isNisadyaExpanded ? 1 : 0.9,
-                                                }}
-                                                transition={{ duration: 0.4 }}
-                                            >
+                                            <p className={`text-muted-foreground leading-relaxed text-base sm:text-lg transition-opacity duration-300 ${
+                                                isNisadyaExpanded ? 'opacity-100' : 'opacity-90'
+                                            }`}>
                                                 {config?.about_description || "Nisadya is the annual flagship business fest of the Department of Management Studies, NIT Tiruchirappalli. It is a vibrant convergence of ideas, insights, and entrepreneurial spirit, bringing together aspiring business leaders. Nisadya provides a dynamic platform for participants to compete, create, and collaborate with some of the brightest minds in management. Featuring a diverse range of events spanning multiple management domains, the fest enables tomorrow's managers to showcase their skills, test their strategic thinking, and engage with industry leaders."}
-                                            </motion.p>
-                                        </motion.div>
+                                            </p>
+                                        </div>
 
-                                        <motion.button
+                                        <button
                                             onClick={() => setIsNisadyaExpanded(!isNisadyaExpanded)}
-                                            className="lg:hidden mt-4 inline-flex items-center gap-2 px-3 py-2 rounded-full bg-secondary/10 text-secondary font-semibold text-sm border border-secondary/30 shadow-sm hover:bg-secondary/15 hover:border-secondary/40 transition-all"
-                                            whileHover={{ scale: 1.05, x: 4 }}
-                                            whileTap={{ scale: 0.95 }}
-                                            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                                            className="lg:hidden mt-4 inline-flex items-center gap-2 px-3 py-2 rounded-full bg-secondary/10 text-secondary font-semibold text-sm border border-secondary/30 shadow-sm active:scale-95 transition-transform touch-manipulation"
                                         >
                                             <span>{isNisadyaExpanded ? 'Read Less' : 'Read More'}</span>
-                                            <motion.svg
-                                                className="w-4 h-4"
+                                            <svg
+                                                className={`w-4 h-4 transition-transform duration-300 ${isNisadyaExpanded ? 'rotate-180' : 'rotate-0'}`}
                                                 fill="none"
                                                 viewBox="0 0 24 24"
                                                 stroke="currentColor"
-                                                animate={{ rotate: isNisadyaExpanded ? 180 : 0 }}
-                                                transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
                                             >
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                            </motion.svg>
-                                        </motion.button>
+                                            </svg>
+                                        </button>
                                     </div>
                                 </div>
 
