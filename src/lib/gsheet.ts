@@ -50,11 +50,10 @@ const parseCSV = (text: string): string[][] => {
 export async function fetchSheetData<T>(gid: string, rowMapper: (headers: string[], row: string[]) => T | null): Promise<T[]> {
     try {
         const url = `${BASE_URL}?output=csv&gid=${gid}`;
-        // Add cache: 'no-store' for client-side usage, keep next: revalidate for server-side
-        const response = await fetch(url, {
-            cache: 'no-store',
-            next: { revalidate: 30 }
-        });
+
+        // Default fetch behavior in Next.js App Router (if not specified) is 'force-cache' for static generation
+        const response = await fetch(url);
+
         if (!response.ok) {
             throw new Error(`Failed to fetch sheet with GID ${gid}: ${response.statusText}`);
         }

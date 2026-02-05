@@ -12,9 +12,9 @@ import Footer from '@/components/Footer';
 import ScrollProgress from '@/components/ScrollProgress';
 import BackToTop from '@/components/BackToTop';
 import { getServerData } from '@/lib/server-data';
-
-export const revalidate = 30; // Revalidate every 30 seconds
-export const dynamic = 'force-dynamic'; // Force dynamic rendering for Google Sheets data
+// Removed: export const revalidate = 30; 
+// Removed: export const dynamic = 'force-dynamic'; 
+// This allows the page to be statically generated at build time.
 
 export default async function Home() {
     // Fetch all data on the server
