@@ -3,7 +3,7 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import About from '@/components/About';
 import Events from '@/components/Events';
-import Schedule from '@/components/Schedule';
+// import Schedule from '@/components/Schedule';
 // import Sponsors from '@/components/Sponsors';
 import Instagram from '@/components/Instagram';
 // import Stay from '@/components/Stay';
@@ -35,7 +35,7 @@ export default async function Home() {
             }>
                 <Events initialEvents={serverData.events} />
             </Suspense>
-            <Schedule initialSchedule={serverData.schedule} />
+            {/* <Schedule initialSchedule={serverData.schedule} /> */}
             {/* <Sponsors /> */}
             <Instagram initialPosts={serverData.instagram} />
             {/* <Stay /> */}

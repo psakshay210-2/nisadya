@@ -52,7 +52,7 @@ const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
         { name: 'Home', href: '#home' },
         { name: 'About', href: '#about' },
         { name: 'Events', href: '#events' },
-        { name: 'Schedule', href: '#schedule' },
+        // { name: 'Schedule', href: '#schedule' },
         { name: 'Instagram', href: '#instagram' },
         { name: 'Location', href: '#location' },
     ];
