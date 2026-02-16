@@ -2,151 +2,116 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { SiteConfig } from '@/lib/gsheet';
 
-const Stay = () => {
+const Stay = ({ config }: { config?: SiteConfig }) => {
     const [ref, inView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
     });
 
-    const accommodations = [
-        {
-            type: 'College Hostel',
-            price: '₹500',
-            period: '/night',
-            features: ['Basic amenities', 'Shared rooms', 'Meals included', 'Secure campus'],
-            icon: '🏫',
-            color: 'from-primary to-primary-dark',
-            recommended: true,
-        },
-        {
-            type: 'Budget Hotels',
-            price: '₹1,500',
-            period: '/night',
-            features: ['AC rooms', 'WiFi', 'Breakfast', '2km from campus'],
-            icon: '🏨',
-            color: 'from-secondary to-secondary-dark',
-            recommended: false,
-        },
-        {
-            type: 'Premium Hotels',
-            price: '₹3,500+',
-            period: '/night',
-            features: ['Luxury stay', 'Restaurant', 'Swimming pool', '3km from campus'],
-            icon: '🏰',
-            color: 'from-accent to-primary',
-            recommended: false,
-        },
-    ];
+    interface ContactMember {
+        name: string;
+        number: string;
+        description: string;
+    }
+
+    let hospitalityContact: ContactMember | null = null;
+    try {
+        if (config?.members_contacts) {
+            const parsed = JSON.parse(config.members_contacts);
+            const contacts: ContactMember[] = Array.isArray(parsed) ? parsed : [parsed];
+            hospitalityContact = contacts.find(c => c.description.toLowerCase().includes('hospitality')) || null;
+        }
+    } catch (e) {
+        console.error("Failed to parse members_contacts", e);
+    }
 
     return (
-        <section id="stay" className="relative section-padding bg-background overflow-hidden">
-            {/* Background Decoration */}
-            <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute top-0 right-0 w-full h-[500px] bg-gradient-to-b from-primary/5 to-transparent opacity-50 dark:opacity-20" />
-                <div className="absolute bottom-0 left-0 w-full h-[500px] bg-gradient-to-t from-secondary/5 to-transparent opacity-50 dark:opacity-20" />
-            </div>
-
-            <div className="container-custom relative z-10 px-4">
+        <section id="stay" className="relative py-16 sm:py-20 bg-background overflow-hidden">
+            <div className="container-custom relative z-10 px-4" ref={ref}>
                 <motion.div
-                    ref={ref}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={inView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.6 }}
-                    className="text-center mb-16"
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+                    transition={{ duration: 0.5 }}
+                    className="max-w-3xl mx-auto"
                 >
-                    <span className="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary text-sm font-semibold tracking-wider uppercase mb-4">
-                        Accommodation
-                    </span>
-                    <h2 className="text-4xl md:text-5xl font-black mb-6 tracking-tight">
-                        Stay <span className="gradient-text">Comfortably</span>
-                    </h2>
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                        We've curated the best stay options for you to ensure a comfortable experience during the fest.
-                    </p>
-                </motion.div>
+                    {/* Thin top rule */}
+                    <div className="h-px bg-foreground/[0.08] dark:bg-white/[0.06] mb-10" />
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                    {accommodations.map((place, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={inView ? { opacity: 1, y: 0 } : {}}
-                            transition={{ delay: index * 0.2 }}
-                            className={`
-                                relative overflow-hidden rounded-3xl p-8 border transition-all duration-300 group
-                                ${place.recommended
-                                    ? 'bg-primary/5 border-primary/50 shadow-2xl dark:shadow-primary/20 scale-105 z-10'
-                                    : 'bg-card border-border hover:border-primary/30 hover:shadow-xl'}
-                            `}
-                        >
-                            {place.recommended && (
-                                <div className="absolute top-0 right-0 bg-primary text-white text-xs font-bold px-4 py-1 rounded-bl-xl uppercase tracking-wider">
-                                    Recommended
-                                </div>
-                            )}
+                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-4">Accommodation</p>
 
-                            {/* Icon */}
-                            <div className={`
-                                w-16 h-16 rounded-2xl mb-6 flex items-center justify-center text-3xl shadow-lg
-                                bg-gradient-to-br ${place.color} text-white
-                            `}>
-                                {place.icon}
-                            </div>
-
-                            {/* Type & Price */}
-                            <h3 className="text-2xl font-bold mb-2">{place.type}</h3>
-                            <div className="flex items-baseline gap-1 mb-6">
-                                <span className="text-4xl font-black text-primary">{place.price}</span>
-                                <span className="text-muted-foreground font-medium">{place.period}</span>
-                            </div>
-
-                            {/* Features */}
-                            <ul className="space-y-4 mb-8">
-                                {place.features.map((feature, i) => (
-                                    <li key={i} className="flex items-center gap-3 text-muted-foreground">
-                                        <div className="w-5 h-5 rounded-full bg-green-500/20 text-green-600 dark:text-green-400 flex items-center justify-center text-xs">✓</div>
-                                        <span>{feature}</span>
-                                    </li>
-                                ))}
-                            </ul>
-
-                            {/* Book Button */}
-                            <button className={`
-                                w-full py-4 rounded-xl font-bold transition-all duration-300
-                                ${place.recommended
-                                    ? 'bg-primary text-white shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-1'
-                                    : 'bg-secondary/10 text-secondary hover:bg-secondary hover:text-white'}
-                            `}>
-                                Book Now
-                            </button>
-                        </motion.div>
-                    ))}
-                </div>
-
-                {/* Contact Info */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={inView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ delay: 0.6 }}
-                    className="max-w-4xl mx-auto glass rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20 dark:border-white/10 text-center relative overflow-hidden"
-                >
-                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-secondary to-accent" />
-
-                    <h3 className="text-3xl font-bold mb-4">
-                        Need Help Finding Accommodation?
+                    <h3 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight mb-4">
+                        On-Campus Stay
                     </h3>
-                    <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                        Our accommodation desk is available 24/7 to help you find the perfect stay. Contact us for personalized recommendations.
+
+                    <p className="text-muted-foreground text-sm sm:text-base leading-relaxed mb-8">
+                        Limited on-campus accommodation at NIT Trichy is available on a first come, first served basis.
+                        Participants can arrive on <strong className="text-foreground">Feb 26th evening</strong>.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                        <a href="mailto:stay@nisadya.com" className="flex items-center gap-2 px-6 py-3 rounded-full bg-primary/10 hover:bg-primary/20 text-primary font-bold transition-colors">
-                            <span>📧</span> stay@nisadya.com
-                        </a>
-                        <a href="tel:+911234567890" className="flex items-center gap-2 px-6 py-3 rounded-full bg-secondary/10 hover:bg-secondary/20 text-secondary font-bold transition-colors">
-                            <span>📞</span> +91 100 200 3000
-                        </a>
+
+                    <div className="flex flex-wrap gap-x-12 gap-y-6 mb-8">
+                        <div>
+                            <div className="flex items-center gap-2 mb-2">
+                                <span className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                                        <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" clipRule="evenodd" />
+                                    </svg>
+                                </span>
+                                <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">Men</p>
+                            </div>
+                            <p className="text-3xl font-black text-foreground">₹1,000 <span className="text-sm font-medium text-muted-foreground">/ 2 days</span></p>
+                        </div>
+                        <div>
+                            <div className="flex items-center gap-2 mb-2">
+                                <span className="w-8 h-8 rounded-full bg-pink-500/10 flex items-center justify-center text-pink-600 dark:text-pink-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                                        <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" clipRule="evenodd" />
+                                    </svg>
+                                </span>
+                                <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">Women</p>
+                            </div>
+                            <p className="text-3xl font-black text-foreground">₹600 <span className="text-sm font-medium text-muted-foreground">/ 2 days</span></p>
+                        </div>
                     </div>
+
+                    {/* Policy — single paragraph, understated */}
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-8">
+                        The fee is fixed for a two-day duration and cannot be adjusted for single-day stays.
+                        Full payment is required regardless of the length of stay.
+                    </p>
+
+                    {/* Contact — just a link */}
+                    <div className="text-xs sm:text-sm text-muted-foreground">
+                        <p className="mb-2">Questions? Reach out at:</p>
+                        <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
+                            <a
+                                href={`mailto:${config?.contact_email || 'fest@nisadya.com'}`}
+                                className="flex items-center gap-2 text-primary font-semibold hover:underline"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                                    <path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z" />
+                                    <path d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z" />
+                                </svg>
+                                {config?.contact_email || 'fest@nisadya.com'}
+                            </a>
+
+                            {hospitalityContact && (
+                                <a
+                                    href={`tel:${hospitalityContact.number}`}
+                                    className="flex items-center gap-2 text-primary font-semibold hover:underline"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                                        <path fillRule="evenodd" d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 4.5V4.5Z" clipRule="evenodd" />
+                                    </svg>
+                                    {hospitalityContact.name} ({hospitalityContact.number})
+                                </a>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Thin bottom rule */}
+                    <div className="h-px bg-foreground/[0.08] dark:bg-white/[0.06] mt-10" />
                 </motion.div>
             </div>
         </section>

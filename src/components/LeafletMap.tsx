@@ -1,26 +1,19 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
-import dynamic from 'next/dynamic';
 import 'leaflet/dist/leaflet.css';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
+import { useTheme } from 'next-themes';
 
-// Dynamically import Leaflet components with ssr: false
-const MapContainer = dynamic(
-    () => import('react-leaflet').then((mod) => mod.MapContainer),
-    { ssr: false }
-);
-const TileLayer = dynamic(
-    () => import('react-leaflet').then((mod) => mod.TileLayer),
-    { ssr: false }
-);
-const Marker = dynamic(
-    () => import('react-leaflet').then((mod) => mod.Marker),
-    { ssr: false }
-);
-const Popup = dynamic(
-    () => import('react-leaflet').then((mod) => mod.Popup),
-    { ssr: false }
-);
+// Fix default icon issue in React Leaflet
+// Delete the default icon URLs manually because webpack often doesn't bundling them correctly
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 // Location Data for NIT Trichy
 const LOCATIONS = [
@@ -35,7 +28,7 @@ const LOCATIONS = [
     { name: 'NITT Hospital', lat: 10.76262, lng: 78.81886, color: '#f43f5e', type: 'Medical', info: '24/7 Campus Hospital.' },
 ];
 
-const CustomMarker = ({ loc, L }: { loc: any, L: any }) => {
+const CustomMarker = ({ loc }: { loc: any }) => {
     const markerRef = useRef<any>(null);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [isSticky, setIsSticky] = useState(false);
@@ -148,44 +141,22 @@ const CustomMarker = ({ loc, L }: { loc: any, L: any }) => {
     );
 };
 
-// ... imports
-import { useTheme } from 'next-themes';
-
-// ... (MapContainer, TileLayer, Marker imports remain same)
-
-// ... (LOCATIONS constant remains same)
-
-// ... (CustomMarker component remains same)
-
 const LeafletMap = () => {
-    const [mapKey, setMapKey] = useState(0);
-    const [L, setL] = useState<any>(null);
     const { theme, resolvedTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
         setMounted(true);
-        import('leaflet').then((mod) => {
-            setL(mod.default);
-            setMapKey(Date.now()); // Ensure unique key after load
-        });
     }, []);
 
     // Determine current theme (account for system preference)
     const currentTheme = theme === 'system' ? resolvedTheme : theme;
     const isDark = currentTheme === 'dark';
 
-    if (!L || !mapKey || !mounted) {
-        return (
-            <div className="w-full h-full bg-background flex items-center justify-center text-muted-foreground animate-pulse">
-                Loading Map Assets...
-            </div>
-        );
-    }
+    if (!mounted) return null;
 
     return (
         <MapContainer
-            key={mapKey}
             center={[10.7610, 78.8139]}
             zoom={16}
             scrollWheelZoom={false}
@@ -202,7 +173,6 @@ const LeafletMap = () => {
                 <CustomMarker
                     key={idx}
                     loc={loc}
-                    L={L}
                 />
             ))}
         </MapContainer>

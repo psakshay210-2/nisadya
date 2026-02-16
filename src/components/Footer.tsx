@@ -88,9 +88,9 @@ const Footer = ({ config }: { config?: SiteConfig }) => {
             </div>
 
             <div className="container-custom px-4 relative z-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-8 mb-16">
                     {/* Brand Section */}
-                    <div className="lg:col-span-2 space-y-6">
+                    <div className="md:col-span-2 xl:col-span-2 space-y-6">
                         <div className="flex items-center gap-4">
                             <div className="relative w-14 h-14 md:w-16 md:h-16">
                                 <Image
@@ -149,9 +149,9 @@ const Footer = ({ config }: { config?: SiteConfig }) => {
 
                     {/* Dynamic Team Contacts */}
                     {memberContacts.length > 0 && (
-                        <div>
+                        <div className="md:col-span-2 xl:col-span-2">
                             <h3 className="text-xl font-bold mb-6 text-white inline-block border-b-2 border-primary pb-1">Team Contacts</h3>
-                            <ul className="space-y-4">
+                            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6">
                                 {memberContacts.map((contact, idx) => (
                                     <li key={idx} className="flex flex-col">
                                         <span className="text-white font-medium">{contact.name}</span>
@@ -215,8 +215,8 @@ const Footer = ({ config }: { config?: SiteConfig }) => {
                             © {new Date().getFullYear()} Nisadya. All rights reserved.
                         </p>
                         <div className="flex items-center gap-6">
-                            <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
-                            <Link href="#" className="hover:text-white transition-colors">Terms of Service</Link>
+                            <Link href="/policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+                            <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
                         </div>
                     </div>
                     <div className="text-center text-slate-400 text-sm flex items-center justify-center gap-1.5">

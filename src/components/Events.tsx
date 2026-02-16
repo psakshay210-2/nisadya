@@ -97,7 +97,7 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                     <div className="relative group/events">
                         <div
                             id="events-scroll-container"
-                            className="flex overflow-x-auto snap-x snap-mandatory gap-4 sm:gap-10 px-6 pb-12 pt-2 scroll-px-6 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:overflow-visible sm:px-0 sm:pt-0 sm:pb-0 sm:scroll-px-0 premium-scrollbar"
+                            className="flex overflow-x-auto snap-x snap-mandatory gap-4 sm:gap-6 lg:gap-8 px-6 pb-12 pt-2 scroll-px-6 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:overflow-visible sm:px-0 sm:pt-0 sm:pb-0 sm:scroll-px-0 premium-scrollbar"
                             onScroll={(e) => {
                                 const target = e.currentTarget;
                                 if (target.scrollLeft > 20) {
@@ -122,7 +122,7 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                                     transition={{ duration: 0.5, delay: index * 0.1 }}
                                 >
                                     <motion.div
-                                        className="relative h-full bg-slate-100 dark:bg-[#020617] backdrop-blur-md border border-black/5 dark:border-white/10 rounded-3xl transition-all duration-300 shadow-lg shadow-black/5 dark:shadow-white/5 group-hover:border-primary/50 group-hover:shadow-2xl group-hover:shadow-primary/10 group-hover:-translate-y-2"
+                                        className="relative min-h-full h-auto bg-slate-100 dark:bg-[#020617] backdrop-blur-md border border-black/5 dark:border-white/10 rounded-3xl transition-all duration-300 shadow-lg shadow-black/5 dark:shadow-white/5 group-hover:border-primary/50 group-hover:shadow-2xl group-hover:shadow-primary/10 group-hover:-translate-y-2 flex flex-col"
                                     >
                                         <div className="relative w-full aspect-[4/3] overflow-hidden rounded-3xl">
                                             {event.imageLink ? (
@@ -161,16 +161,51 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                         </div>
 
                         {/* Scroll Hint Arrow */}
-                        <div
+                        {/* Scroll Hint Gesture */}
+                        <motion.div
                             id="scroll-hint-arrow"
-                            className="absolute right-2 top-1/2 -translate-y-1/2 z-30 pointer-events-none transition-opacity duration-500 sm:hidden"
+                            className="absolute right-6 top-1/2 -translate-y-1/2 z-30 pointer-events-none sm:hidden"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
                         >
-                            <div className="w-12 h-12 flex items-center justify-center rounded-full bg-slate-900/60 backdrop-blur-lg border border-white/20 shadow-xl animate-pulse">
-                                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
+                            <div className="relative">
+                                <motion.div
+                                    animate={{
+                                        x: [0, -20, 0],
+                                        opacity: [0, 1, 0],
+                                    }}
+                                    transition={{
+                                        duration: 2,
+                                        repeat: Infinity,
+                                        ease: "easeInOut",
+                                        repeatDelay: 0.5
+                                    }}
+                                    className="w-12 h-12 flex items-center justify-center rounded-full bg-black/60 backdrop-blur-md border border-white/20 shadow-2xl"
+                                >
+                                    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                    </svg>
+                                </motion.div>
+                                <motion.div
+                                    animate={{
+                                        x: [0, -20, 0],
+                                        opacity: [0, 0.5, 0],
+                                    }}
+                                    transition={{
+                                        duration: 2,
+                                        repeat: Infinity,
+                                        ease: "easeInOut",
+                                        repeatDelay: 0.5,
+                                        delay: 0.1
+                                    }}
+                                    className="absolute inset-0 w-12 h-12 rounded-full border border-white/40"
+                                />
                             </div>
-                        </div>
+                            <div className="absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap bg-black/50 backdrop-blur-md px-3 py-1 rounded-full border border-white/10">
+                                <span className="text-[10px] font-bold text-white uppercase tracking-widest">Swipe</span>
+                            </div>
+                        </motion.div>
                     </div>
                 )}
             </div>
@@ -183,13 +218,13 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setSelectedId(null)}
-                            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+                            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[1050]"
                         />
 
-                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 pointer-events-none">
+                        <div className="fixed inset-0 z-[1050] flex items-center justify-center p-4 sm:p-8 pointer-events-none">
                             <motion.div
                                 layoutId={`card-${selectedId}`}
-                                className="w-full max-w-lg sm:max-w-2xl mx-4 sm:mx-0 bg-slate-100 dark:bg-[#020617] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl relative pointer-events-auto flex flex-col max-h-[75vh] sm:max-h-[85vh]"
+                                className="w-full max-w-lg sm:max-w-xl mx-4 sm:mx-0 bg-slate-100 dark:bg-[#020617] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl relative pointer-events-auto flex flex-col max-h-[75vh] sm:max-h-[85vh]"
                             >
                                 <button
                                     onClick={(e) => {
@@ -237,7 +272,7 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                                     </div>
                                 </div>
 
-                                <div className="p-4 sm:p-6 md:p-8 overflow-y-auto">
+                                <div className="p-4 sm:p-6 md:p-8 overflow-y-auto flex-1">
                                     <motion.div
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
@@ -265,17 +300,18 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                                             </div>
                                         </div>
 
-                                        <div className="pt-2 sm:pt-4">
-                                            <a
-                                                href={events[selectedId].unstopLink}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="block w-full bg-primary hover:bg-primary/90 text-white text-center font-bold py-3 sm:py-4 rounded-xl shadow-lg shadow-primary/25 transition-all hover:-translate-y-1 active:scale-95 text-sm sm:text-base"
-                                            >
-                                                Register on Unstop
-                                            </a>
-                                        </div>
                                     </motion.div>
+                                </div>
+
+                                <div className="p-4 sm:p-6 border-t border-black/5 dark:border-white/10 bg-slate-100/50 dark:bg-[#020617]/50 backdrop-blur-md sticky bottom-0 z-10">
+                                    <a
+                                        href={events[selectedId].unstopLink}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="block w-full bg-primary hover:bg-primary/90 text-white text-center font-bold py-3 sm:py-4 rounded-xl shadow-lg shadow-primary/25 transition-all hover:-translate-y-1 active:scale-95 text-sm sm:text-base"
+                                    >
+                                        Register on Unstop
+                                    </a>
                                 </div>
                             </motion.div>
                         </div>
