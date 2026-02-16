@@ -54,6 +54,7 @@ const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
         { name: 'Events', href: '#events' },
         // { name: 'Schedule', href: '#schedule' },
         { name: 'Instagram', href: '#instagram' },
+        { name: 'Stay', href: '#stay' },
         { name: 'Location', href: '#location' },
     ];
 
@@ -106,7 +107,7 @@ const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
                         </div>
 
                         {/* Desktop Navigation */}
-                        <div className="hidden md:flex items-center space-x-6">
+                        <div className="hidden lg:flex items-center space-x-6">
                             {navLinks.map((link) => (
                                 <Link
                                     key={link.name}
@@ -136,7 +137,7 @@ const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
                         </div>
 
                         {/* Mobile Menu & Search Button */}
-                        <div className="flex items-center gap-2 md:hidden">
+                        <div className="flex items-center gap-2 lg:hidden">
                             <button
                                 onClick={() => {
                                     if (!isSearchOpen) setIsMobileMenuOpen(false);
@@ -153,7 +154,7 @@ const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
                                     if (!isMobileMenuOpen) setIsSearchOpen(false);
                                     setIsMobileMenuOpen(!isMobileMenuOpen);
                                 }}
-                                className="md:hidden p-2 rounded-lg hover:bg-primary/10 transition-colors"
+                                className="lg:hidden p-2 rounded-lg hover:bg-primary/10 transition-colors"
                                 aria-label="Toggle menu"
                             >
                                 <div className="w-6 h-5 flex flex-col justify-between">

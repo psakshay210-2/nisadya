@@ -280,35 +280,68 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                 />
             </div>
 
-            <div className="container-custom relative z-10 px-4">
+            <div className="container-custom relative z-10 px-4 mt-12 sm:mt-0 md:-mt-4">
                 <div className="flex flex-col items-center text-center">
                     <motion.div
                         initial={{ opacity: 1, y: 0 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
-                        className="mb-6 relative"
+                        className="mb-2 md:mb-3 relative"
                     >
                         {/* Decorative floating element */}
                         <motion.div style={{ y: y2 }} className="absolute -top-10 -right-10 md:-right-20 w-20 h-20 md:w-32 md:h-32 z-0 opacity-60 pointer-events-none select-none">
                             <div className="w-full h-full rounded-full bg-gradient-to-r from-primary to-accent blur-xl animate-pulse" />
                         </motion.div>
 
-                        <h2 className="text-xl md:text-2xl font-bold tracking-[0.2em] text-secondary dark:text-secondary-light mb-4 uppercase">
+                        <h2 className="text-lg md:text-xl font-bold tracking-[0.2em] text-secondary dark:text-secondary-light mb-1 uppercase">
                             {config?.hero_subtitle || 'The Ultimate College Fest'}
                         </h2>
-                        <h1 className="text-6xl md:text-8xl lg:text-9xl font-extrabold tracking-tight mb-6 relative z-10">
-                            <span className="gradient-text drop-shadow-sm">NISADYA</span>
-                            <span className="block text-4xl md:text-6xl lg:text-7xl mt-2 text-foreground/90 dark:text-white/90 font-heading">
+                        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-1 relative z-10">
+                            <span className="gradient-text drop-shadow-sm tracking-[0.3em]">NISADYA</span>
+                            <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl mt-1 text-foreground/90 dark:text-white/90 font-heading tracking-[0.15em]">
                                 {config?.hero_year || '2026'}
                             </span>
                         </h1>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.1 }}
+                        className="flex items-center gap-2 mb-4 md:mb-6"
+                    >
+                        <div className="px-4 py-1.5 rounded-full bg-secondary/10 dark:bg-secondary/20 border border-secondary/20 backdrop-blur-sm flex items-center gap-2">
+                            <Calendar className="w-4 h-4 text-secondary dark:text-secondary-light" />
+                            <span className="text-sm md:text-base font-semibold text-secondary dark:text-secondary-light tracking-wide uppercase">
+                                {(() => {
+                                    const dateStr = config?.hero_date || '2026-02-28';
+                                    try {
+                                        // Handle DD-MM-YYYY or DD/MM/YYYY
+                                        let parseableDate = dateStr;
+                                        if (dateStr.match(/^\d{2}[\/-]\d{2}[\/-]\d{4}$/)) {
+                                            const [d, m, y] = dateStr.split(/[\/-]/);
+                                            parseableDate = `${y}-${m}-${d}`;
+                                        }
+                                        const date = new Date(parseableDate);
+                                        if (isNaN(date.getTime())) return dateStr;
+                                        return date.toLocaleDateString('en-US', {
+                                            day: 'numeric',
+                                            month: 'long',
+                                            year: 'numeric'
+                                        });
+                                    } catch (e) {
+                                        return dateStr;
+                                    }
+                                })()}
+                            </span>
+                        </div>
                     </motion.div>
 
                     <motion.p
                         initial={{ opacity: 1, y: 0 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-8 md:mb-12 leading-relaxed"
+                        className="text-sm md:text-lg text-muted-foreground max-w-2xl mb-6 md:mb-8 leading-relaxed"
                     >
                         {config?.hero_description || config?.about_description || 'Unleash your potential at the biggest cultural and technical extravaganza of the year. Join us for 3 days of innovation, creativity, and fun.'}
                     </motion.p>
@@ -317,17 +350,17 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                         initial={{ opacity: 1, scale: 1 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
-                        className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mb-8 md:mb-16 w-full max-w-4xl"
+                        className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-8 md:mb-10 w-full max-w-3xl"
                     >
                         {timeUnits.map((unit) => (
                             <div
                                 key={unit.label}
-                                className="glass group hover:bg-white/90 dark:hover:bg-slate-800/90 p-4 md:p-6 rounded-2xl flex flex-col items-center justify-center transition-all duration-300 transform hover:-translate-y-2 border-t border-white/40 dark:border-white/10"
+                                className="glass group hover:bg-white/90 dark:hover:bg-slate-800/90 p-3 md:p-5 rounded-2xl flex flex-col items-center justify-center transition-all duration-300 transform hover:-translate-y-2 border-t border-white/40 dark:border-white/10"
                             >
-                                <span className="text-3xl md:text-5xl lg:text-6xl font-black text-primary dark:text-primary-light mb-2 font-mono">
+                                <span className="text-2xl md:text-4xl lg:text-5xl font-black text-primary dark:text-primary-light mb-1 font-mono">
                                     {String(unit.value).padStart(2, '0')}
                                 </span>
-                                <span className="text-xs md:text-sm uppercase tracking-wider font-semibold text-secondary/80 dark:text-secondary-light/80">
+                                <span className="text-[10px] md:text-xs uppercase tracking-wider font-semibold text-secondary/80 dark:text-secondary-light/80">
                                     {unit.label}
                                 </span>
                             </div>
@@ -338,18 +371,18 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                         initial={{ opacity: 1, y: 0 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.6 }}
-                        className="flex flex-col sm:flex-row gap-4 justify-center"
+                        className="flex flex-col sm:flex-row gap-3 justify-center relative z-30"
                     >
                         <button
                             onClick={handleScrollToEvents}
-                            className="btn-outline text-lg px-10 py-4 glass hover:bg-primary/5 dark:hover:bg-white/5 border-primary/50"
+                            className="btn-outline text-base px-8 py-3 glass hover:bg-primary/5 dark:hover:bg-white/5 border-primary/50"
                         >
                             Explore Events
                         </button>
 
                         <button
                             onClick={handleRegister}
-                            className={`btn-primary text-lg px-10 py-4 shadow-xl shadow-primary/20 hover:shadow-primary/40 relative overflow-hidden group ${registrationState === 'CLOSED' ? 'opacity-80' : ''}`}
+                            className={`btn-primary text-base px-8 py-3 shadow-xl shadow-primary/20 hover:shadow-primary/40 relative overflow-hidden group ${registrationState === 'CLOSED' ? 'opacity-80' : ''}`}
                             disabled={registrationState === 'CLOSED'}
                         >
                             <span className="relative z-10">{getRegisterButtonText()}</span>
@@ -364,7 +397,7 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
             {/* Scroll indicator */}
             <motion.div
                 style={{ opacity }}
-                className="absolute bottom-4 md:bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2"
+                className="absolute scroll-indicator bottom-40 md:bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2"
             >
                 <span className="hidden md:block text-xs font-medium text-muted-foreground/60 uppercase tracking-[0.2em]">scroll</span>
                 <div className="w-5 h-9 border-2 border-muted-foreground/30 rounded-full flex justify-center p-1">

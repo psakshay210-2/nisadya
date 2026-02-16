@@ -29,7 +29,7 @@ const Maps = () => {
                     </h2>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-auto lg:h-[600px]">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 h-auto lg:h-[540px]">
                     {/* Left Side: Interactive Map */}
                     <motion.div
                         className="lg:col-span-2 h-[400px] lg:h-full relative rounded-3xl overflow-hidden border border-border shadow-2xl group"
@@ -57,20 +57,19 @@ const Maps = () => {
                     </motion.div>
 
                     {/* Right Side: Info Cards */}
-                    <div className="lg:col-span-1 flex flex-col gap-6 h-full">
-                        {/* Address Card */}
+                    <div className="lg:col-span-1 flex flex-col gap-3 lg:gap-4 h-full">
                         <div
-                            className="bg-card dark:bg-slate-900/50 border border-border p-6 rounded-3xl flex-1 backdrop-blur-sm"
+                            className="bg-card dark:bg-slate-900/50 border border-border p-4 lg:p-5 rounded-3xl flex-1 backdrop-blur-sm"
                         >
-                            <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
+                            <div className="flex items-start gap-3">
+                                <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
                                     <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                     </svg>
                                 </div>
                                 <div>
-                                    <h3 className="text-foreground font-bold text-lg mb-2">Address</h3>
-                                    <p className="text-muted-foreground text-sm leading-relaxed">
+                                    <h3 className="text-foreground font-bold text-base lg:text-lg mb-1">Address</h3>
+                                    <p className="text-muted-foreground text-xs lg:text-sm leading-relaxed">
                                         National Institute of Technology,<br />
                                         Tanjore Main Road, NH 83,<br />
                                         Tiruchirappalli - 620015,<br />
@@ -81,10 +80,10 @@ const Maps = () => {
                         </div>
 
                         {/* Transport Grid */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6 flex-[2]">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-3 lg:gap-4 flex-[2]">
                             {/* Airport */}
                             <div
-                                className="bg-card dark:bg-slate-900/50 border border-border p-6 rounded-3xl hover:bg-accent/5"
+                                className="bg-card dark:bg-slate-900/50 border border-border p-4 lg:p-5 rounded-3xl hover:bg-accent/5"
                             >
                                 <div className="flex items-center gap-3 mb-3">
                                     <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
@@ -101,7 +100,7 @@ const Maps = () => {
 
                             {/* Railway */}
                             <div
-                                className="bg-card dark:bg-slate-900/50 border border-border p-6 rounded-3xl hover:bg-accent/5"
+                                className="bg-card dark:bg-slate-900/50 border border-border p-4 lg:p-5 rounded-3xl hover:bg-accent/5"
                             >
                                 <div className="flex items-center gap-3 mb-3">
                                     <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
@@ -118,7 +117,7 @@ const Maps = () => {
 
                             {/* Bus */}
                             <div
-                                className="bg-card dark:bg-slate-900/50 border border-border p-6 rounded-3xl hover:bg-accent/5"
+                                className="bg-card dark:bg-slate-900/50 border border-border p-4 lg:p-5 rounded-3xl hover:bg-accent/5"
                             >
                                 <div className="flex items-center gap-3 mb-3">
                                     <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">

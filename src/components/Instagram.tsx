@@ -16,7 +16,7 @@ const Instagram = ({ initialPosts = [] }: { initialPosts?: InstagramPost[] }) =>
             safePosts = [...safePosts, ...safePosts];
         }
     }
-    
+
     const [posts] = useState<InstagramPost[]>(safePosts);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [exitX, setExitX] = useState<number | null>(null);
@@ -70,7 +70,7 @@ const Instagram = ({ initialPosts = [] }: { initialPosts?: InstagramPost[] }) =>
                 </div>
 
                 {/* 3D Card Stack Container */}
-                <div className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[360px] md:max-w-[420px] h-[480px] sm:h-[600px] flex items-center justify-center perspective-1000">
+                <div className="relative w-full max-w-[280px] xs:max-w-[300px] sm:max-w-[340px] md:max-w-[380px] h-[420px] sm:h-[520px] flex items-center justify-center perspective-1000">
 
                     {/* Render ALL posts, but visually hide the ones far back. 
                         Using stable keys (post.postLink) ensures iframes don't reload when index changes. */}

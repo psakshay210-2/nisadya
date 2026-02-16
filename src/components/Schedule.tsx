@@ -39,22 +39,22 @@ const Schedule = ({ initialSchedule = [] }: { initialSchedule?: RawScheduleRow[]
         const dayKey = `Day ${current.day}`;
         if (!acc[dayKey]) {
             acc[dayKey] = {
-                        day: dayKey,
-                        date: current.date, // Will be empty if 'date' column doesn't exist
-                        events: [],
-                    };
-                }
-                acc[dayKey].events.push({
-                    time: current.time,
-                    title: current.title,
-                    venue: current.venue,
-                    category: current.category,
-                });
-                return acc;
-            }, {} as Record<string, ScheduleDay>);
+                day: dayKey,
+                date: current.date, // Will be empty if 'date' column doesn't exist
+                events: [],
+            };
+        }
+        acc[dayKey].events.push({
+            time: current.time,
+            title: current.title,
+            venue: current.venue,
+            category: current.category,
+        });
+        return acc;
+    }, {} as Record<string, ScheduleDay>);
 
     const finalSchedule = Object.values(groupedByDay).sort((a, b) => a.day.localeCompare(b.day, undefined, { numeric: true }));
-    
+
     const [schedule] = useState<ScheduleDay[]>(finalSchedule);
     const [activeDayIndex, setActiveDayIndex] = useState(0);
 
@@ -197,7 +197,7 @@ const Schedule = ({ initialSchedule = [] }: { initialSchedule?: RawScheduleRow[]
                             initial="hidden"
                             animate={inView ? 'visible' : 'hidden'}
                             variants={containerVariants}
-                                    className="hidden md:flex flex-wrap justify-center gap-8"
+                            className="hidden md:flex flex-wrap justify-center gap-8"
                         >
                             {schedule.map((day, dayIndex) => (
                                 <motion.div
@@ -206,19 +206,19 @@ const Schedule = ({ initialSchedule = [] }: { initialSchedule?: RawScheduleRow[]
                                         hidden: { opacity: 0, y: 50 },
                                         visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
                                     }}
-                                    className="relative group w-full max-w-md mx-4 sm:mx-0"
+                                    className="relative group w-full max-w-sm mx-4 sm:mx-0"
                                 >
-                                    <div className="h-full bg-slate-100 dark:bg-[#020617] backdrop-blur-md p-4 sm:p-5 md:p-8 rounded-2xl sm:rounded-3xl border-t border-black/5 dark:border-white/10 relative overflow-hidden transition-all duration-300 shadow-md shadow-black/5 dark:shadow-white/5 hover:shadow-2xl hover:-translate-y-2">
+                                    <div className="h-full bg-slate-100 dark:bg-[#020617] backdrop-blur-md p-4 sm:p-5 md:p-6 rounded-2xl sm:rounded-3xl border-t border-black/5 dark:border-white/10 relative overflow-hidden transition-all duration-300 shadow-md shadow-black/5 dark:shadow-white/5 hover:shadow-2xl hover:-translate-y-2">
                                         <div className="absolute -right-2 -top-2 sm:-right-4 sm:-top-4 text-7xl sm:text-8xl md:text-9xl font-black text-foreground/[0.04] sm:text-foreground/5 select-none pointer-events-none">
                                             {String(dayIndex + 1).padStart(2, '0')}
                                         </div>
 
-                                        <div className="relative z-10 mb-4 sm:mb-6 md:mb-8">
-                                            <h3 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 text-primary">{day.day}</h3>
+                                        <div className="relative z-10 mb-4 sm:mb-5 md:mb-6">
+                                            <h3 className="text-2xl font-bold mb-1 sm:mb-2 text-primary">{day.day}</h3>
                                             <p className="text-muted-foreground font-medium uppercase tracking-widest text-sm">{day.date}</p>
                                         </div>
 
-                                        <div className="relative space-y-5 sm:space-y-6 md:space-y-8 pl-4 sm:pl-6 border-l-2 border-primary/20">
+                                        <div className="relative space-y-4 sm:space-y-5 md:space-y-6 pl-4 sm:pl-6 border-l-2 border-primary/20">
                                             {day.events.map((event, eventIndex) => (
                                                 <div key={eventIndex} className="relative group/event">
                                                     <span className="absolute -left-[23px] sm:-left-[33px] top-1.5 w-3 h-3 sm:w-4 sm:h-4 rounded-full border-4 border-background bg-primary transition-all duration-300 group-hover/event:scale-125" />
@@ -227,7 +227,7 @@ const Schedule = ({ initialSchedule = [] }: { initialSchedule?: RawScheduleRow[]
                                                         <span className="text-xs font-bold text-secondary uppercase tracking-wider mb-1 block">
                                                             {event.time}
                                                         </span>
-                                                        <h4 className="text-base sm:text-lg font-bold text-foreground mb-1 group-hover/event:text-primary transition-colors">
+                                                        <h4 className="text-base font-bold text-foreground mb-1 group-hover/event:text-primary transition-colors">
                                                             {event.title}
                                                         </h4>
                                                         <div className="flex items-center gap-2 text-sm text-muted-foreground">

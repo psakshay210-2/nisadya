@@ -79,6 +79,14 @@ html {
     /* Keep scrollbar space reserved to prevent flicker when theme switches */
     scrollbar-gutter: stable both-edges;
     color-scheme: light;
+    scroll-padding-top: 130px;
+    /* Ensures links don't hide behind Navbar */
+}
+
+@media (max-height: 650px) {
+    .scroll-indicator {
+        display: none !important;
+    }
 }
 
 body {

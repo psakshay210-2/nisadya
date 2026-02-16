@@ -92,14 +92,14 @@ const About = ({ config: initialConfig }: { config?: SiteConfig }) => {
                             <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-primary/20 to-transparent rounded-bl-[100px] opacity-50" />
 
                             {/* Content */}
-                            <div className="relative p-8 sm:p-10">
+                            <div className="relative p-6 sm:p-8">
                                 {/* Icon & Title */}
-                                <div className="flex items-start justify-between mb-8">
+                                <div className="flex items-start justify-between mb-6">
                                     <div>
-                                        <h3 className="text-2xl sm:text-3xl font-black bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
+                                        <h3 className="text-xl sm:text-2xl font-black bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
                                             {config?.doms_title || 'DoMS NITT'}
                                         </h3>
-                                        <p className="text-xs text-primary font-semibold uppercase tracking-wider mt-1">
+                                        <p className="text-[10px] sm:text-xs text-primary font-semibold uppercase tracking-wider mt-1">
                                             {config?.doms_subtitle || 'Since 1978'}
                                         </p>
                                     </div>
@@ -119,7 +119,7 @@ const About = ({ config: initialConfig }: { config?: SiteConfig }) => {
                                             style={{ transform: 'translateZ(0)' }}
                                         >
                                             <div
-                                                className={`text-muted-foreground leading-relaxed text-base sm:text-lg transition-opacity duration-300 whitespace-pre-wrap ${isDomsExpanded ? 'opacity-100' : 'opacity-90'}`}
+                                                className={`text-muted-foreground leading-relaxed text-sm sm:text-base transition-opacity duration-300 whitespace-pre-wrap ${isDomsExpanded ? 'opacity-100' : 'opacity-90'}`}
                                                 style={{ textAlign: (config?.doms_description_alignment as any) || 'left' }}
                                                 dangerouslySetInnerHTML={{ __html: config?.doms_description || "Since its inception in 1978, the Department of Management Studies at NIT Trichy (DoMS-NITT) has been a nexus of innovation and leadership, shaping the future of management professionals in India. As a department, under the Ministry of HRD, DoMS-NITT merges academic excellence with cutting-edge research to contribute to the nation's progress. It is set apart by its vibrant industry ties and an alumni network that continues to fuel growth through mentorship, offering students boundless learning opportunities and a roadmap to career success." }}
                                             />
@@ -127,11 +127,11 @@ const About = ({ config: initialConfig }: { config?: SiteConfig }) => {
 
                                         <button
                                             onClick={() => setIsDomsExpanded(!isDomsExpanded)}
-                                            className="lg:hidden mt-4 inline-flex items-center gap-2 px-3 py-2 rounded-full bg-primary/10 text-primary font-semibold text-sm border border-primary/30 shadow-sm active:scale-95 transition-transform touch-manipulation"
+                                            className="lg:hidden mt-4 inline-flex items-center gap-2 px-3 py-2 rounded-full bg-primary/10 text-primary font-semibold text-xs border border-primary/30 shadow-sm active:scale-95 transition-transform touch-manipulation"
                                         >
                                             <span>{isDomsExpanded ? 'Read Less' : 'Read More'}</span>
                                             <svg
-                                                className={`w-4 h-4 transition-transform duration-300 ${isDomsExpanded ? 'rotate-180' : 'rotate-0'}`}
+                                                className={`w-3 h-3 transition-transform duration-300 ${isDomsExpanded ? 'rotate-180' : 'rotate-0'}`}
                                                 fill="none"
                                                 viewBox="0 0 24 24"
                                                 stroke="currentColor"
@@ -144,13 +144,13 @@ const About = ({ config: initialConfig }: { config?: SiteConfig }) => {
 
                                 {/* Bottom Decoration */}
                                 <motion.div
-                                    className="mt-8 flex items-center gap-2 opacity-50 group-hover:opacity-100 transition-opacity"
+                                    className="mt-6 flex items-center gap-2 opacity-50 group-hover:opacity-100 transition-opacity"
                                     animate={{
                                         opacity: isDomsExpanded ? 0.8 : 0.5
                                     }}
                                 >
                                     <div className="flex-1 h-px bg-gradient-to-r from-primary/50 via-primary/20 to-transparent" />
-                                    <span className="text-xs text-primary font-bold">{config?.doms_tagline || 'Excellence in Education'}</span>
+                                    <span className="text-[10px] sm:text-xs text-primary font-bold">{config?.doms_tagline || 'Excellence in Education'}</span>
                                 </motion.div>
                             </div>
                         </div>
@@ -173,14 +173,14 @@ const About = ({ config: initialConfig }: { config?: SiteConfig }) => {
                             <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-secondary/20 to-transparent rounded-bl-[100px] opacity-50" />
 
                             {/* Content */}
-                            <div className="relative p-8 sm:p-10">
+                            <div className="relative p-6 sm:p-8">
                                 {/* Icon & Title */}
-                                <div className="flex items-start justify-between mb-8">
+                                <div className="flex items-start justify-between mb-6">
                                     <div>
-                                        <h3 className="text-2xl sm:text-3xl font-black bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
+                                        <h3 className="text-xl sm:text-2xl font-black bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
                                             {config?.about_title || "Nisadya '26"}
                                         </h3>
-                                        <p className="text-xs text-secondary font-semibold uppercase tracking-wider mt-1">
+                                        <p className="text-[10px] sm:text-xs text-secondary font-semibold uppercase tracking-wider mt-1">
                                             {config?.about_subtitle || "Flagship Business Fest"}
                                         </p>
                                     </div>
@@ -200,7 +200,7 @@ const About = ({ config: initialConfig }: { config?: SiteConfig }) => {
                                             style={{ transform: 'translateZ(0)' }}
                                         >
                                             <div
-                                                className={`text-muted-foreground leading-relaxed text-base sm:text-lg transition-opacity duration-300 whitespace-pre-wrap ${isNisadyaExpanded ? 'opacity-100' : 'opacity-90'}`}
+                                                className={`text-muted-foreground leading-relaxed text-sm sm:text-base transition-opacity duration-300 whitespace-pre-wrap ${isNisadyaExpanded ? 'opacity-100' : 'opacity-90'}`}
                                                 style={{ textAlign: (config?.about_description_alignment as any) || 'left' }}
                                                 dangerouslySetInnerHTML={{ __html: config?.about_description || "Nisadya is the annual flagship business fest of the Department of Management Studies, NIT Tiruchirappalli. It is a vibrant convergence of ideas, insights, and entrepreneurial spirit, bringing together aspiring business leaders. Nisadya provides a dynamic platform for participants to compete, create, and collaborate with some of the brightest minds in management. Featuring a diverse range of events spanning multiple management domains, the fest enables tomorrow's managers to showcase their skills, test their strategic thinking, and engage with industry leaders." }}
                                             />
@@ -208,11 +208,11 @@ const About = ({ config: initialConfig }: { config?: SiteConfig }) => {
 
                                         <button
                                             onClick={() => setIsNisadyaExpanded(!isNisadyaExpanded)}
-                                            className="lg:hidden mt-4 inline-flex items-center gap-2 px-3 py-2 rounded-full bg-secondary/10 text-secondary font-semibold text-sm border border-secondary/30 shadow-sm active:scale-95 transition-transform touch-manipulation"
+                                            className="lg:hidden mt-4 inline-flex items-center gap-2 px-3 py-2 rounded-full bg-secondary/10 text-secondary font-semibold text-xs border border-secondary/30 shadow-sm active:scale-95 transition-transform touch-manipulation"
                                         >
                                             <span>{isNisadyaExpanded ? 'Read Less' : 'Read More'}</span>
                                             <svg
-                                                className={`w-4 h-4 transition-transform duration-300 ${isNisadyaExpanded ? 'rotate-180' : 'rotate-0'}`}
+                                                className={`w-3 h-3 transition-transform duration-300 ${isNisadyaExpanded ? 'rotate-180' : 'rotate-0'}`}
                                                 fill="none"
                                                 viewBox="0 0 24 24"
                                                 stroke="currentColor"
@@ -225,13 +225,13 @@ const About = ({ config: initialConfig }: { config?: SiteConfig }) => {
 
                                 {/* Bottom Decoration */}
                                 <motion.div
-                                    className="mt-8 flex items-center gap-2 opacity-50 group-hover:opacity-100 transition-opacity"
+                                    className="mt-6 flex items-center gap-2 opacity-50 group-hover:opacity-100 transition-opacity"
                                     animate={{
                                         opacity: isNisadyaExpanded ? 0.8 : 0.5
                                     }}
                                 >
                                     <div className="flex-1 h-px bg-gradient-to-r from-secondary/50 via-secondary/20 to-transparent" />
-                                    <span className="text-xs text-secondary font-bold">{config?.about_tagline || 'Compete. Create. Collaborate'}</span>
+                                    <span className="text-[10px] sm:text-xs text-secondary font-bold">{config?.about_tagline || 'Compete. Create. Collaborate'}</span>
                                 </motion.div>
                             </div>
                         </div>

@@ -27,7 +27,7 @@ export async function getServerData(): Promise<ServerData> {
   try {
     // Fetch config
     const config = await fetchSiteConfig();
-    
+
     // Fetch events
     const events = await fetchSheetData(GIDS.EVENTS, (headers, row) => {
       const event = {
