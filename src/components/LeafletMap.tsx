@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import { useTheme } from 'next-themes';
 
@@ -141,12 +141,28 @@ const CustomMarker = ({ loc }: { loc: any }) => {
     );
 };
 
-const LeafletMap = () => {
+// Component to handle map events
+const MapEventHandler = ({ onInteraction }: { onInteraction?: (active: boolean) => void }) => {
+    const map = useMapEvents({
+        dragstart: () => onInteraction?.(true),
+        dragend: () => onInteraction?.(false),
+        zoomstart: () => onInteraction?.(true),
+        zoomend: () => onInteraction?.(false),
+    });
+    return null;
+};
+
+const LeafletMap = ({ onMapInteraction }: { onMapInteraction?: (isInteracting: boolean) => void }) => {
     const { theme, resolvedTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
+    // Generate a unique ID for this mount instance to prevent collision
+    const [mountId] = useState(() => `map-${Math.random().toString(36).substr(2, 9)}`);
 
     useEffect(() => {
         setMounted(true);
+        return () => {
+            setMounted(false);
+        };
     }, []);
 
     // Determine current theme (account for system preference)
@@ -157,11 +173,14 @@ const LeafletMap = () => {
 
     return (
         <MapContainer
+            key={`${isDark ? 'dark' : 'light'}-${mountId}`}
+            id={mountId}
             center={[10.7610, 78.8139]}
             zoom={16}
             scrollWheelZoom={false}
             className="w-full h-full z-0 bg-background"
         >
+            <MapEventHandler onInteraction={onMapInteraction} />
             <TileLayer
                 attribution='&copy; <a href="https://carto.com/attributions">CARTO</a>'
                 url={isDark

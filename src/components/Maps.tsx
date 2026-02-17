@@ -1,5 +1,6 @@
 'use client';
 
+import React, { useState, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 
@@ -16,7 +17,19 @@ const LeafletMap = dynamic(
     }
 );
 
-const Maps = () => {
+const Maps = ({ taxiContacts }: { taxiContacts?: string }) => {
+    const [isMapInteracting, setIsMapInteracting] = useState(false);
+
+    const parsedTaxiContacts = useMemo(() => {
+        if (!taxiContacts) return [];
+        try {
+            return JSON.parse(taxiContacts) as { name: string; number: string }[];
+        } catch (e) {
+            console.error("Failed to parse taxi contacts", e);
+            return [];
+        }
+    }, [taxiContacts]);
+
     return (
         <section id="location" className="relative pt-12 pb-28 bg-slate-100 dark:bg-[#020617] border-y border-black/5 dark:border-white/10 overflow-hidden">
             <div className="container-custom px-4">
@@ -29,14 +42,23 @@ const Maps = () => {
                     </h2>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 h-auto lg:h-[540px]">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 h-auto lg:h-[720px]">
                     {/* Left Side: Interactive Map */}
                     <motion.div
                         className="lg:col-span-2 h-[400px] lg:h-full relative rounded-3xl overflow-hidden border border-border shadow-2xl group"
                     >
                         {/* Map Overlay Card */}
-                        <div className="absolute bottom-6 left-6 right-6 z-10 pointer-events-none">
-                            <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-border p-5 rounded-2xl shadow-xl pointer-events-auto flex items-center justify-between">
+                        <motion.div
+                            initial={{ opacity: 1, y: 0 }}
+                            animate={{
+                                opacity: isMapInteracting ? 0 : 1,
+                                y: isMapInteracting ? 20 : 0,
+                                pointerEvents: isMapInteracting ? 'none' : 'auto'
+                            }}
+                            transition={{ duration: 0.3 }}
+                            className="absolute bottom-6 left-6 right-6 z-10"
+                        >
+                            <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-border p-5 rounded-2xl shadow-xl flex items-center justify-between">
                                 <div>
                                     <h3 className="text-foreground font-bold text-lg">NIT Tiruchirappalli</h3>
                                     <p className="text-muted-foreground text-sm">Tanjore Main Road, NH83</p>
@@ -50,9 +72,9 @@ const Maps = () => {
                                     Get Directions
                                 </a>
                             </div>
-                        </div>
+                        </motion.div>
 
-                        <LeafletMap />
+                        <LeafletMap onMapInteraction={setIsMapInteracting} />
 
                     </motion.div>
 
@@ -81,6 +103,32 @@ const Maps = () => {
 
                         {/* Transport Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-3 lg:gap-4 flex-[2]">
+                            {/* Taxi Services - Dynamic */}
+                            {parsedTaxiContacts.length > 0 && (
+                                <div
+                                    className="bg-card dark:bg-slate-900/50 border border-border p-4 lg:p-5 rounded-3xl hover:bg-accent/5"
+                                >
+                                    <div className="flex items-center gap-3 mb-3">
+                                        <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
+                                            <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                            </svg>
+                                        </div>
+                                        <h3 className="text-foreground font-bold">Taxi Services</h3>
+                                    </div>
+                                    <div className="space-y-2">
+                                        {parsedTaxiContacts.map((taxi, index) => (
+                                            <p key={index} className="text-muted-foreground text-sm flex items-center gap-2">
+                                                <span className="w-1.5 h-1.5 bg-primary/50 rounded-full"></span>
+                                                {taxi.name}:
+                                                <a href={`tel:${taxi.number.replace(/\s/g, "")}`} className="text-foreground hover:text-primary transition-colors font-medium">
+                                                    {taxi.number}
+                                                </a>
+                                            </p>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                             {/* Airport */}
                             <div
                                 className="bg-card dark:bg-slate-900/50 border border-border p-4 lg:p-5 rounded-3xl hover:bg-accent/5"
@@ -131,6 +179,7 @@ const Maps = () => {
                                     Panjapur Bus Stand (~22km) | Chatram Stand (~18km). Route #128, #100 series to NIT.
                                 </p>
                             </div>
+
                         </div>
                     </div>
                 </div>

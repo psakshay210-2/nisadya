@@ -39,7 +39,7 @@ export default async function Home() {
             {/* <Sponsors /> */}
             <Instagram initialPosts={serverData.instagram} />
             <Stay config={serverData.config} />
-            <Maps />
+            <Maps taxiContacts={serverData.config.taxi_contacts} />
             <Footer config={serverData.config} />
             <BackToTop />
         </main>
