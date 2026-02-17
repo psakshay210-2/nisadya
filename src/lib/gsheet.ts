@@ -52,7 +52,9 @@ export async function fetchSheetData<T>(gid: string, rowMapper: (headers: string
         const url = `${BASE_URL}?output=csv&gid=${gid}`;
 
         // Default fetch behavior in Next.js App Router (if not specified) is 'force-cache' for static generation
-        const response = await fetch(url);
+        // Adding revalidate to ensure sheet updates are picked up periodically (ISR)
+        // Setting to 0 to ensure fresh data on every request (dynamic)
+        const response = await fetch(url, { next: { revalidate: 0 } });
 
         if (!response.ok) {
             throw new Error(`Failed to fetch sheet with GID ${gid}: ${response.statusText}`);
@@ -100,6 +102,7 @@ export interface SiteConfig {
     registration_start_date?: string; // YYYY-MM-DD
     registration_end_date?: string; // YYYY-MM-DD
     members_contacts?: string; // JSON string of contacts
+    taxi_contacts?: string; // JSON string of taxi contacts
     [key: string]: string | undefined;
 }
 
