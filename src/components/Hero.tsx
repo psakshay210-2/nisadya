@@ -296,6 +296,20 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                         <h2 className="text-lg md:text-xl font-bold tracking-[0.2em] text-secondary dark:text-secondary-light mb-1 uppercase">
                             {config?.hero_subtitle || 'The Ultimate College Fest'}
                         </h2>
+                        {/* Title Sponsor Credit */}
+                        <div className="flex items-center justify-center gap-2 mb-2">
+                            <span className="text-xs sm:text-sm font-semibold tracking-[0.15em] uppercase text-foreground/60 dark:text-white/50">NLC India Ltd</span>
+                            <a href="https://www.nlcindia.in/" target="_blank" rel="noopener noreferrer">
+                                <Image
+                                    src="/NLCIL Logo CMYK_.png"
+                                    alt="NLC India Ltd Logo"
+                                    width={40}
+                                    height={40}
+                                    className="object-contain"
+                                />
+                            </a>
+                            <span className="text-xs sm:text-sm font-semibold tracking-[0.15em] uppercase text-foreground/60 dark:text-white/50">presents</span>
+                        </div>
                         <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-1 relative z-10">
                             <span className="gradient-text drop-shadow-sm tracking-[0.3em]">NISADYA</span>
                             <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl mt-1 text-foreground/90 dark:text-white/90 font-heading tracking-[0.15em]">
@@ -391,13 +405,37 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                             )}
                         </button>
                     </motion.div>
+
+                    {/* Powered by Unstop */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.8, delay: 0.8 }}
+                        className="flex justify-center mt-4"
+                    >
+                        <a
+                            href="https://unstop.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 dark:bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all"
+                        >
+                            <span className="text-[10px] sm:text-xs font-medium uppercase tracking-wider text-foreground/50 dark:text-white/40">Powered by</span>
+                            <Image
+                                src="/Unstop-Logo-Blue-Large.png"
+                                alt="Unstop"
+                                width={64}
+                                height={20}
+                                className="object-contain dark:brightness-0 dark:invert opacity-60 hover:opacity-100 transition-opacity"
+                            />
+                        </a>
+                    </motion.div>
                 </div>
             </div>
 
             {/* Scroll indicator */}
             <motion.div
                 style={{ opacity }}
-                className="absolute scroll-indicator bottom-40 md:bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2"
+                className="absolute scroll-indicator bottom-40 md:bottom-10 left-1/2 transform -translate-x-1/2 hidden md:flex flex-col items-center gap-2"
             >
                 <span className="hidden md:block text-xs font-medium text-muted-foreground/60 uppercase tracking-[0.2em]">scroll</span>
                 <div className="w-5 h-9 border-2 border-muted-foreground/30 rounded-full flex justify-center p-1">
