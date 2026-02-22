@@ -280,7 +280,7 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                 />
             </div>
 
-            <div className="container-custom relative z-10 px-4 mt-12 sm:mt-0 md:-mt-4">
+            <div className="container-custom relative z-10 px-4 mt-16 sm:mt-20 md:mt-24">
                 <div className="flex flex-col items-center text-center">
                     <motion.div
                         initial={{ opacity: 1, y: 0 }}
@@ -297,18 +297,27 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                             {config?.hero_subtitle || 'The Ultimate College Fest'}
                         </h2>
                         {/* Title Sponsor Credit */}
-                        <div className="flex items-center justify-center gap-2 mb-2">
-                            <span className="text-xs sm:text-sm font-semibold tracking-[0.15em] uppercase text-foreground/60 dark:text-white/50">NLC India Ltd</span>
-                            <a href="https://www.nlcindia.in/" target="_blank" rel="noopener noreferrer" className="dark:bg-white/95 dark:rounded-lg p-1 transition-colors">
+                        <div className="flex flex-col items-center justify-center gap-3 sm:gap-4 mb-6">
+                            <span className="text-sm sm:text-lg font-bold tracking-[0.2em] sm:tracking-[0.3em] uppercase text-foreground/70 dark:text-white/70">
+                                NLC India Ltd
+                            </span>
+                            <a
+                                href="https://www.nlcindia.in/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="relative flex items-center justify-center bg-white/90 dark:bg-white/95 rounded-2xl sm:rounded-3xl p-2 sm:p-4 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 w-28 h-28 sm:w-36 sm:h-36 lg:w-40 lg:h-40"
+                            >
                                 <Image
                                     src="/NLCIL Logo CMYK_.png"
                                     alt="NLC India Ltd Logo"
-                                    width={40}
-                                    height={40}
-                                    className="object-contain"
+                                    fill
+                                    className="object-contain p-2 sm:p-3"
+                                    priority
                                 />
                             </a>
-                            <span className="text-xs sm:text-sm font-semibold tracking-[0.15em] uppercase text-foreground/60 dark:text-white/50">presents</span>
+                            <span className="text-sm sm:text-lg font-bold tracking-[0.2em] sm:tracking-[0.3em] uppercase text-foreground/70 dark:text-white/70">
+                                presents
+                            </span>
                         </div>
                         <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-1 relative z-10">
                             <span className="gradient-text drop-shadow-sm tracking-[0.3em]">NISADYA</span>
