@@ -103,6 +103,7 @@ export interface SiteConfig {
     registration_end_date?: string; // YYYY-MM-DD
     members_contacts?: string; // JSON string of contacts
     taxi_contacts?: string; // JSON string of taxi contacts
+    unstop_url?: string;
     [key: string]: string | undefined;
 }
 

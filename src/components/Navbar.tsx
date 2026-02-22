@@ -84,14 +84,16 @@ const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
                         {/* Logo */}
                         <div className="flex items-center gap-3 md:gap-4">
                             {/* NLC Title Sponsor Logo */}
-                            <a href="https://www.nlcindia.in/" target="_blank" rel="noopener noreferrer" className="relative w-12 h-12 md:w-14 md:h-14 flex-shrink-0">
-                                <Image
-                                    src="/NLCIL Logo CMYK_.png"
-                                    alt="NLC India Ltd - Title Sponsor"
-                                    fill
-                                    className="object-contain"
-                                    priority
-                                />
+                            <a href="https://www.nlcindia.in/" target="_blank" rel="noopener noreferrer" className="relative w-12 h-12 md:w-14 md:h-14 flex-shrink-0 dark:bg-white/95 dark:rounded-lg p-1 transition-colors">
+                                <div className="relative w-full h-full">
+                                    <Image
+                                        src="/NLCIL Logo CMYK_.png"
+                                        alt="NLC India Ltd - Title Sponsor"
+                                        fill
+                                        className="object-contain"
+                                        priority
+                                    />
+                                </div>
                             </a>
                             <div className="w-[1px] h-6 md:h-8 bg-foreground/20" />
                             <div className="relative w-12 h-12 md:w-16 md:h-16">
@@ -147,19 +149,8 @@ const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
                             <ThemeToggle />
                         </div>
 
-                        {/* Mobile Menu & Search Button */}
+                        {/* Mobile Menu Button */}
                         <div className="flex items-center gap-2 lg:hidden">
-                            <button
-                                onClick={() => {
-                                    if (!isSearchOpen) setIsMobileMenuOpen(false);
-                                    setIsSearchOpen(!isSearchOpen);
-                                }}
-                                className="p-2 rounded-lg hover:bg-primary/10 transition-colors"
-                            >
-                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
-                            </button>
                             <button
                                 onClick={() => {
                                     if (!isMobileMenuOpen) setIsSearchOpen(false);
@@ -222,6 +213,26 @@ const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: 20 }}
                                 transition={{ delay: navLinks.length * 0.1, duration: 0.4 }}
+                            >
+                                <button
+                                    onClick={() => {
+                                        setIsMobileMenuOpen(false);
+                                        setTimeout(() => setIsSearchOpen(true), 150);
+                                    }}
+                                    className="text-3xl font-bold tracking-tight text-foreground/80 hover:text-primary transition-colors flex items-center justify-center gap-3 w-full"
+                                >
+                                    Search
+                                    <svg className="w-8 h-8 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </button>
+                            </motion.div>
+
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 20 }}
+                                transition={{ delay: (navLinks.length + 1) * 0.1, duration: 0.4 }}
                                 className="pt-8"
                             >
                                 <ThemeToggle />

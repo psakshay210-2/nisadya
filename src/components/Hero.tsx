@@ -299,7 +299,7 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                         {/* Title Sponsor Credit */}
                         <div className="flex items-center justify-center gap-2 mb-2">
                             <span className="text-xs sm:text-sm font-semibold tracking-[0.15em] uppercase text-foreground/60 dark:text-white/50">NLC India Ltd</span>
-                            <a href="https://www.nlcindia.in/" target="_blank" rel="noopener noreferrer">
+                            <a href="https://www.nlcindia.in/" target="_blank" rel="noopener noreferrer" className="dark:bg-white/95 dark:rounded-lg p-1 transition-colors">
                                 <Image
                                     src="/NLCIL Logo CMYK_.png"
                                     alt="NLC India Ltd Logo"
@@ -324,9 +324,9 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                         transition={{ duration: 0.8, delay: 0.1 }}
                         className="flex items-center gap-2 mb-4 md:mb-6"
                     >
-                        <div className="px-4 py-1.5 rounded-full bg-secondary/10 dark:bg-secondary/20 border border-secondary/20 backdrop-blur-sm flex items-center gap-2">
-                            <Calendar className="w-4 h-4 text-secondary dark:text-secondary-light" />
-                            <span className="text-sm md:text-base font-semibold text-secondary dark:text-secondary-light tracking-wide uppercase">
+                        <div className="px-4 py-1.5 rounded-full bg-secondary/10 dark:bg-white/10 border border-secondary/20 dark:border-white/20 backdrop-blur-sm flex items-center gap-2 shadow-sm">
+                            <Calendar className="w-4 h-4 text-secondary dark:text-white" />
+                            <span className="text-sm md:text-base font-semibold text-secondary dark:text-white tracking-wide uppercase">
                                 {(() => {
                                     const dateStr = config?.hero_date || '2026-02-28';
                                     try {
@@ -414,7 +414,7 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                         className="flex justify-center mt-4"
                     >
                         <a
-                            href="https://unstop.com"
+                            href={config?.unstop_url || "https://unstop.com"}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 dark:bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all"

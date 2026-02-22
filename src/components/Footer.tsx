@@ -93,13 +93,15 @@ const Footer = ({ config }: { config?: SiteConfig }) => {
                     <div className="md:col-span-2 xl:col-span-2 space-y-6">
                         <div className="flex items-center gap-4">
                             {/* NLC Title Sponsor Logo */}
-                            <a href="https://www.nlcindia.in/" target="_blank" rel="noopener noreferrer" className="relative w-16 h-16 md:w-[72px] md:h-[72px] flex-shrink-0">
-                                <Image
-                                    src="/NLCIL Logo CMYK_.png"
-                                    alt="NLC India Ltd - Title Sponsor"
-                                    fill
-                                    className="object-contain"
-                                />
+                            <a href="https://www.nlcindia.in/" target="_blank" rel="noopener noreferrer" className="relative w-16 h-16 md:w-[72px] md:h-[72px] flex-shrink-0 bg-white/95 rounded-xl p-1.5">
+                                <div className="relative w-full h-full">
+                                    <Image
+                                        src="/NLCIL Logo CMYK_.png"
+                                        alt="NLC India Ltd - Title Sponsor"
+                                        fill
+                                        className="object-contain"
+                                    />
+                                </div>
                             </a>
                             <div className="w-[1px] h-10 bg-white/20" />
                             <div className="relative w-14 h-14 md:w-16 md:h-16">
@@ -225,7 +227,7 @@ const Footer = ({ config }: { config?: SiteConfig }) => {
                             © {new Date().getFullYear()} Nisadya. All rights reserved.
                         </p>
                         <a
-                            href="https://unstop.com"
+                            href={config?.unstop_url || "https://unstop.com"}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
