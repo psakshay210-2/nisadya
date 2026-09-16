@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 import { SiteConfig, getDriveImage } from '@/lib/gsheet';
 
-import { GlobalSearch } from './GlobalSearch';
+import { GlobalSearch, SearchEvent } from './GlobalSearch';
 
 const SearchIcon = ({ className }: { className: string }) => (
     <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -15,7 +15,7 @@ const SearchIcon = ({ className }: { className: string }) => (
     </svg>
 );
 
-const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
+const Navbar = ({ config: initialConfig, events }: { config?: SiteConfig; events?: SearchEvent[] }) => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -91,7 +91,7 @@ const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
 
     return (
         <>
-            <GlobalSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+            <GlobalSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} events={events} />
             <motion.nav
                 initial={{ y: 0 }}
                 animate={{ y: 0 }}

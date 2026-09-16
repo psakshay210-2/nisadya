@@ -22,7 +22,7 @@ export default async function Home() {
                 two routes free of any sheet fetch. */}
             <JsonLd config={serverData.config} />
             <ScrollProgress />
-            <Navbar config={serverData.config} />
+            <Navbar config={serverData.config} events={serverData.events} />
             <Hero config={serverData.config} />
             <About config={serverData.config} />
             <Events initialEvents={serverData.events} />

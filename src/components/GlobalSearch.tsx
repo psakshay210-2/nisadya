@@ -2,9 +2,16 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { fetchSheetData, GIDS, getDriveImage } from '@/lib/gsheet';
+import { getDriveImage } from '@/lib/gsheet';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+
+// The slice of a server-fetched event the search needs (see server-data.ts).
+export interface SearchEvent {
+    name: string;
+    imageLink: string;
+    category?: string;
+}
 
 interface SearchResult {
     id: string;
@@ -38,19 +45,18 @@ const TYPE_ICONS = {
     ),
 };
 
-export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+export const GlobalSearch = ({ isOpen, onClose, events = [] }: { isOpen: boolean; onClose: () => void; events?: SearchEvent[] }) => {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<SearchResult[]>([]);
     const [allData, setAllData] = useState<SearchResult[]>([]);
-    const [loading, setLoading] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
 
-    // Initial Data Load
+    // Initial Data Load. The events arrive from the server render via
+    // page.tsx, so opening the search no longer fetches the sheet from the
+    // browser (and keeps working during a sheet outage).
     useEffect(() => {
         if (isOpen) {
-            const loadData = async () => {
-                setLoading(true);
                 const staticPages: SearchResult[] = [
                     { id: 'p1', type: 'Page', title: 'Home', subtitle: 'Go to Homepage', link: '#home' },
                     { id: 'p2', type: 'Page', title: 'About', subtitle: 'Learn about Nisadya', link: '#about' },
@@ -59,35 +65,22 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                     { id: 'p5', type: 'Page', title: 'Location', subtitle: 'Find us on map', link: '#location' },
                 ];
 
-                try {
-                    // Fetch Events
-                    const events = await fetchSheetData(GIDS.EVENTS, (headers, row) => {
-                        return {
-                            id: row[headers.indexOf('event name')] || Math.random().toString(),
-                            type: 'Event' as const,
-                            title: row[headers.indexOf('event name')] || 'Untitled Event',
-                            subtitle: row[headers.indexOf('category')] || 'Event',
-                            // Try to construct a deeper link if possible, else scroll to events
-                            link: '#events',
-                            image: row[headers.indexOf('image link')] || ''
-                        };
-                    });
-
-                    setAllData([...staticPages, ...(events as SearchResult[])]);
-                } catch (e) {
-                    console.error("Search data load failed", e);
-                    setAllData(staticPages);
-                } finally {
-                    setLoading(false);
-                    // Focus input after animation roughly
-                    setTimeout(() => inputRef.current?.focus(), 100);
-                }
-            };
-
-            loadData();
+                setAllData([
+                    ...staticPages,
+                    ...events.map((event) => ({
+                        id: event.name,
+                        type: 'Event' as const,
+                        title: event.name,
+                        subtitle: event.category || 'Event',
+                        link: '#events',
+                        image: event.imageLink,
+                    })),
+                ]);
+                // Focus input after animation roughly
+                setTimeout(() => inputRef.current?.focus(), 100);
             setQuery('');
         }
-    }, [isOpen]);
+    }, [isOpen, events]);
 
     // Filtering Logic
     useEffect(() => {
@@ -243,7 +236,7 @@ export const GlobalSearch = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                                 </motion.div>
                             )}
 
-                            {results.length === 0 && query && !loading && (
+                            {results.length === 0 && query && (
                                 <motion.div
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
