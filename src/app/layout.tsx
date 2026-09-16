@@ -22,11 +22,11 @@ const poppins = Poppins({
 export const metadata: Metadata = {
     metadataBase: new URL('https://nisadya.in'),
     title: {
-        default: "Nisadya'27 | College Fest",
-        template: "%s | Nisadya'27",
+        default: "Nisadya'26 | College Fest",
+        template: "%s | Nisadya'26",
     },
-    description: "Join us for an unforgettable celebration of talent, creativity, and innovation at Nisadya'27 - the annual college fest.",
-    keywords: ["college fest", "nisadya", "cultural fest", "technical fest", "2027", "events", "competitions", "NIT Trichy", "DoMS"],
+    description: "Join us for an unforgettable celebration of talent, creativity, and innovation at Nisadya'26 - the annual college fest.",
+    keywords: ["college fest", "nisadya", "cultural fest", "technical fest", "2026", "events", "competitions", "NIT Trichy", "DoMS"],
     authors: [{ name: "Nisadya Team" }],
     creator: "DoMS NIT Trichy",
     publisher: "DoMS NIT Trichy",
@@ -39,16 +39,16 @@ export const metadata: Metadata = {
         canonical: '/',
     },
     openGraph: {
-        title: "Nisadya'27 | College Fest",
-        description: "Join us for an unforgettable celebration at Nisadya'27",
+        title: "Nisadya'26 | College Fest",
+        description: "Join us for an unforgettable celebration at Nisadya'26",
         url: 'https://nisadya.in',
-        siteName: "Nisadya'27",
+        siteName: "Nisadya'26",
         images: [
             {
                 url: '/fest_main_logo.png', // Ensure this exists or use a dedicated OG image
                 width: 800,
                 height: 600,
-                alt: "Nisadya'27 Logo",
+                alt: "Nisadya'26 Logo",
             },
         ],
         locale: 'en_US',
@@ -56,8 +56,8 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: 'summary_large_image',
-        title: "Nisadya'27 | College Fest",
-        description: "Join us for an unforgettable celebration at Nisadya'27",
+        title: "Nisadya'26 | College Fest",
+        description: "Join us for an unforgettable celebration at Nisadya'26",
         images: ['/fest_main_logo.png'], // Ensure this exists
     },
     robots: {

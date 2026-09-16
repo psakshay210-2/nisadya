@@ -1,7 +1,7 @@
 
 import { SiteConfig } from '@/lib/gsheet';
 
-// 2028 REFRESH TOUCHPOINT: nothing here now. The Event name and start date come
+// NEXT-EDITION TOUCHPOINT: nothing here now. The Event name and start date come
 // from the CONFIG tab (hero_year, hero_date), so a 2028 refresh is a sheet edit.
 // Only the venue, the logo and the organiser below are hard-coded.
 //
@@ -22,7 +22,7 @@ export default function JsonLd({ config }: { config?: SiteConfig }) {
     heroDate && /^\d{4}-\d{2}-\d{2}$/.test(heroDate) && !isNaN(new Date(heroDate).getTime())
       ? heroDate
       : null;
-  const year = config?.hero_year || '2027';
+  const year = config?.hero_year || '2026';
   const name = `Nisadya'${year.slice(-2)}`;
 
   const jsonLd = startDate
