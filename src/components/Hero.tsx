@@ -160,6 +160,13 @@ const Hero = ({ config }: { config?: SiteConfig }) => {
         }
     };
 
+    // Title sponsor, from the sheet with the Nisadya'26 values as defaults, so
+    // the rendered block is unchanged until the CONFIG tab gains these keys.
+    // title_sponsor_name = "none" drops the block entirely.
+    const sponsorName = config?.title_sponsor_name || 'NLC India Ltd';
+    const sponsorUrl = config?.title_sponsor_url || 'https://www.nlcindia.in/';
+    const sponsorLogo = config?.title_sponsor_logo || '/nlcil-logo.png';
+
     return (
         <section
             id="home"
@@ -213,23 +220,27 @@ const Hero = ({ config }: { config?: SiteConfig }) => {
                             <div className="w-full h-full rounded-full bg-gradient-to-r from-primary to-accent blur-xl animate-pulse" />
                         </motion.div>
 
-                        <h2 className="text-lg md:text-xl font-bold tracking-[0.2em] text-secondary dark:text-secondary-light mb-1 uppercase">
+                        {/* A <p>, not an <h2>: this kicker sits above the <h1>,
+                            so as a heading it made the page start at level 2. */}
+                        <p className="text-lg md:text-xl font-bold tracking-[0.2em] text-secondary dark:text-secondary-light mb-1 uppercase">
                             {config?.hero_subtitle || 'The Ultimate College Fest'}
-                        </h2>
-                        {/* Title Sponsor Credit */}
+                        </p>
+                        {/* Title Sponsor Credit. Indentation left alone on purpose:
+                            only the guard and the three values changed. */}
+                        {sponsorName !== 'none' && (
                         <div className="flex flex-col items-center justify-center gap-3 sm:gap-4 mb-6">
                             <span className="text-sm sm:text-lg font-bold tracking-[0.2em] sm:tracking-[0.3em] uppercase text-foreground/70 dark:text-white/70">
-                                NLC India Ltd
+                                {sponsorName}
                             </span>
                             <a
-                                href="https://www.nlcindia.in/"
+                                href={sponsorUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="relative flex items-center justify-center bg-white/90 dark:bg-white/95 rounded-2xl sm:rounded-3xl p-2 sm:p-4 shadow-xl hover:shadow-2xl transition-[box-shadow,transform] hover:-translate-y-2 w-28 h-28 sm:w-36 sm:h-36 lg:w-40 lg:h-40"
                             >
                                 <Image
-                                    src="/nlcil-logo.png"
-                                    alt="NLC India Ltd Logo"
+                                    src={sponsorLogo}
+                                    alt={`${sponsorName} Logo`}
                                     fill
                                     sizes="(max-width: 640px) 112px, 160px"
                                     className="object-contain p-2 sm:p-3"
@@ -240,6 +251,7 @@ const Hero = ({ config }: { config?: SiteConfig }) => {
                                 presents
                             </span>
                         </div>
+                        )}
                         <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-1 relative z-10">
                             <span className="gradient-text drop-shadow-sm tracking-[0.3em]">NISADYA</span>
                             <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl mt-1 text-foreground/90 dark:text-white/90 font-heading tracking-[0.15em]">
@@ -252,13 +264,18 @@ const Hero = ({ config }: { config?: SiteConfig }) => {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.1 }}
-                        className="flex items-center gap-2 mb-4 md:mb-6"
+                        className={`${config?.hero_date ? 'flex' : 'hidden'} items-center gap-2 mb-4 md:mb-6`}
                     >
                         <div className="px-4 py-1.5 rounded-full bg-secondary/10 dark:bg-white/10 border border-secondary/20 dark:border-white/20 backdrop-blur-sm flex items-center gap-2 shadow-sm">
                             <Calendar className="w-4 h-4 text-secondary dark:text-white" />
                             <span className="text-sm md:text-base font-semibold text-secondary dark:text-white tracking-wide uppercase">
                                 {(() => {
-                                    const dateStr = config?.hero_date || '2026-02-28';
+                                    // No '2026-02-28' default: a blank hero_date used to
+                                    // print "February 28, 2026". Blank now prints nothing
+                                    // and the whole pill is hidden by the class above. A
+                                    // non-date string ("Dates to be announced") prints raw.
+                                    const dateStr = config?.hero_date;
+                                    if (!dateStr) return null;
                                     const date = new Date(toISO(dateStr));
                                     if (isNaN(date.getTime())) return dateStr;
                                     return date.toLocaleDateString('en-US', {

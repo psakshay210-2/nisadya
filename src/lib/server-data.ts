@@ -68,13 +68,18 @@ export async function getServerData(): Promise<ServerData> {
       return post;
     });
 
-    // Return real sheet data, but substitute the last-known 2026-07-08 snapshot
-    // for any section that came back empty, so visitors never see a blank section.
+    // Return real sheet data verbatim. An emptied tab STAYS empty: clearing a
+    // tab is how a teaser is built, and substituting the 2026-07-08 snapshot
+    // there republished last year's events. The snapshot is now only for the
+    // outage path in the catch below, which fetchSheetData reaches by throwing.
+    // config keeps its fallback: a CONFIG tab with zero rows is a mistake, not
+    // a teaser (a teaser still needs hero_year and hero_description set), and
+    // an empty config would strip the hero, the sponsor and every contact.
     return {
       config: Object.keys(config).length > 0 ? config : FALLBACK_CONFIG_MERGED,
-      events: events.length > 0 ? events : FALLBACK_EVENTS,
-      schedule: schedule.length > 0 ? schedule : FALLBACK_SCHEDULE,
-      instagram: instagram.length > 0 ? instagram : FALLBACK_INSTAGRAM,
+      events,
+      schedule,
+      instagram,
     };
   } catch (error) {
     console.error('Error fetching server data:', error);

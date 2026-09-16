@@ -20,17 +20,16 @@ const CountdownTimer = ({ heroDate }: { heroDate?: string }) => {
         seconds: 0
     });
 
+    // No hard-coded fallback date. A blank or unparseable hero_date used to
+    // fall back to 2026-02-28, a date now in the past, so the four tiles froze
+    // at 00 00 00 00. NaN here means "no date to count to" and the component
+    // renders nothing at all, leaving the hero's date pill to say what it says.
+    const targetDate = heroDate
+        ? new Date(`${toISO(heroDate)}T09:00:00`).getTime()
+        : NaN;
+
     useEffect(() => {
-        // Target date: Configured date or Default (Feb 28, 2026)
-        const dateStr = toISO(heroDate || '2026-02-28');
-
-        let targetDate = new Date(`${dateStr}T09:00:00`).getTime();
-
-        // Fallback if date is invalid
-        if (isNaN(targetDate)) {
-            console.warn('Invalid hero_date format:', dateStr);
-            targetDate = new Date('2026-02-28T09:00:00').getTime();
-        }
+        if (isNaN(targetDate)) return;
 
         const interval = setInterval(() => {
             const now = new Date().getTime();
@@ -47,7 +46,9 @@ const CountdownTimer = ({ heroDate }: { heroDate?: string }) => {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [heroDate]);
+    }, [targetDate]);
+
+    if (isNaN(targetDate)) return null;
 
     const timeUnits = [
         { label: 'Days', value: timeLeft.days },

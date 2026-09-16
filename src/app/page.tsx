@@ -10,6 +10,7 @@ import Maps from '@/components/Maps';
 import Footer from '@/components/Footer';
 import ScrollProgress from '@/components/ScrollProgress';
 import BackToTop from '@/components/BackToTop';
+import JsonLd from '@/components/JsonLd';
 import { getServerData } from '@/lib/server-data';
 
 export default async function Home() {
@@ -18,6 +19,10 @@ export default async function Home() {
 
     return (
         <main className="relative">
+            {/* Moved out of layout.tsx: this describes the fest, so it belongs
+                on the homepage, not on /policy and /terms. It also keeps those
+                two routes free of any sheet fetch. */}
+            <JsonLd config={serverData.config} />
             <ScrollProgress />
             <Navbar config={serverData.config} />
             <Hero config={serverData.config} />

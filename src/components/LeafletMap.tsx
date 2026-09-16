@@ -74,6 +74,11 @@ const CustomMarker = ({ loc }: { loc: any }) => {
             ref={markerRef}
             position={[loc.lat, loc.lng]}
             icon={icon}
+            // Accessible name for the role="button" Leaflet puts on every
+            // keyboard-enabled marker. `alt` is ignored here: leaflet-src.js
+            // 7907 only copies it onto an <img>, and this icon is a divIcon.
+            // `title` is copied onto any element (7903) and names it.
+            title={loc.name}
             eventHandlers={{
                 mouseover: (e) => { cancelClose(); e.target.openPopup(); },
                 mouseout: (e) => scheduleClose(() => e.target.closePopup()),
@@ -114,7 +119,7 @@ const CustomMarker = ({ loc }: { loc: any }) => {
 
 // Component to handle map events
 const MapEventHandler = ({ onInteraction }: { onInteraction?: (active: boolean) => void }) => {
-    const map = useMapEvents({
+    useMapEvents({
         dragstart: () => onInteraction?.(true),
         dragend: () => onInteraction?.(false),
         zoomstart: () => onInteraction?.(true),

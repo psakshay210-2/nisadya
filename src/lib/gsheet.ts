@@ -73,8 +73,12 @@ export async function fetchSheetData<T>(gid: string, rowMapper: (headers: string
             .filter((item): item is T => item !== null);
 
     } catch (error) {
+        // Rethrow, do not swallow. server-data.ts has to tell an outage apart
+        // from a deliberately emptied tab: an outage lands in its catch and
+        // gets the offline snapshot, an empty tab returns [] and stays empty.
+        // Both other callers already catch (server-data.ts, GlobalSearch.tsx).
         console.error(`Error fetching or parsing sheet with GID ${gid}:`, error);
-        return [];
+        throw error;
     }
 }
 
@@ -105,6 +109,9 @@ export interface SiteConfig {
     members_contacts?: string; // JSON string of contacts
     taxi_contacts?: string; // JSON string of taxi contacts
     unstop_url?: string;
+    title_sponsor_name?: string; // "none" hides the whole sponsor block
+    title_sponsor_url?: string;
+    title_sponsor_logo?: string; // /public path or a Drive link
     [key: string]: string | undefined;
 }
 

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
-import JsonLd from "@/components/JsonLd";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -23,11 +22,11 @@ const poppins = Poppins({
 export const metadata: Metadata = {
     metadataBase: new URL('https://nisadya.in'),
     title: {
-        default: "Nisadya'26 | College Fest",
-        template: "%s | Nisadya'26",
+        default: "Nisadya'27 | College Fest",
+        template: "%s | Nisadya'27",
     },
-    description: "Join us for an unforgettable celebration of talent, creativity, and innovation at Nisadya'26 - the annual college fest.",
-    keywords: ["college fest", "nisadya", "cultural fest", "technical fest", "2026", "events", "competitions", "NIT Trichy", "DoMS"],
+    description: "Join us for an unforgettable celebration of talent, creativity, and innovation at Nisadya'27 - the annual college fest.",
+    keywords: ["college fest", "nisadya", "cultural fest", "technical fest", "2027", "events", "competitions", "NIT Trichy", "DoMS"],
     authors: [{ name: "Nisadya Team" }],
     creator: "DoMS NIT Trichy",
     publisher: "DoMS NIT Trichy",
@@ -40,16 +39,16 @@ export const metadata: Metadata = {
         canonical: '/',
     },
     openGraph: {
-        title: "Nisadya'26 | College Fest",
-        description: "Join us for an unforgettable celebration at Nisadya'26",
+        title: "Nisadya'27 | College Fest",
+        description: "Join us for an unforgettable celebration at Nisadya'27",
         url: 'https://nisadya.in',
-        siteName: "Nisadya'26",
+        siteName: "Nisadya'27",
         images: [
             {
                 url: '/fest_main_logo.png', // Ensure this exists or use a dedicated OG image
                 width: 800,
                 height: 600,
-                alt: "Nisadya'26 Logo",
+                alt: "Nisadya'27 Logo",
             },
         ],
         locale: 'en_US',
@@ -57,8 +56,8 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: 'summary_large_image',
-        title: "Nisadya'26 | College Fest",
-        description: "Join us for an unforgettable celebration at Nisadya'26",
+        title: "Nisadya'27 | College Fest",
+        description: "Join us for an unforgettable celebration at Nisadya'27",
         images: ['/fest_main_logo.png'], // Ensure this exists
     },
     robots: {
@@ -87,7 +86,6 @@ export default function RootLayout({
         <html lang="en" className={`${inter.variable} ${poppins.variable}`} suppressHydrationWarning>
             <body className={inter.className}>
                 <Providers>
-                    <JsonLd />
                     {children}
                 </Providers>
             </body>
