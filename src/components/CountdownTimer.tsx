@@ -27,9 +27,14 @@ const CountdownTimer = ({ heroDate }: { heroDate?: string }) => {
     const targetDate = heroDate
         ? new Date(`${toISO(heroDate)}T09:00:00`).getTime()
         : NaN;
+    // Once the target has passed (09:00 on the first fest day) the tiles would
+    // sit at 00 00 00 00, so the block goes. ponytail: Date.now() at render can
+    // mismatch a cached server render for up to a minute around 09:00; React
+    // re-renders on the client and the tiles start at zero either way.
+    const expired = isNaN(targetDate) || targetDate <= Date.now();
 
     useEffect(() => {
-        if (isNaN(targetDate)) return;
+        if (expired) return;
 
         const interval = setInterval(() => {
             const now = new Date().getTime();
@@ -46,9 +51,9 @@ const CountdownTimer = ({ heroDate }: { heroDate?: string }) => {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [targetDate]);
+    }, [targetDate, expired]);
 
-    if (isNaN(targetDate)) return null;
+    if (expired) return null;
 
     const timeUnits = [
         { label: 'Days', value: timeLeft.days },
@@ -57,8 +62,10 @@ const CountdownTimer = ({ heroDate }: { heroDate?: string }) => {
         { label: 'Seconds', value: timeLeft.seconds }
     ];
 
+    // The grid wrapper lives here, not in Hero, so it vanishes with the tiles
+    // instead of leaving an empty band with its bottom margin.
     return (
-        <>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-8 md:mb-10 w-full max-w-3xl">
             {timeUnits.map((unit) => (
                 <div
                     key={unit.label}
@@ -72,7 +79,7 @@ const CountdownTimer = ({ heroDate }: { heroDate?: string }) => {
                     </span>
                 </div>
             ))}
-        </>
+        </div>
     );
 };
 

@@ -260,17 +260,10 @@ const Hero = ({ config }: { config?: SiteConfig }) => {
                         transition={{ duration: 0.8, delay: 0.2 }}
                         className="text-sm md:text-lg text-muted-foreground max-w-2xl mb-6 md:mb-8 leading-relaxed"
                     >
-                        {config?.hero_description || config?.about_description || 'Unleash your potential at the biggest cultural and technical extravaganza of the year. Join us for 3 days of innovation, creativity, and fun.'}
+                        {config?.hero_description || config?.about_description || 'Unleash your potential at the biggest cultural and technical extravaganza of the year. Join us for 2 days of innovation, creativity, and fun.'}
                     </motion.p>
 
-                    <motion.div
-                        initial={{ opacity: 1, scale: 1 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
-                        className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-8 md:mb-10 w-full max-w-3xl"
-                    >
-                        <CountdownTimer heroDate={config?.hero_date} />
-                    </motion.div>
+                    <CountdownTimer heroDate={config?.hero_date} />
 
                     <motion.div
                         initial={{ opacity: 1, y: 0 }}
