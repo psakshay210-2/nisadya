@@ -4,15 +4,13 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { SiteConfig } from '@/lib/gsheet';
 
-// Same block twice, once per tier. Each accent is a COMPLETE class string so
-// Tailwind's JIT still sees the literals, and the class attribute order on the
-// rendered span is unchanged.
-const TIERS = [
-    { label: 'Men', price: '₹1,000', accentClass: 'w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-600 dark:text-blue-400' },
-    { label: 'Women', price: '₹600', accentClass: 'w-8 h-8 rounded-full bg-pink-500/10 flex items-center justify-center text-pink-600 dark:text-pink-400' },
-];
-
 const Stay = ({ config }: { config?: SiteConfig }) => {
+    // Prices come from the CONFIG tab; a blank price drops that tier. Each
+    // accent is a COMPLETE class string so Tailwind's JIT still sees the literals.
+    const tiers = [
+        { label: 'Men', price: config?.stay_price_men, accentClass: 'w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-600 dark:text-blue-400' },
+        { label: 'Women', price: config?.stay_price_women, accentClass: 'w-8 h-8 rounded-full bg-pink-500/10 flex items-center justify-center text-pink-600 dark:text-pink-400' },
+    ].filter(tier => tier.price);
     const [ref, inView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
@@ -55,11 +53,12 @@ const Stay = ({ config }: { config?: SiteConfig }) => {
 
                     <p className="text-muted-foreground text-sm sm:text-base leading-relaxed mb-8">
                         Limited on-campus accommodation at NIT Trichy is available on a first come, first served basis.
-                        Participants can arrive on <strong className="text-foreground">Feb 26th evening</strong>.
+                        {config?.stay_arrival && <> Participants can arrive on <strong className="text-foreground">{config.stay_arrival}</strong>.</>}
                     </p>
 
+                    {tiers.length > 0 && (<>
                     <div className="flex flex-wrap gap-x-12 gap-y-6 mb-8">
-                        {TIERS.map((tier) => (
+                        {tiers.map((tier) => (
                             <div key={tier.label}>
                                 <div className="flex items-center gap-2 mb-2">
                                     <span className={tier.accentClass}>
@@ -80,10 +79,12 @@ const Stay = ({ config }: { config?: SiteConfig }) => {
                         The fee is fixed for a two-day duration and cannot be adjusted for single-day stays.
                         Full payment is required regardless of the length of stay.
                     </p>
+                    </>)}
 
                     {/* Book Accommodation CTA */}
+                    {config?.stay_form_url && (
                     <a
-                        href="https://forms.gle/wNDYayAV5gJjuTKJ6"
+                        href={config.stay_form_url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-white text-sm font-bold rounded-xl transition-[background-color,box-shadow,transform] shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 mb-8"
@@ -94,6 +95,7 @@ const Stay = ({ config }: { config?: SiteConfig }) => {
                         </svg>
                         Book Accommodation
                     </a>
+                    )}
 
                     {/* Contact — just a link */}
                     <div className="text-xs sm:text-sm text-muted-foreground">

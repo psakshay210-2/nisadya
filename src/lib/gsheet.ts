@@ -108,6 +108,10 @@ export interface SiteConfig {
     members_contacts?: string; // JSON string of contacts
     taxi_contacts?: string; // JSON string of taxi contacts
     unstop_url?: string;
+    stay_arrival?: string; // e.g. "12 November evening"; blank hides the sentence
+    stay_price_men?: string; // e.g. "₹1,000"; blank hides the tier
+    stay_price_women?: string;
+    stay_form_url?: string; // blank hides the Book Accommodation button
     [key: string]: string | undefined;
 }
 
