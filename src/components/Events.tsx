@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { useEffect, useState } from 'react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { getDriveImage } from '@/lib/gsheet';
 
@@ -19,27 +19,33 @@ interface EventData {
 
 import { useSearchParams } from 'next/navigation';
 
+// Only this null-rendering child reads the query string. useSearchParams()
+// makes Next leave everything up to the nearest <Suspense> out of the
+// prerendered HTML, so the boundary sits around this and not the whole grid
+// (page.tsx used to wrap <Events> itself, which shipped a spinner and no
+// events markup in the static HTML).
+const DeepLink = ({ onEvent }: { onEvent: (name: string | null) => void }) => {
+    const searchParams = useSearchParams();
+    useEffect(() => {
+        onEvent(searchParams.get('event'));
+    }, [searchParams, onEvent]);
+    return null;
+};
+
 const Events = ({ initialEvents: events = [] }: { initialEvents?: EventData[] }) => {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [showScrollHint, setShowScrollHint] = useState(true);
-    const searchParams = useSearchParams();
     const [ref, inView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
     });
 
-    // Handle Deep Linking
-    useEffect(() => {
-        if (events.length > 0) {
-            const eventParam = searchParams.get('event');
-            if (eventParam) {
-                const index = events.findIndex(e => e.name.toLowerCase() === eventParam.toLowerCase());
-                if (index !== -1) {
-                    setSelectedId(index);
-                }
-            }
-        }
-    }, [events, searchParams]);
+    // Deep link: ?event=NAME opens that event (the search uses it too).
+    const openByName = useCallback((name: string | null) => {
+        if (!name) return;
+        const index = events.findIndex(e => e.name.toLowerCase() === name.toLowerCase());
+        if (index !== -1) setSelectedId(index);
+    }, [events]);
 
     useEffect(() => {
         if (selectedId !== null) {
@@ -60,6 +66,9 @@ const Events = ({ initialEvents: events = [] }: { initialEvents?: EventData[] })
 
     return (
         <section id="events" className="relative py-24 sm:py-32 overflow-visible sm:overflow-hidden bg-background">
+            <Suspense fallback={null}>
+                <DeepLink onEvent={openByName} />
+            </Suspense>
             <div className="absolute inset-0 z-0 opacity-30 dark:opacity-20 pointer-events-none overflow-hidden">
                 {/* radial-gradient glows replace filter:blur(100px) orbs (cheaper to paint) */}
                 <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full -translate-y-1/2 translate-x-1/3" style={{ background: 'radial-gradient(circle, color-mix(in srgb, var(--primary) 20%, transparent) 0%, transparent 70%)' }} />

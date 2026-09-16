@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import About from '@/components/About';
@@ -26,15 +25,7 @@ export default async function Home() {
             <Navbar config={serverData.config} />
             <Hero config={serverData.config} />
             <About config={serverData.config} />
-            <Suspense fallback={
-                <section className="relative py-24 sm:py-32 bg-background">
-                    <div className="flex justify-center items-center py-20">
-                        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-                    </div>
-                </section>
-            }>
-                <Events initialEvents={serverData.events} />
-            </Suspense>
+            <Events initialEvents={serverData.events} />
             <Schedule initialSchedule={serverData.schedule} />
             <Stay config={serverData.config} />
             <Maps taxiContacts={serverData.config.taxi_contacts} />
