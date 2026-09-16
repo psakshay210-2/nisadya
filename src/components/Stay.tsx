@@ -15,9 +15,9 @@ const Stay = ({ config }: { config?: SiteConfig }) => {
         { label: 'Men', price: config?.stay_price_men, accentClass: 'w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-600 dark:text-blue-400' },
         { label: 'Women', price: config?.stay_price_women, accentClass: 'w-8 h-8 rounded-full bg-pink-500/10 flex items-center justify-center text-pink-600 dark:text-pink-400' },
     ].filter(tier => tier.price);
-    // Absolute http(s) links only: a bare "forms.gle/abc" pasted into the sheet
+    // https links only, like registration_link: a bare "forms.gle/abc" pasted into the sheet
     // would resolve against nisadya.in and land on the 404 page.
-    const stayForm = /^https?:\/\//i.test(config?.stay_form_url || '') ? config?.stay_form_url : '';
+    const stayForm = /^https:\/\//i.test(config?.stay_form_url || '') ? config?.stay_form_url : '';
     const [ref, inView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
