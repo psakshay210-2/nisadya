@@ -208,28 +208,6 @@ const Footer = ({ config }: { config?: SiteConfig }) => {
                             <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
                         </div>
                     </div>
-                    <div className="text-center text-slate-400 text-sm flex items-center justify-center gap-1.5">
-                        <span>Built with</span>
-                        <span className="text-red-500 animate-pulse">❤️</span>
-                        <span>by</span>
-                        <a
-                            href="https://www.linkedin.com/in/priyansh-kumar-paswan-a0ba49133/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-semibold text-white hover:text-primary transition-colors"
-                        >
-                            Priyansh
-                        </a>
-                        <span className="font-semibold text-white">&</span>
-                        <a
-                            href="https://www.linkedin.com/in/p-s-akshay-955003b6/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-semibold text-white hover:text-primary transition-colors"
-                        >
-                            Akshay
-                        </a>
-                    </div>
                 </div>
             </div>
         </footer>
