@@ -72,7 +72,7 @@ const Maps = ({ taxiContacts }: { taxiContacts?: string }) => {
                                     href="https://www.google.com/maps/dir/?api=1&destination=10.75687,78.81331"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="px-5 py-2.5 bg-primary hover:bg-primary/90 text-white text-sm font-bold rounded-xl transition-colors shadow-lg shadow-primary/25"
+                                    className="px-5 py-2.5 bg-primary-solid hover:bg-primary-solid-dark text-white text-sm font-bold rounded-xl transition-colors shadow-lg shadow-primary/25"
                                 >
                                     Get Directions
                                 </a>

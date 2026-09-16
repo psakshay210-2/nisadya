@@ -67,12 +67,13 @@ const nextConfig = {
     async headers() {
         return [
             { source: '/:path*', headers: securityHeaders },
-            // The only public/ files fetched by URL (the layout.tsx icons); the
-            // rest go through /_next/image and its minimumCacheTTL. A day, not a
-            // year: these names are not content-hashed. Next applies every
+            // Every image in public/ fetched by name. With the optimiser on that
+            // is only the two layout.tsx icons (the rest go through /_next/image
+            // and its minimumCacheTTL); if App Hosting bypasses the optimiser
+            // the logos are fetched by name too and this covers them. A day,
+            // not a year: these names are not content-hashed. Next applies every
             // matching entry, so /:path* still adds the security headers here.
-            { source: '/favicon.png', headers: cacheOneDay },
-            { source: '/apple-icon.png', headers: cacheOneDay },
+            { source: '/:file(.*\\.png|.*\\.jpg)', headers: cacheOneDay },
         ];
     },
 }

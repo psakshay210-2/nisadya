@@ -5,12 +5,19 @@ import { useInView } from 'react-intersection-observer';
 import { SiteConfig } from '@/lib/gsheet';
 
 const Stay = ({ config }: { config?: SiteConfig }) => {
-    // Prices come from the CONFIG tab; a blank price drops that tier. Each
-    // accent is a COMPLETE class string so Tailwind's JIT still sees the literals.
+    // Prices come from the CONFIG tab; a blank price drops that tier. No
+    // defaults on purpose: the old literals (Feb 26th, 2026 prices, a 2026 form)
+    // are wrong for November 2026, so the four stay_* keys go into the sheet
+    // before the deploy, and the snapshot refresh before the freeze carries
+    // them into the outage path. Each accent is a COMPLETE class string so
+    // Tailwind's JIT still sees the literals.
     const tiers = [
         { label: 'Men', price: config?.stay_price_men, accentClass: 'w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-600 dark:text-blue-400' },
         { label: 'Women', price: config?.stay_price_women, accentClass: 'w-8 h-8 rounded-full bg-pink-500/10 flex items-center justify-center text-pink-600 dark:text-pink-400' },
     ].filter(tier => tier.price);
+    // Absolute http(s) links only: a bare "forms.gle/abc" pasted into the sheet
+    // would resolve against nisadya.in and land on the 404 page.
+    const stayForm = /^https?:\/\//i.test(config?.stay_form_url || '') ? config?.stay_form_url : '';
     const [ref, inView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
@@ -82,12 +89,12 @@ const Stay = ({ config }: { config?: SiteConfig }) => {
                     </>)}
 
                     {/* Book Accommodation CTA */}
-                    {config?.stay_form_url && (
+                    {stayForm && (
                     <a
-                        href={config.stay_form_url}
+                        href={stayForm}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-[#C2410C] hover:bg-[#9A3412] text-white text-sm font-bold rounded-xl transition-[background-color,box-shadow,transform] shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 mb-8"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-primary-solid hover:bg-primary-solid-dark text-white text-sm font-bold rounded-xl transition-[background-color,box-shadow,transform] shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 mb-8"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
                             <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />

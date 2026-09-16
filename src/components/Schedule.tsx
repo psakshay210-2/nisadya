@@ -109,7 +109,7 @@ const Schedule = ({ initialSchedule = [] }: { initialSchedule?: RawScheduleRow[]
                                         key={index}
                                         onClick={() => setActiveDayIndex(index)}
                                         className={`px-6 py-2 rounded-full text-sm font-bold uppercase tracking-wider transition-[background-color,color,box-shadow,transform] duration-300 ${activeDayIndex === index
-                                            ? 'bg-primary text-white shadow-lg shadow-primary/25 scale-105'
+                                            ? 'bg-primary-solid text-white shadow-lg shadow-primary/25 scale-105'
                                             : 'bg-secondary/5 text-muted-foreground hover:bg-secondary/10 hover:text-foreground'
                                             }`}
                                     >

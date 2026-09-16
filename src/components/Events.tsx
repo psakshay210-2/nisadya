@@ -32,7 +32,11 @@ const DeepLink = ({ onEvent }: { onEvent: (name: string | null) => void }) => {
     return null;
 };
 
-const Events = ({ initialEvents: events = [] }: { initialEvents?: EventData[] }) => {
+// Module-level so an omitted prop keeps one identity across renders (a `= []`
+// default is a new array every render and would re-run every hook that lists it).
+const NO_EVENTS: EventData[] = [];
+
+const Events = ({ initialEvents: events = NO_EVENTS }: { initialEvents?: EventData[] }) => {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [showScrollHint, setShowScrollHint] = useState(true);
     const [ref, inView] = useInView({
@@ -314,7 +318,7 @@ const Events = ({ initialEvents: events = [] }: { initialEvents?: EventData[] })
                                         href={events[selectedId].unstopLink}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="block w-full bg-primary hover:bg-primary/90 text-white text-center font-bold py-3 sm:py-4 rounded-xl shadow-lg shadow-primary/25 transition-[background-color,transform] hover:-translate-y-1 active:scale-95 text-sm sm:text-base"
+                                        className="block w-full bg-primary-solid hover:bg-primary-solid-dark text-white text-center font-bold py-3 sm:py-4 rounded-xl shadow-lg shadow-primary/25 transition-[background-color,transform] hover:-translate-y-1 active:scale-95 text-sm sm:text-base"
                                     >
                                         Register on Unstop
                                     </a>

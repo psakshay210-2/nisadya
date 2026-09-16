@@ -75,7 +75,7 @@ export async function fetchSheetData<T>(gid: string, rowMapper: (headers: string
         // Rethrow, do not swallow. server-data.ts has to tell an outage apart
         // from a deliberately emptied tab: an outage lands in its catch and
         // gets the offline snapshot, an empty tab returns [] and stays empty.
-        // Both other callers already catch (server-data.ts, GlobalSearch.tsx).
+        // server-data.ts, the only caller, catches.
         console.error(`Error fetching or parsing sheet with GID ${gid}:`, error);
         throw error;
     }

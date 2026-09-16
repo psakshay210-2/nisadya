@@ -24,13 +24,16 @@ const CountdownTimer = ({ heroDate }: { heroDate?: string }) => {
     // fall back to 2026-02-28, a date now in the past, so the four tiles froze
     // at 00 00 00 00. NaN here means "no date to count to" and the component
     // renders nothing at all, leaving the hero's date pill to say what it says.
+    // 09:00 IST on the fest day. The offset is pinned because the server runs
+    // in UTC on Cloud Run and the visitor's browser in IST; without it the two
+    // would disagree on the instant by 5.5 hours.
     const targetDate = heroDate
-        ? new Date(`${toISO(heroDate)}T09:00:00`).getTime()
+        ? new Date(`${toISO(heroDate)}T09:00:00+05:30`).getTime()
         : NaN;
-    // Once the target has passed (09:00 on the first fest day) the tiles would
-    // sit at 00 00 00 00, so the block goes. ponytail: Date.now() at render can
-    // mismatch a cached server render for up to a minute around 09:00; React
-    // re-renders on the client and the tiles start at zero either way.
+    // Once the target has passed the tiles would sit at 00 00 00 00, so the
+    // block goes. ponytail: Date.now() at render can mismatch a cached server
+    // render for up to a minute around 09:00 IST; React re-renders on the
+    // client and the tiles start at zero either way.
     const expired = isNaN(targetDate) || targetDate <= Date.now();
 
     useEffect(() => {

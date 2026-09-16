@@ -45,7 +45,11 @@ const TYPE_ICONS = {
     ),
 };
 
-export const GlobalSearch = ({ isOpen, onClose, events = [] }: { isOpen: boolean; onClose: () => void; events?: SearchEvent[] }) => {
+// Module-level so an omitted prop keeps one identity: a `= []` default is a
+// new array every render and the effect below would re-run without end.
+const NO_EVENTS: SearchEvent[] = [];
+
+export const GlobalSearch = ({ isOpen, onClose, events = NO_EVENTS }: { isOpen: boolean; onClose: () => void; events?: SearchEvent[] }) => {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<SearchResult[]>([]);
     const [allData, setAllData] = useState<SearchResult[]>([]);

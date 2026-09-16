@@ -15,6 +15,10 @@ module.exports = {
                     light: 'var(--primary-light)',
                     dark: 'var(--primary-dark)',
                     foreground: 'var(--primary-foreground)',
+                    // Filled buttons with white text: 5.18:1 on white, where the
+                    // brand orange is 2.82:1 (under the 4.5:1 WCAG minimum).
+                    solid: '#C2410C',
+                    'solid-dark': '#9A3412',
                 },
                 secondary: {
                     DEFAULT: 'var(--secondary)',
@@ -44,7 +48,6 @@ module.exports = {
             },
             animation: {
                 // 'pulse' is a Tailwind built-in keyframe; no custom keyframes needed.
-                'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             },
         },
     },

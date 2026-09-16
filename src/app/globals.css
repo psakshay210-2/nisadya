@@ -178,10 +178,12 @@ body {
 }
 
 /* Button styles. White text on --primary (#FF6B4A) is 2.82:1 and on
-   --primary-dark 3.67:1, both under the 4.5:1 WCAG minimum. #C2410C is 5.18:1.
-   Scoped to the filled buttons so the brand orange stays everywhere else. */
+   --primary-dark 3.67:1, both under the 4.5:1 WCAG minimum. primary-solid
+   (#C2410C, tailwind.config.js) is 5.18:1. Used by every filled button with
+   white text (this class, the Stay, event-modal and map buttons, the active
+   schedule tab) so the brand orange stays everywhere else. */
 .btn-primary {
-    @apply bg-[#C2410C] hover:bg-[#9A3412] text-primary-foreground font-semibold px-8 py-3 rounded-full transition-[background-color,transform,box-shadow] duration-300 transform hover:scale-105 hover:shadow-lg;
+    @apply bg-primary-solid hover:bg-primary-solid-dark text-primary-foreground font-semibold px-8 py-3 rounded-full transition-[background-color,transform,box-shadow] duration-300 transform hover:scale-105 hover:shadow-lg;
 }
 
 .btn-outline {
