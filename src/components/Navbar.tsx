@@ -76,7 +76,6 @@ const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
         { name: 'About', href: '#about' },
         { name: 'Events', href: '#events' },
         // { name: 'Schedule', href: '#schedule' },
-        { name: 'Instagram', href: '#instagram' },
         { name: 'Stay', href: '#stay' },
         { name: 'Location', href: '#location' },
     ];
@@ -106,20 +105,6 @@ const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
                     <div className="flex items-center justify-between h-20 md:h-28 px-4">
                         {/* Logo */}
                         <div className="flex items-center gap-3 md:gap-4">
-                            {/* NLC Title Sponsor Logo */}
-                            <a href="https://www.nlcindia.in/" target="_blank" rel="noopener noreferrer" className="relative w-12 h-12 md:w-14 md:h-14 flex-shrink-0 dark:bg-white/95 dark:rounded-lg p-1 transition-colors">
-                                <div className="relative w-full h-full">
-                                    <Image
-                                        src="/nlcil-logo.png"
-                                        alt="NLC India Ltd - Title Sponsor"
-                                        fill
-                                        sizes="(max-width: 768px) 48px, 56px"
-                                        className="object-contain"
-                                        priority
-                                    />
-                                </div>
-                            </a>
-                            <div className="w-[1px] h-6 md:h-8 bg-foreground/20" />
                             <div className="relative w-12 h-12 md:w-16 md:h-16">
                                 <Image
                                     src="/college_logo.png"

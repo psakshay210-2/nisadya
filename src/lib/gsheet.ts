@@ -4,7 +4,6 @@ const BASE_URL = `https://docs.google.com/spreadsheets/d/e/${SPREADSHEET_ID}/pub
 export const GIDS = {
     EVENTS: '0',
     SCHEDULE: '104413209',
-    INSTAGRAM: '1758100385',
     CONFIG: '545694281',
 };
 
@@ -109,9 +108,6 @@ export interface SiteConfig {
     members_contacts?: string; // JSON string of contacts
     taxi_contacts?: string; // JSON string of taxi contacts
     unstop_url?: string;
-    title_sponsor_name?: string; // "none" hides the whole sponsor block
-    title_sponsor_url?: string;
-    title_sponsor_logo?: string; // /public path or a Drive link
     [key: string]: string | undefined;
 }
 

@@ -160,13 +160,6 @@ const Hero = ({ config }: { config?: SiteConfig }) => {
         }
     };
 
-    // Title sponsor, from the sheet with the Nisadya'26 values as defaults, so
-    // the rendered block is unchanged until the CONFIG tab gains these keys.
-    // title_sponsor_name = "none" drops the block entirely.
-    const sponsorName = config?.title_sponsor_name || 'NLC India Ltd';
-    const sponsorUrl = config?.title_sponsor_url || 'https://www.nlcindia.in/';
-    const sponsorLogo = config?.title_sponsor_logo || '/nlcil-logo.png';
-
     return (
         <section
             id="home"
@@ -225,33 +218,6 @@ const Hero = ({ config }: { config?: SiteConfig }) => {
                         <p className="text-lg md:text-xl font-bold tracking-[0.2em] text-secondary dark:text-secondary-light mb-1 uppercase">
                             {config?.hero_subtitle || 'The Ultimate College Fest'}
                         </p>
-                        {/* Title Sponsor Credit. Indentation left alone on purpose:
-                            only the guard and the three values changed. */}
-                        {sponsorName !== 'none' && (
-                        <div className="flex flex-col items-center justify-center gap-3 sm:gap-4 mb-6">
-                            <span className="text-sm sm:text-lg font-bold tracking-[0.2em] sm:tracking-[0.3em] uppercase text-foreground/70 dark:text-white/70">
-                                {sponsorName}
-                            </span>
-                            <a
-                                href={sponsorUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="relative flex items-center justify-center bg-white/90 dark:bg-white/95 rounded-2xl sm:rounded-3xl p-2 sm:p-4 shadow-xl hover:shadow-2xl transition-[box-shadow,transform] hover:-translate-y-2 w-28 h-28 sm:w-36 sm:h-36 lg:w-40 lg:h-40"
-                            >
-                                <Image
-                                    src={sponsorLogo}
-                                    alt={`${sponsorName} Logo`}
-                                    fill
-                                    sizes="(max-width: 640px) 112px, 160px"
-                                    className="object-contain p-2 sm:p-3"
-                                    priority
-                                />
-                            </a>
-                            <span className="text-sm sm:text-lg font-bold tracking-[0.2em] sm:tracking-[0.3em] uppercase text-foreground/70 dark:text-white/70">
-                                presents
-                            </span>
-                        </div>
-                        )}
                         <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-1 relative z-10">
                             <span className="gradient-text drop-shadow-sm tracking-[0.3em]">NISADYA</span>
                             <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl mt-1 text-foreground/90 dark:text-white/90 font-heading tracking-[0.15em]">

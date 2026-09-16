@@ -62,19 +62,6 @@ const Footer = ({ config }: { config?: SiteConfig }) => {
                     {/* Brand Section */}
                     <div className="md:col-span-2 xl:col-span-2 space-y-6">
                         <div className="flex items-center gap-4">
-                            {/* NLC Title Sponsor Logo */}
-                            <a href="https://www.nlcindia.in/" target="_blank" rel="noopener noreferrer" className="relative w-16 h-16 md:w-[72px] md:h-[72px] flex-shrink-0 bg-white/95 rounded-xl p-1.5">
-                                <div className="relative w-full h-full">
-                                    <Image
-                                        src="/nlcil-logo.png"
-                                        alt="NLC India Ltd - Title Sponsor"
-                                        fill
-                                        sizes="(max-width: 768px) 64px, 72px"
-                                        className="object-contain"
-                                    />
-                                </div>
-                            </a>
-                            <div className="w-[1px] h-10 bg-white/20" />
                             <div className="relative w-14 h-14 md:w-16 md:h-16">
                                 <Image
                                     src="/college_logo.png"

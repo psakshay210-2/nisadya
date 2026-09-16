@@ -3,14 +3,12 @@ import {
   FALLBACK_CONFIG,
   FALLBACK_EVENTS,
   FALLBACK_SCHEDULE,
-  FALLBACK_INSTAGRAM,
 } from './fallback-content';
 
 interface ServerData {
   config: SiteConfig;
   events: any[];
   schedule: any[];
-  instagram: any[];
 }
 
 // Offline fallback config: the 2026-07-08 live-sheet snapshot, used whenever
@@ -59,27 +57,17 @@ export async function getServerData(): Promise<ServerData> {
       return item;
     });
 
-    // Fetch instagram posts
-    const instagram = await fetchSheetData(GIDS.INSTAGRAM, (headers, row) => {
-      const post = {
-        postLink: row[headers.indexOf('link')] || '',
-      };
-      if (!post.postLink) return null;
-      return post;
-    });
-
     // Return real sheet data verbatim. An emptied tab STAYS empty: clearing a
     // tab is how a teaser is built, and substituting the 2026-07-08 snapshot
     // there republished last year's events. The snapshot is now only for the
     // outage path in the catch below, which fetchSheetData reaches by throwing.
     // config keeps its fallback: a CONFIG tab with zero rows is a mistake, not
     // a teaser (a teaser still needs hero_year and hero_description set), and
-    // an empty config would strip the hero, the sponsor and every contact.
+    // an empty config would strip the hero and every contact.
     return {
       config: Object.keys(config).length > 0 ? config : FALLBACK_CONFIG_MERGED,
       events,
       schedule,
-      instagram,
     };
   } catch (error) {
     console.error('Error fetching server data:', error);
@@ -88,7 +76,6 @@ export async function getServerData(): Promise<ServerData> {
       config: FALLBACK_CONFIG_MERGED,
       events: FALLBACK_EVENTS,
       schedule: FALLBACK_SCHEDULE,
-      instagram: FALLBACK_INSTAGRAM,
     };
   }
 }

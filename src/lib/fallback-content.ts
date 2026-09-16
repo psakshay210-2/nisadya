@@ -299,31 +299,3 @@ export const FALLBACK_SCHEDULE = [
     "category": ""
   }
 ];
-
-// Instagram snapshot (matches the instagram rowMapper in server-data.ts).
-export const FALLBACK_INSTAGRAM = [
-  {
-    "postLink": "https://www.instagram.com/p/DEzDSWSMxky/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
-  },
-  {
-    "postLink": "https://www.instagram.com/reel/DEpPGlBs_rF/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
-  },
-  {
-    "postLink": "https://www.instagram.com/reel/DFIStFfsJDL/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
-  },
-  {
-    "postLink": "https://www.instagram.com/reel/DErZl-rpPyN/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
-  },
-  {
-    "postLink": "https://www.instagram.com/reel/DE2zTorTJsl/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
-  },
-  {
-    "postLink": "https://www.instagram.com/reel/DUd6d8kE7nd/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
-  },
-  {
-    "postLink": "https://www.instagram.com/p/DUXo8L4jFcD/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
-  },
-  {
-    "postLink": "https://www.instagram.com/reel/DT-FYzDjENr/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
-  }
-];

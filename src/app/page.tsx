@@ -4,7 +4,6 @@ import Hero from '@/components/Hero';
 import About from '@/components/About';
 import Events from '@/components/Events';
 import Schedule from '@/components/Schedule';
-import Instagram from '@/components/Instagram';
 import Stay from '@/components/Stay';
 import Maps from '@/components/Maps';
 import Footer from '@/components/Footer';
@@ -37,7 +36,6 @@ export default async function Home() {
                 <Events initialEvents={serverData.events} />
             </Suspense>
             <Schedule initialSchedule={serverData.schedule} />
-            <Instagram initialPosts={serverData.instagram} />
             <Stay config={serverData.config} />
             <Maps taxiContacts={serverData.config.taxi_contacts} />
             <Footer config={serverData.config} />
