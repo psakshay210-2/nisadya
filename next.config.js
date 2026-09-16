@@ -19,16 +19,14 @@ const securityHeaders = [
             "default-src 'self'",
             "script-src 'self' 'unsafe-inline'",
             "style-src 'self' 'unsafe-inline'",
-            "img-src 'self' data: blob: https://*.basemaps.cartocdn.com",
+            // lh3 is listed in case Firebase App Hosting bypasses the image
+            // optimiser (see images.unoptimized below). With it off, Next renders
+            // the Drive original as the <img src> instead of /_next/image.
+            "img-src 'self' data: blob: https://*.basemaps.cartocdn.com https://lh3.googleusercontent.com",
             "font-src 'self'",
-            // The published-sheet CSV 307-redirects to
-            // doc-14-1k-sheets.googleusercontent.com, and CSP checks the redirect
-            // target host, so docs.google.com alone would block GlobalSearch once
-            // this policy is enforced. The shard prefix rotates; CSP host wildcards
-            // only work on a whole leading label, so *.googleusercontent.com is the
-            // narrowest valid pattern that covers it.
-            "connect-src 'self' https://docs.google.com https://*.googleusercontent.com",
-            "frame-src https://www.instagram.com",
+            // The browser makes no cross-origin request: the sheet is fetched
+            // server-side only, in src/lib/server-data.ts (commit 0cf8c4f).
+            "connect-src 'self'",
             "frame-ancestors 'none'",
             "base-uri 'self'",
             "form-action 'self'",
@@ -36,6 +34,8 @@ const securityHeaders = [
         ].join('; '),
     },
 ];
+
+const cacheOneDay = [{ key: 'Cache-Control', value: 'public, max-age=86400' }];
 
 const nextConfig = {
     poweredByHeader: false,
@@ -65,7 +65,15 @@ const nextConfig = {
     reactStrictMode: true,
 
     async headers() {
-        return [{ source: '/:path*', headers: securityHeaders }];
+        return [
+            { source: '/:path*', headers: securityHeaders },
+            // The only public/ files fetched by URL (the layout.tsx icons); the
+            // rest go through /_next/image and its minimumCacheTTL. A day, not a
+            // year: these names are not content-hashed. Next applies every
+            // matching entry, so /:path* still adds the security headers here.
+            { source: '/favicon.png', headers: cacheOneDay },
+            { source: '/apple-icon.png', headers: cacheOneDay },
+        ];
     },
 }
 
