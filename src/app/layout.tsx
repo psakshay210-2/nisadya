@@ -11,7 +11,10 @@ const inter = Inter({
 });
 
 const poppins = Poppins({
-    weight: ["600", "700", "800"],
+    // Only weight 800 is ever painted: the single `font-heading` element
+    // (Hero.tsx) sits inside a font-extrabold h1. 600 and 700 were preloaded
+    // on every page load and never used.
+    weight: ["800"],
     subsets: ["latin"],
     variable: "--font-poppins",
     display: "swap",
@@ -71,7 +74,7 @@ export const metadata: Metadata = {
     },
     icons: {
         icon: "/favicon.png",
-        apple: "/favicon.png", // Add apple touch icon if available, reusing favicon for now
+        apple: "/apple-icon.png",
     },
 };
 

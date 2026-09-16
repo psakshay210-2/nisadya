@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
 
 const PrivacyPolicy = () => {
@@ -66,7 +65,7 @@ const PrivacyPolicy = () => {
                     <section className="space-y-4">
                         <h2 className="text-2xl font-bold text-white">5. Contact Us</h2>
                         <p className="leading-relaxed">
-                            If you have questions or comments about this policy, you may email us at <a href="mailto:fest@nisadya.com" className="text-primary hover:underline">fest@nisadya.com</a>.
+                            If you have questions or comments about this policy, you may email us at <a href="mailto:nisadya@nitt.edu" className="text-primary hover:underline">nisadya@nitt.edu</a>.
                         </p>
                     </section>
                 </motion.div>

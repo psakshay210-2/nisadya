@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
 
 const TermsOfService = () => {
@@ -62,7 +61,7 @@ const TermsOfService = () => {
                     <section className="space-y-4">
                         <h2 className="text-2xl font-bold text-white">6. Contact Us</h2>
                         <p className="leading-relaxed">
-                            To resolve a complaint regarding the Site or to receive further information regarding use of the Site, please contact us at: <a href="mailto:fest@nisadya.com" className="text-primary hover:underline">fest@nisadya.com</a>.
+                            To resolve a complaint regarding the Site or to receive further information regarding use of the Site, please contact us at: <a href="mailto:nisadya@nitt.edu" className="text-primary hover:underline">nisadya@nitt.edu</a>.
                         </p>
                     </section>
                 </motion.div>

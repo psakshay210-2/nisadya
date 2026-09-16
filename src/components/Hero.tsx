@@ -1,67 +1,50 @@
 "use client";
-import { useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import { SiteConfig, getDriveImage } from '@/lib/gsheet';
 import { toast } from 'react-hot-toast';
 import { Calendar, Hourglass, Ticket } from 'lucide-react';
+import CountdownTimer, { toISO } from './CountdownTimer';
 
-const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
-    const [config] = useState<SiteConfig | null>({ ...initialConfig, registration_status: 'PRE_REGISTRATION' });
-    const [timeLeft, setTimeLeft] = useState({
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0
-    });
+// The three registration toasts share one wrapper character for character.
+// Only the icon, the two lines of copy and the trailing pulse dot differ.
+const regToast = (icon: ReactNode, title: string, body: string, dot = false) =>
+    toast.custom((t) => (
+        <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.8 }}
+            animate={{
+                opacity: t.visible ? 1 : 0,
+                y: t.visible ? 0 : 20,
+                scale: t.visible ? 1 : 0.8
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            className="max-w-md w-full bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border border-primary/20 shadow-2xl rounded-2xl pointer-events-auto flex items-center p-4 ring-1 ring-black/5 dark:ring-white/10"
+        >
+            <div className="flex-shrink-0 mr-4">
+                {icon}
+            </div>
+            <div className="flex-1">
+                <p className="text-base font-bold text-foreground">
+                    {title}
+                </p>
+                <p className="text-sm text-muted-foreground mt-1">
+                    {body}
+                </p>
+            </div>
+            {dot && (
+                <div className="flex-shrink-0 ml-4">
+                    <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+                </div>
+            )}
+        </motion.div>
+    ), { position: 'bottom-center', duration: 4000 });
 
+const Hero = ({ config }: { config?: SiteConfig }) => {
     const { scrollY } = useScroll();
-    // y1 was unused
     const y2 = useTransform(scrollY, [0, 500], [0, -150]);
     const opacity = useTransform(scrollY, [0, 300], [1, 0]);
-
-    useEffect(() => {
-        // Target date: Configured date or Default (Feb 28, 2026)
-        let dateStr = config?.hero_date || '2026-02-28';
-
-        // Handle common date formats
-        // If DD/MM/YYYY or DD-MM-YYYY
-        if (dateStr.match(/^\d{2}[\/-]\d{2}[\/-]\d{4}$/)) {
-            const [d, m, y] = dateStr.split(/[\/-]/);
-            dateStr = `${y}-${m}-${d}`;
-        }
-
-        let targetDate = new Date(`${dateStr}T09:00:00`).getTime();
-
-        // Fallback if date is invalid
-        if (isNaN(targetDate)) {
-            console.warn('Invalid hero_date format:', dateStr);
-            targetDate = new Date('2026-02-28T09:00:00').getTime();
-        }
-
-        const interval = setInterval(() => {
-            const now = new Date().getTime();
-            const difference = targetDate - now;
-
-            if (difference > 0) {
-                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-                setTimeLeft({ days, hours, minutes, seconds });
-            }
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [config]);
-
-    const timeUnits = [
-        { label: 'Days', value: timeLeft.days },
-        { label: 'Hours', value: timeLeft.hours },
-        { label: 'Minutes', value: timeLeft.minutes },
-        { label: 'Seconds', value: timeLeft.seconds }
-    ];
+    const bottomFadeOpacity = useTransform(scrollY, [0, 400], [0, 1]);
 
     const handleScrollToEvents = () => {
         const element = document.getElementById('events');
@@ -80,21 +63,13 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
             return 'NO_DATES';
         }
 
-        // Parse dates
-        // Handle common date formats DD/MM/YYYY or DD-MM-YYYY conversions if needed, 
-        // but assuming YYYY-MM-DD as per config or handling simpler parsing.
-        // Let's make a safe parser helper
+        // Parse dates. The standard constructor is tried first (it accepts
+        // MM/DD/YYYY, which toISO would reorder into an invalid date), and
+        // only an invalid result falls back to the DD/MM/YYYY normaliser.
         const parseDate = (dateStr: string | undefined) => {
             if (!dateStr) return null;
-            // Try standard constructor first
             let date = new Date(dateStr);
-            // If invalid, try parsing generic formats
-            if (isNaN(date.getTime())) {
-                if (dateStr.match(/^\d{2}[\/-]\d{2}[\/-]\d{4}$/)) {
-                    const [d, m, y] = dateStr.split(/[\/-]/);
-                    date = new Date(`${y}-${m}-${d}`);
-                }
-            }
+            if (isNaN(date.getTime())) date = new Date(toISO(dateStr));
             return isNaN(date.getTime()) ? null : date;
         };
 
@@ -126,58 +101,20 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
         const startDateStr = config?.registration_start_date || '';
 
         if (state === 'NO_DATES') {
-            toast.custom((t) => (
-                <motion.div
-                    initial={{ opacity: 0, y: 50, scale: 0.8 }}
-                    animate={{
-                        opacity: t.visible ? 1 : 0,
-                        y: t.visible ? 0 : 20,
-                        scale: t.visible ? 1 : 0.8
-                    }}
-                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                    className="max-w-md w-full bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border border-primary/20 shadow-2xl rounded-2xl pointer-events-auto flex items-center p-4 ring-1 ring-black/5 dark:ring-white/10"
-                >
-                    <div className="flex-shrink-0 mr-4">
-                        <Hourglass className="w-8 h-8 text-primary animate-pulse" />
-                    </div>
-                    <div className="flex-1">
-                        <p className="text-base font-bold text-foreground">
-                            Coming Soon!
-                        </p>
-                        <p className="text-sm text-muted-foreground mt-1">
-                            Registrations will be opening soon. Stay tuned!
-                        </p>
-                    </div>
-                </motion.div>
-            ), { position: 'bottom-center', duration: 4000 });
+            regToast(
+                <Hourglass className="w-8 h-8 text-primary animate-pulse" />,
+                'Coming Soon!',
+                'Registrations will be opening soon. Stay tuned!'
+            );
             return;
         }
 
         if (state === 'BEFORE_START') {
-            toast.custom((t) => (
-                <motion.div
-                    initial={{ opacity: 0, y: 50, scale: 0.8 }}
-                    animate={{
-                        opacity: t.visible ? 1 : 0,
-                        y: t.visible ? 0 : 20,
-                        scale: t.visible ? 1 : 0.8
-                    }}
-                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                    className="max-w-md w-full bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border border-primary/20 shadow-2xl rounded-2xl pointer-events-auto flex items-center p-4 ring-1 ring-black/5 dark:ring-white/10"
-                >
-                    <div className="flex-shrink-0 mr-4">
-                        <Calendar className="w-8 h-8 text-primary animate-bounce" />
-                    </div>
-                    <div className="flex-1">
-                        <p className="text-base font-bold text-foreground">
-                            Mark your calendars!
-                        </p>
-                        <p className="text-sm text-muted-foreground mt-1">
-                            Registration starts from {startDateStr}.
-                        </p>
-                    </div>
-                </motion.div>
-            ), { position: 'bottom-center', duration: 4000 });
+            regToast(
+                <Calendar className="w-8 h-8 text-primary animate-bounce" />,
+                'Mark your calendars!',
+                `Registration starts from ${startDateStr}.`
+            );
             return;
         }
 
@@ -187,51 +124,30 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
         }
 
         // If OPEN
-        if (config?.registration_link) {
-            window.open(config.registration_link, '_blank');
+        // Scheme allowlist: the sheet is trusted but window.open is the one sink
+        // React does not sanitise, so a javascript: cell would run in our origin.
+        // '#' and '/' are allowed because DEFAULT/fallback config uses '#events'.
+        const regLink = config?.registration_link;
+        if (regLink && /^(https:\/\/|#|\/)/i.test(regLink)) {
+            window.open(regLink, '_blank', 'noopener,noreferrer');
         } else {
             const element = document.getElementById('events');
             if (element) {
                 element.scrollIntoView({ behavior: 'smooth' });
-                toast.custom((t) => (
-                    <motion.div
-                        initial={{ opacity: 0, y: 50, scale: 0.8 }}
-                        animate={{
-                            opacity: t.visible ? 1 : 0,
-                            y: t.visible ? 0 : 20,
-                            scale: t.visible ? 1 : 0.8
-                        }}
-                        transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                        className="max-w-md w-full bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border border-primary/20 shadow-2xl rounded-2xl pointer-events-auto flex items-center p-4 ring-1 ring-black/5 dark:ring-white/10"
-                    >
-                        <div className="flex-shrink-0 mr-4">
-                            <Ticket className="w-8 h-8 text-primary animate-pulse" />
-                        </div>
-                        <div className="flex-1">
-                            <p className="text-base font-bold text-foreground">
-                                Ready to Register?
-                            </p>
-                            <p className="text-sm text-muted-foreground mt-1">
-                                Select an event to start your registration!
-                            </p>
-                        </div>
-                        <div className="flex-shrink-0 ml-4">
-                            <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                        </div>
-                    </motion.div>
-                ), { position: 'bottom-center', duration: 4000 });
+                regToast(
+                    <Ticket className="w-8 h-8 text-primary animate-pulse" />,
+                    'Ready to Register?',
+                    'Select an event to start your registration!',
+                    true
+                );
             }
         }
     };
 
+    // YYYY-MM-DD to DD/MM/YYYY, the inverse of toISO.
     const formatDate = (dateStr: string | undefined) => {
         if (!dateStr) return '';
-        // Handle YYYY-MM-DD
-        if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
-            const [y, m, d] = dateStr.split('-');
-            return `${d}/${m}/${y}`;
-        }
-        return dateStr;
+        return /^\d{4}-\d{2}-\d{2}$/.test(dateStr) ? dateStr.split('-').reverse().join('/') : dateStr;
     };
 
     const getRegisterButtonText = () => {
@@ -255,8 +171,9 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                 <div className="absolute inset-0 z-[-1]">
                     <Image
                         src={config?.background_image_url ? getDriveImage(config.background_image_url) : "/bg-optimized.jpg"}
-                        alt="Background"
+                        alt=""
                         fill
+                        sizes="100vw"
                         className="object-cover opacity-80 dark:opacity-70"
                         priority
                     />
@@ -266,16 +183,19 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_10%,rgba(255,253,245,0.8)_100%)] dark:bg-[radial-gradient(circle_at_center,transparent_20%,#020617_100%)]" />
                 <div className="absolute inset-0 bg-gradient-to-br from-cream/30 to-primary/10 dark:from-slate-950/40 dark:to-slate-900/40 mix-blend-overlay" />
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-30 dark:opacity-20">
-                    <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/30 blur-[100px] animate-float" />
-                    <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-secondary/30 blur-[100px] animate-float" style={{ animationDelay: '2s' }} />
-                    <div className="absolute top-[40%] left-[40%] w-[30%] h-[30%] rounded-full bg-accent/20 blur-[100px] animate-float" style={{ animationDelay: '4s' }} />
+                    {/* Soft colour glows. A radial-gradient paints the same glow a
+                        filter:blur(100px) used to, but without the very expensive
+                        blur filter that had to repaint every animation frame. */}
+                    <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full animate-float" style={{ background: 'radial-gradient(circle, color-mix(in srgb, var(--primary) 30%, transparent) 0%, transparent 70%)' }} />
+                    <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full animate-float" style={{ background: 'radial-gradient(circle, color-mix(in srgb, var(--secondary) 30%, transparent) 0%, transparent 70%)', animationDelay: '2s' }} />
+                    <div className="absolute top-[40%] left-[40%] w-[30%] h-[30%] rounded-full animate-float" style={{ background: 'radial-gradient(circle, color-mix(in srgb, var(--accent) 20%, transparent) 0%, transparent 70%)', animationDelay: '4s' }} />
                 </div>
                 {/* Grid pattern overlay */}
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
 
                 {/* Bottom Fade - Scroll Triggered & Enhanced Blend */}
                 <motion.div
-                    style={{ opacity: useTransform(scrollY, [0, 400], [0, 1]) }}
+                    style={{ opacity: bottomFadeOpacity }}
                     className="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-t from-background via-background/80 to-transparent z-10"
                 />
             </div>
@@ -305,12 +225,13 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                                 href="https://www.nlcindia.in/"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="relative flex items-center justify-center bg-white/90 dark:bg-white/95 rounded-2xl sm:rounded-3xl p-2 sm:p-4 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 w-28 h-28 sm:w-36 sm:h-36 lg:w-40 lg:h-40"
+                                className="relative flex items-center justify-center bg-white/90 dark:bg-white/95 rounded-2xl sm:rounded-3xl p-2 sm:p-4 shadow-xl hover:shadow-2xl transition-[box-shadow,transform] hover:-translate-y-2 w-28 h-28 sm:w-36 sm:h-36 lg:w-40 lg:h-40"
                             >
                                 <Image
-                                    src="/NLCIL Logo CMYK_.png"
+                                    src="/nlcil-logo.png"
                                     alt="NLC India Ltd Logo"
                                     fill
+                                    sizes="(max-width: 640px) 112px, 160px"
                                     className="object-contain p-2 sm:p-3"
                                     priority
                                 />
@@ -338,23 +259,13 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                             <span className="text-sm md:text-base font-semibold text-secondary dark:text-white tracking-wide uppercase">
                                 {(() => {
                                     const dateStr = config?.hero_date || '2026-02-28';
-                                    try {
-                                        // Handle DD-MM-YYYY or DD/MM/YYYY
-                                        let parseableDate = dateStr;
-                                        if (dateStr.match(/^\d{2}[\/-]\d{2}[\/-]\d{4}$/)) {
-                                            const [d, m, y] = dateStr.split(/[\/-]/);
-                                            parseableDate = `${y}-${m}-${d}`;
-                                        }
-                                        const date = new Date(parseableDate);
-                                        if (isNaN(date.getTime())) return dateStr;
-                                        return date.toLocaleDateString('en-US', {
-                                            day: 'numeric',
-                                            month: 'long',
-                                            year: 'numeric'
-                                        });
-                                    } catch (e) {
-                                        return dateStr;
-                                    }
+                                    const date = new Date(toISO(dateStr));
+                                    if (isNaN(date.getTime())) return dateStr;
+                                    return date.toLocaleDateString('en-US', {
+                                        day: 'numeric',
+                                        month: 'long',
+                                        year: 'numeric'
+                                    });
                                 })()}
                             </span>
                         </div>
@@ -375,19 +286,7 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                         transition={{ duration: 0.8, delay: 0.4 }}
                         className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-8 md:mb-10 w-full max-w-3xl"
                     >
-                        {timeUnits.map((unit) => (
-                            <div
-                                key={unit.label}
-                                className="glass group hover:bg-white/90 dark:hover:bg-slate-800/90 p-3 md:p-5 rounded-2xl flex flex-col items-center justify-center transition-all duration-300 transform hover:-translate-y-2 border-t border-white/40 dark:border-white/10"
-                            >
-                                <span className="text-2xl md:text-4xl lg:text-5xl font-black text-primary dark:text-primary-light mb-1 font-mono">
-                                    {String(unit.value).padStart(2, '0')}
-                                </span>
-                                <span className="text-[10px] md:text-xs uppercase tracking-wider font-semibold text-secondary/80 dark:text-secondary-light/80">
-                                    {unit.label}
-                                </span>
-                            </div>
-                        ))}
+                        <CountdownTimer heroDate={config?.hero_date} />
                     </motion.div>
 
                     <motion.div
@@ -426,7 +325,7 @@ const Hero = ({ config: initialConfig }: { config?: SiteConfig }) => {
                             href={config?.unstop_url || "https://unstop.com"}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 dark:bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all"
+                            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 dark:bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors"
                         >
                             <span className="text-[10px] sm:text-xs font-medium uppercase tracking-wider text-foreground/50 dark:text-white/40">Powered by</span>
                             <Image

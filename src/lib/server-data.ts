@@ -1,23 +1,23 @@
 import { fetchSiteConfig, fetchSheetData, GIDS, SiteConfig } from './gsheet';
+import {
+  FALLBACK_CONFIG,
+  FALLBACK_EVENTS,
+  FALLBACK_SCHEDULE,
+  FALLBACK_INSTAGRAM,
+} from './fallback-content';
 
-export interface ServerData {
+interface ServerData {
   config: SiteConfig;
   events: any[];
   schedule: any[];
   instagram: any[];
 }
 
-// Default fallback data when sheets are unavailable
-const DEFAULT_CONFIG: SiteConfig = {
-  hero_title: 'NISADYA',
-  hero_subtitle: 'The Ultimate College Fest',
-  hero_year: '2026',
-  hero_date: '2026-02-28',
-  hero_description: 'Unleash your potential at the biggest cultural and technical extravaganza of the year.',
-  about_title: "Nisadya '26",
-  about_description: 'Nisadya is the annual flagship business fest of the Department of Management Studies, NIT Tiruchirappalli.',
-  registration_link: '#events',
-};
+// Offline fallback config: the 2026-07-08 live-sheet snapshot, used whenever
+// Sheets is unreachable or returns no config rows. registration_link is the one
+// key the snapshot lacks that anything reads (Hero.tsx), so it is defaulted
+// here; every other former default was shadowed by the snapshot or never read.
+const FALLBACK_CONFIG_MERGED: SiteConfig = { registration_link: '#events', ...FALLBACK_CONFIG };
 
 /**
  * Fetch all required data from Google Sheets on the server
@@ -68,21 +68,22 @@ export async function getServerData(): Promise<ServerData> {
       return post;
     });
 
-    // Return with fallbacks for empty data
+    // Return real sheet data, but substitute the last-known 2026-07-08 snapshot
+    // for any section that came back empty, so visitors never see a blank section.
     return {
-      config: Object.keys(config).length > 0 ? config : DEFAULT_CONFIG,
-      events: events.length > 0 ? events : [],
-      schedule: schedule.length > 0 ? schedule : [],
-      instagram: instagram.length > 0 ? instagram : [],
+      config: Object.keys(config).length > 0 ? config : FALLBACK_CONFIG_MERGED,
+      events: events.length > 0 ? events : FALLBACK_EVENTS,
+      schedule: schedule.length > 0 ? schedule : FALLBACK_SCHEDULE,
+      instagram: instagram.length > 0 ? instagram : FALLBACK_INSTAGRAM,
     };
   } catch (error) {
     console.error('Error fetching server data:', error);
-    // Return default data if fetch fails
+    // Sheets unreachable: serve the 2026-07-08 offline snapshot instead of blanks.
     return {
-      config: DEFAULT_CONFIG,
-      events: [],
-      schedule: [],
-      instagram: [],
+      config: FALLBACK_CONFIG_MERGED,
+      events: FALLBACK_EVENTS,
+      schedule: FALLBACK_SCHEDULE,
+      instagram: FALLBACK_INSTAGRAM,
     };
   }
 }

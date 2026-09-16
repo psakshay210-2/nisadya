@@ -19,10 +19,9 @@ interface EventData {
 
 import { useSearchParams } from 'next/navigation';
 
-const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
-    const [events] = useState<EventData[]>(initialEvents);
-    const [loading] = useState(false);
+const Events = ({ initialEvents: events = [] }: { initialEvents?: EventData[] }) => {
     const [selectedId, setSelectedId] = useState<number | null>(null);
+    const [showScrollHint, setShowScrollHint] = useState(true);
     const searchParams = useSearchParams();
     const [ref, inView] = useInView({
         triggerOnce: true,
@@ -37,9 +36,6 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                 const index = events.findIndex(e => e.name.toLowerCase() === eventParam.toLowerCase());
                 if (index !== -1) {
                     setSelectedId(index);
-                    // Optional: Scroll to events section if not already there
-                    // document.getElementById('events')?.scrollIntoView(); 
-                    // (Browser might handle fragment scroll, but we want to ensure modal opens)
                 }
             }
         }
@@ -54,11 +50,10 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
         return () => { document.body.style.overflow = 'auto'; };
     }, [selectedId]);
 
-    const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') setSelectedId(null);
-    };
-
     useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') setSelectedId(null);
+        };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
@@ -66,8 +61,9 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
     return (
         <section id="events" className="relative py-24 sm:py-32 overflow-visible sm:overflow-hidden bg-background">
             <div className="absolute inset-0 z-0 opacity-30 dark:opacity-20 pointer-events-none overflow-hidden">
-                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3" />
-                <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-secondary/20 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/3" />
+                {/* radial-gradient glows replace filter:blur(100px) orbs (cheaper to paint) */}
+                <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full -translate-y-1/2 translate-x-1/3" style={{ background: 'radial-gradient(circle, color-mix(in srgb, var(--primary) 20%, transparent) 0%, transparent 70%)' }} />
+                <div className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full translate-y-1/2 -translate-x-1/3" style={{ background: 'radial-gradient(circle, color-mix(in srgb, var(--secondary) 20%, transparent) 0%, transparent 70%)' }} />
             </div>
 
             <div className="container-custom relative z-10 px-4">
@@ -99,16 +95,14 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                             id="events-scroll-container"
                             className="flex overflow-x-auto snap-x snap-mandatory gap-4 sm:gap-6 lg:gap-8 px-6 pb-12 pt-2 scroll-px-6 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:overflow-visible sm:px-0 sm:pt-0 sm:pb-0 sm:scroll-px-0 premium-scrollbar"
                             onScroll={(e) => {
-                                const target = e.currentTarget;
-                                if (target.scrollLeft > 20) {
-                                    const arrow = document.getElementById('scroll-hint-arrow');
-                                    if (arrow) arrow.style.opacity = '0';
-                                } else {
-                                    // Optional: bring it back if scrolled all the way left?
-                                    // User said "fades away when user starts scrolling", implies one-time or threshold based.
-                                    const arrow = document.getElementById('scroll-hint-arrow');
-                                    if (arrow) arrow.style.opacity = '1';
-                                }
+                                // Read scrollLeft, then let React commit the opacity
+                                // change. Writing style directly here would force a
+                                // synchronous reflow (read-then-write layout thrash).
+                                const scrolled = e.currentTarget.scrollLeft > 20;
+                                const shouldShow = !scrolled;
+                                // Bail out via the functional updater so we only
+                                // re-render when the visibility actually flips.
+                                setShowScrollHint(prev => (prev === shouldShow ? prev : shouldShow));
                             }}
                         >
                             {events.map((event, index) => (
@@ -122,7 +116,7 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                                     transition={{ duration: 0.5, delay: index * 0.1 }}
                                 >
                                     <motion.div
-                                        className="relative min-h-full h-auto bg-slate-100 dark:bg-[#020617] backdrop-blur-md border border-black/5 dark:border-white/10 rounded-3xl transition-all duration-300 shadow-lg shadow-black/5 dark:shadow-white/5 group-hover:border-primary/50 group-hover:shadow-2xl group-hover:shadow-primary/10 group-hover:-translate-y-2 flex flex-col"
+                                        className="relative min-h-full h-auto bg-slate-100 dark:bg-[#020617] backdrop-blur-sm border border-black/5 dark:border-white/10 rounded-3xl transition-[border-color,box-shadow,transform] duration-300 shadow-lg shadow-black/5 dark:shadow-white/5 group-hover:border-primary/50 group-hover:shadow-2xl group-hover:shadow-primary/10 group-hover:-translate-y-2 flex flex-col"
                                     >
                                         <div className="relative w-full aspect-[4/3] overflow-hidden rounded-3xl">
                                             {event.imageLink ? (
@@ -130,6 +124,7 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                                                     src={getDriveImage(event.imageLink)}
                                                     alt={event.name}
                                                     fill
+                                                    sizes="(max-width: 640px) 85vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                                                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                                                 />
                                             ) : (
@@ -166,7 +161,7 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                             id="scroll-hint-arrow"
                             className="absolute right-6 top-1/2 -translate-y-1/2 z-30 pointer-events-none sm:hidden"
                             initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
+                            animate={{ opacity: showScrollHint ? 1 : 0 }}
                             exit={{ opacity: 0 }}
                         >
                             <div className="relative">
@@ -232,6 +227,7 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                                         setSelectedId(null);
                                     }}
                                     className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-8 h-8 sm:w-10 sm:h-10 bg-black/50 hover:bg-black/70 backdrop-blur-md border border-white/20 text-white rounded-full flex items-center justify-center transition-colors text-sm sm:text-base"
+                                    aria-label="Close"
                                 >
                                     ✕
                                 </button>
@@ -242,6 +238,7 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                                             src={getDriveImage(events[selectedId].imageLink)}
                                             alt={events[selectedId].name}
                                             fill
+                                            sizes="(max-width: 640px) 90vw, 576px"
                                             className="object-cover"
                                         />
                                     ) : (
@@ -303,12 +300,12 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                                     </motion.div>
                                 </div>
 
-                                <div className="p-4 sm:p-6 border-t border-black/5 dark:border-white/10 bg-slate-100/50 dark:bg-[#020617]/50 backdrop-blur-md sticky bottom-0 z-10">
+                                <div className="p-4 sm:p-6 border-t border-black/5 dark:border-white/10 bg-slate-100/50 dark:bg-[#020617]/50 backdrop-blur-sm sticky bottom-0 z-10">
                                     <a
                                         href={events[selectedId].unstopLink}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="block w-full bg-primary hover:bg-primary/90 text-white text-center font-bold py-3 sm:py-4 rounded-xl shadow-lg shadow-primary/25 transition-all hover:-translate-y-1 active:scale-95 text-sm sm:text-base"
+                                        className="block w-full bg-primary hover:bg-primary/90 text-white text-center font-bold py-3 sm:py-4 rounded-xl shadow-lg shadow-primary/25 transition-[background-color,transform] hover:-translate-y-1 active:scale-95 text-sm sm:text-base"
                                     >
                                         Register on Unstop
                                     </a>

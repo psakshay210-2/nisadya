@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap');
+/* Inter and Poppins are self-hosted by next/font in layout.tsx under those exact
+   family names, so no Google Fonts request is needed. The @import that used to
+   sit here was also inert (an @import after other rules is invalid CSS). */
 
 :root {
     --background: #FFF8F3;
@@ -95,7 +97,6 @@ body {
     color: var(--foreground);
     overflow-x: hidden;
     overflow-y: scroll;
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .dark body,
@@ -104,37 +105,11 @@ body {
 }
 
 @layer utilities {
-    .text-balance {
-        text-wrap: balance;
-    }
-
     .glass {
-        @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-lg;
-    }
-
-    .glass-hover {
-        @apply hover:bg-white/80 dark:hover:bg-slate-800/80 transition-all duration-300;
-    }
-
-    /* Hide scrollbar for Chrome, Safari and Opera */
-    .scrollbar-hide::-webkit-scrollbar {
-        display: none !important;
-        width: 0 !important;
-        height: 0 !important;
-        background: transparent !important;
-        -webkit-appearance: none !important;
-    }
-
-    /* Hide scrollbar for IE, Edge and Firefox */
-    .scrollbar-hide {
-        -ms-overflow-style: none !important;
-        /* IE and Edge */
-        scrollbar-width: none !important;
-        /* Firefox */
+        @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-sm border border-white/20 dark:border-white/10 shadow-lg;
     }
 }
 
-/* Custom scrollbar */
 /* Custom scrollbar */
 ::-webkit-scrollbar {
     width: 10px;
@@ -193,30 +168,7 @@ body {
     animation: float 3s ease-in-out infinite;
 }
 
-@keyframes gradient-shift {
-    0% {
-        background-position: 0% 50%;
-    }
-
-    50% {
-        background-position: 100% 50%;
-    }
-
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-.animate-gradient {
-    background-size: 200% 200%;
-    animation: gradient-shift 15s ease infinite;
-}
-
 /* Section spacing */
-.section {
-    @apply min-h-screen py-20 px-4 md:px-8 lg:px-16;
-}
-
 .section-padding {
     @apply py-16 md:py-24 lg:py-32;
 }
@@ -227,16 +179,11 @@ body {
 
 /* Button styles */
 .btn-primary {
-    @apply bg-primary hover:bg-primary-dark text-primary-foreground font-semibold px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg;
+    @apply bg-primary hover:bg-primary-dark text-primary-foreground font-semibold px-8 py-3 rounded-full transition-[background-color,transform,box-shadow] duration-300 transform hover:scale-105 hover:shadow-lg;
 }
 
 .btn-outline {
-    @apply border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-semibold px-8 py-3 rounded-full transition-all duration-300;
-}
-
-/* Card styles */
-.card {
-    @apply bg-card text-card-foreground rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-black/5 dark:border-white/10;
+    @apply border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-semibold px-8 py-3 rounded-full transition-colors duration-300;
 }
 
 /* Gradient text */
@@ -245,4 +192,26 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+}
+
+/*
+ * Respect the OS "reduce motion" accessibility setting. When a visitor has
+ * asked their system to minimise animation, we neutralise every CSS
+ * animation/transition and make anchor scrolling instant. framer-motion is
+ * handled separately via <MotionConfig reducedMotion="user"> in providers.tsx.
+ */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    html {
+        scroll-behavior: auto !important;
+    }
 }

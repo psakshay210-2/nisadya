@@ -53,8 +53,9 @@ export async function fetchSheetData<T>(gid: string, rowMapper: (headers: string
 
         // Default fetch behavior in Next.js App Router (if not specified) is 'force-cache' for static generation
         // Adding revalidate to ensure sheet updates are picked up periodically (ISR)
-        // Setting to 0 to ensure fresh data on every request (dynamic)
-        const response = await fetch(url, { next: { revalidate: 0 } });
+        // Setting to 60 caches each sheet fetch for 60 seconds: sheet edits show up within a minute
+        // while repeat visitors in that window are served from cache instead of re-hitting Google
+        const response = await fetch(url, { next: { revalidate: 60 } });
 
         if (!response.ok) {
             throw new Error(`Failed to fetch sheet with GID ${gid}: ${response.statusText}`);
@@ -108,23 +109,14 @@ export interface SiteConfig {
 }
 
 export async function fetchSiteConfig(): Promise<SiteConfig> {
-    interface ConfigRow {
-        key: string;
-        value: string;
-    }
-
-    const rows = await fetchSheetData<ConfigRow>(GIDS.CONFIG, (headers, row) => {
+    const rows = await fetchSheetData<[string, string]>(GIDS.CONFIG, (headers, row) => {
         // Use index 0 for key and index 1 for value to be robust against header naming changes
         const key = row[0];
-        const value = row[1];
         if (!key) return null;
-        return { key: key.trim(), value: value || '' };
+        return [key.trim(), row[1] || ''];
     });
 
-    return rows.reduce((acc, current) => {
-        acc[current.key] = current.value;
-        return acc;
-    }, {} as SiteConfig);
+    return Object.fromEntries(rows) as SiteConfig;
 }
 
 export const getDriveImage = (link: string | undefined): string => {
