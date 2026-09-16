@@ -41,6 +41,15 @@ const nextConfig = {
     poweredByHeader: false,
 
     images: {
+        // Firebase App Hosting turns the built-in Next image optimiser OFF
+        // unless unoptimized is EXPLICITLY false, which is why nisadya.in
+        // 404s on /_next/image and serves 13 full-size Drive originals.
+        // https://firebase.google.com/docs/app-hosting/optimize-image-loading
+        // (fetched 2026-09-02). Locally this changes nothing: the local build
+        // already optimises. minimumCacheTTL is 60s by default, which re-fetches
+        // every Drive original far too often for images that change once a year.
+        unoptimized: false,
+        minimumCacheTTL: 86400,
         remotePatterns: [
             {
                 protocol: 'https',
