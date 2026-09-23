@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { useEffect, useState } from 'react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { getDriveImage } from '@/lib/gsheet';
 
@@ -19,31 +19,37 @@ interface EventData {
 
 import { useSearchParams } from 'next/navigation';
 
-const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
-    const [events] = useState<EventData[]>(initialEvents);
-    const [loading] = useState(false);
-    const [selectedId, setSelectedId] = useState<number | null>(null);
+// Only this null-rendering child reads the query string. useSearchParams()
+// makes Next leave everything up to the nearest <Suspense> out of the
+// prerendered HTML, so the boundary sits around this and not the whole grid
+// (page.tsx used to wrap <Events> itself, which shipped a spinner and no
+// events markup in the static HTML).
+const DeepLink = ({ onEvent }: { onEvent: (name: string | null) => void }) => {
     const searchParams = useSearchParams();
+    useEffect(() => {
+        onEvent(searchParams.get('event'));
+    }, [searchParams, onEvent]);
+    return null;
+};
+
+// Module-level so an omitted prop keeps one identity across renders (a `= []`
+// default is a new array every render and would re-run every hook that lists it).
+const NO_EVENTS: EventData[] = [];
+
+const Events = ({ initialEvents: events = NO_EVENTS }: { initialEvents?: EventData[] }) => {
+    const [selectedId, setSelectedId] = useState<number | null>(null);
+    const [showScrollHint, setShowScrollHint] = useState(true);
     const [ref, inView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
     });
 
-    // Handle Deep Linking
-    useEffect(() => {
-        if (events.length > 0) {
-            const eventParam = searchParams.get('event');
-            if (eventParam) {
-                const index = events.findIndex(e => e.name.toLowerCase() === eventParam.toLowerCase());
-                if (index !== -1) {
-                    setSelectedId(index);
-                    // Optional: Scroll to events section if not already there
-                    // document.getElementById('events')?.scrollIntoView(); 
-                    // (Browser might handle fragment scroll, but we want to ensure modal opens)
-                }
-            }
-        }
-    }, [events, searchParams]);
+    // Deep link: ?event=NAME opens that event (the search uses it too).
+    const openByName = useCallback((name: string | null) => {
+        if (!name) return;
+        const index = events.findIndex(e => e.name.toLowerCase() === name.toLowerCase());
+        if (index !== -1) setSelectedId(index);
+    }, [events]);
 
     useEffect(() => {
         if (selectedId !== null) {
@@ -54,20 +60,23 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
         return () => { document.body.style.overflow = 'auto'; };
     }, [selectedId]);
 
-    const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') setSelectedId(null);
-    };
-
     useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') setSelectedId(null);
+        };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
 
     return (
         <section id="events" className="relative py-24 sm:py-32 overflow-visible sm:overflow-hidden bg-background">
+            <Suspense fallback={null}>
+                <DeepLink onEvent={openByName} />
+            </Suspense>
             <div className="absolute inset-0 z-0 opacity-30 dark:opacity-20 pointer-events-none overflow-hidden">
-                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3" />
-                <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-secondary/20 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/3" />
+                {/* radial-gradient glows replace filter:blur(100px) orbs (cheaper to paint) */}
+                <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full -translate-y-1/2 translate-x-1/3" style={{ background: 'radial-gradient(circle, color-mix(in srgb, var(--primary) 20%, transparent) 0%, transparent 70%)' }} />
+                <div className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full translate-y-1/2 -translate-x-1/3" style={{ background: 'radial-gradient(circle, color-mix(in srgb, var(--secondary) 20%, transparent) 0%, transparent 70%)' }} />
             </div>
 
             <div className="container-custom relative z-10 px-4">
@@ -99,16 +108,14 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                             id="events-scroll-container"
                             className="flex overflow-x-auto snap-x snap-mandatory gap-4 sm:gap-6 lg:gap-8 px-6 pb-12 pt-2 scroll-px-6 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:overflow-visible sm:px-0 sm:pt-0 sm:pb-0 sm:scroll-px-0 premium-scrollbar"
                             onScroll={(e) => {
-                                const target = e.currentTarget;
-                                if (target.scrollLeft > 20) {
-                                    const arrow = document.getElementById('scroll-hint-arrow');
-                                    if (arrow) arrow.style.opacity = '0';
-                                } else {
-                                    // Optional: bring it back if scrolled all the way left?
-                                    // User said "fades away when user starts scrolling", implies one-time or threshold based.
-                                    const arrow = document.getElementById('scroll-hint-arrow');
-                                    if (arrow) arrow.style.opacity = '1';
-                                }
+                                // Read scrollLeft, then let React commit the opacity
+                                // change. Writing style directly here would force a
+                                // synchronous reflow (read-then-write layout thrash).
+                                const scrolled = e.currentTarget.scrollLeft > 20;
+                                const shouldShow = !scrolled;
+                                // Bail out via the functional updater so we only
+                                // re-render when the visibility actually flips.
+                                setShowScrollHint(prev => (prev === shouldShow ? prev : shouldShow));
                             }}
                         >
                             {events.map((event, index) => (
@@ -122,7 +129,7 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                                     transition={{ duration: 0.5, delay: index * 0.1 }}
                                 >
                                     <motion.div
-                                        className="relative min-h-full h-auto bg-slate-100 dark:bg-[#020617] backdrop-blur-md border border-black/5 dark:border-white/10 rounded-3xl transition-all duration-300 shadow-lg shadow-black/5 dark:shadow-white/5 group-hover:border-primary/50 group-hover:shadow-2xl group-hover:shadow-primary/10 group-hover:-translate-y-2 flex flex-col"
+                                        className="relative min-h-full h-auto bg-slate-100 dark:bg-[#020617] backdrop-blur-sm border border-black/5 dark:border-white/10 rounded-3xl transition-[border-color,box-shadow,transform] duration-300 shadow-lg shadow-black/5 dark:shadow-white/5 group-hover:border-primary/50 group-hover:shadow-2xl group-hover:shadow-primary/10 group-hover:-translate-y-2 flex flex-col"
                                     >
                                         <div className="relative w-full aspect-[4/3] overflow-hidden rounded-3xl">
                                             {event.imageLink ? (
@@ -130,6 +137,7 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                                                     src={getDriveImage(event.imageLink)}
                                                     alt={event.name}
                                                     fill
+                                                    sizes="(max-width: 640px) 85vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                                                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                                                 />
                                             ) : (
@@ -140,9 +148,11 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                                                 </div>
                                             )}
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60" />
-                                            <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-md border border-white/20 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
-                                                {event.startDate}
-                                            </div>
+                                            {event.startDate && (
+                                                <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-md border border-white/20 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                                                    {event.startDate}
+                                                </div>
+                                            )}
                                         </div>
                                         <div className="p-6">
                                             <h3 className="text-xl font-bold text-foreground dark:text-white mb-2 line-clamp-1 group-hover:text-primary transition-colors">
@@ -166,7 +176,7 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                             id="scroll-hint-arrow"
                             className="absolute right-6 top-1/2 -translate-y-1/2 z-30 pointer-events-none sm:hidden"
                             initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
+                            animate={{ opacity: showScrollHint ? 1 : 0 }}
                             exit={{ opacity: 0 }}
                         >
                             <div className="relative">
@@ -232,6 +242,7 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                                         setSelectedId(null);
                                     }}
                                     className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-8 h-8 sm:w-10 sm:h-10 bg-black/50 hover:bg-black/70 backdrop-blur-md border border-white/20 text-white rounded-full flex items-center justify-center transition-colors text-sm sm:text-base"
+                                    aria-label="Close"
                                 >
                                     ✕
                                 </button>
@@ -242,6 +253,7 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                                             src={getDriveImage(events[selectedId].imageLink)}
                                             alt={events[selectedId].name}
                                             fill
+                                            sizes="(max-width: 640px) 90vw, 576px"
                                             className="object-cover"
                                         />
                                     ) : (
@@ -258,17 +270,19 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                                         >
                                             {events[selectedId].name}
                                         </motion.h3>
-                                        <motion.div
-                                            initial={{ opacity: 0 }}
-                                            animate={{ opacity: 1 }}
-                                            transition={{ delay: 0.3 }}
-                                            className="flex flex-wrap gap-3"
-                                        >
-                                            <span className="px-2 py-0.5 sm:px-3 sm:py-1 bg-primary/20 text-primary rounded-full text-xs sm:text-sm font-bold border border-primary/20">
-                                                {events[selectedId].startDate}
-                                                {events[selectedId].endDate && ` - ${events[selectedId].endDate}`}
-                                            </span>
-                                        </motion.div>
+                                        {events[selectedId].startDate && (
+                                            <motion.div
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                transition={{ delay: 0.3 }}
+                                                className="flex flex-wrap gap-3"
+                                            >
+                                                <span className="px-2 py-0.5 sm:px-3 sm:py-1 bg-primary/20 text-primary rounded-full text-xs sm:text-sm font-bold border border-primary/20">
+                                                    {events[selectedId].startDate}
+                                                    {events[selectedId].endDate && ` - ${events[selectedId].endDate}`}
+                                                </span>
+                                            </motion.div>
+                                        )}
                                     </div>
                                 </div>
 
@@ -289,30 +303,38 @@ const Events = ({ initialEvents = [] }: { initialEvents?: EventData[] }) => {
                                             </p>
                                         </div>
 
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 bg-secondary/5 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-secondary/10">
-                                            <div>
-                                                <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Coordinator</div>
-                                                <div className="font-semibold text-foreground">{events[selectedId].coordinator}</div>
+                                        {(events[selectedId].coordinator || events[selectedId].contact) && (
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 bg-secondary/5 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-secondary/10">
+                                                {events[selectedId].coordinator && (
+                                                    <div>
+                                                        <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Coordinator</div>
+                                                        <div className="font-semibold text-foreground">{events[selectedId].coordinator}</div>
+                                                    </div>
+                                                )}
+                                                {events[selectedId].contact && (
+                                                    <div>
+                                                        <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Contact</div>
+                                                        <div className="font-semibold text-foreground">{events[selectedId].contact}</div>
+                                                    </div>
+                                                )}
                                             </div>
-                                            <div>
-                                                <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Contact</div>
-                                                <div className="font-semibold text-foreground">{events[selectedId].contact}</div>
-                                            </div>
-                                        </div>
+                                        )}
 
                                     </motion.div>
                                 </div>
 
-                                <div className="p-4 sm:p-6 border-t border-black/5 dark:border-white/10 bg-slate-100/50 dark:bg-[#020617]/50 backdrop-blur-md sticky bottom-0 z-10">
-                                    <a
-                                        href={events[selectedId].unstopLink}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="block w-full bg-primary hover:bg-primary/90 text-white text-center font-bold py-3 sm:py-4 rounded-xl shadow-lg shadow-primary/25 transition-all hover:-translate-y-1 active:scale-95 text-sm sm:text-base"
-                                    >
-                                        Register on Unstop
-                                    </a>
-                                </div>
+                                {/^https:\/\//i.test(events[selectedId].unstopLink) && (
+                                    <div className="p-4 sm:p-6 border-t border-black/5 dark:border-white/10 bg-slate-100/50 dark:bg-[#020617]/50 backdrop-blur-sm sticky bottom-0 z-10">
+                                        <a
+                                            href={events[selectedId].unstopLink}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="block w-full bg-primary-solid hover:bg-primary-solid-dark text-white text-center font-bold py-3 sm:py-4 rounded-xl shadow-lg shadow-primary/25 transition-[background-color,transform] hover:-translate-y-1 active:scale-95 text-sm sm:text-base"
+                                        >
+                                            Register on Unstop
+                                        </a>
+                                    </div>
+                                )}
                             </motion.div>
                         </div>
                     </>

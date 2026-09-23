@@ -1,29 +1,17 @@
-'use client';
-
-import React from 'react';
-import { motion } from 'framer-motion';
+export const metadata = { title: 'Privacy Policy' };
 
 const PrivacyPolicy = () => {
     return (
         <main className="min-h-screen bg-slate-950 text-slate-200 pt-32 pb-20 px-4 md:px-8">
             <div className="max-w-4xl mx-auto space-y-12">
                 <div className="text-center space-y-4">
-                    <motion.h1
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="text-4xl md:text-5xl font-black text-white tracking-tight"
-                    >
+                    <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
                         Privacy <span className="text-primary">Policy</span>
-                    </motion.h1>
+                    </h1>
                     <p className="text-slate-400">Last Updated: {new Date().toLocaleDateString()}</p>
                 </div>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 }}
-                    className="space-y-8 bg-slate-900/50 p-8 rounded-3xl border border-white/5 backdrop-blur-sm"
-                >
+                <div className="space-y-8 bg-slate-900/50 p-8 rounded-3xl border border-white/5 backdrop-blur-sm">
                     <section className="space-y-4">
                         <h2 className="text-2xl font-bold text-white">1. Introduction</h2>
                         <p className="leading-relaxed">
@@ -66,10 +54,10 @@ const PrivacyPolicy = () => {
                     <section className="space-y-4">
                         <h2 className="text-2xl font-bold text-white">5. Contact Us</h2>
                         <p className="leading-relaxed">
-                            If you have questions or comments about this policy, you may email us at <a href="mailto:fest@nisadya.com" className="text-primary hover:underline">fest@nisadya.com</a>.
+                            If you have questions or comments about this policy, you may email us at <a href="mailto:nisadya@nitt.edu" className="text-primary hover:underline">nisadya@nitt.edu</a>.
                         </p>
                     </section>
-                </motion.div>
+                </div>
             </div>
         </main>
     );

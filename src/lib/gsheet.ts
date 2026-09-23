@@ -4,7 +4,6 @@ const BASE_URL = `https://docs.google.com/spreadsheets/d/e/${SPREADSHEET_ID}/pub
 export const GIDS = {
     EVENTS: '0',
     SCHEDULE: '104413209',
-    INSTAGRAM: '1758100385',
     CONFIG: '545694281',
 };
 
@@ -53,8 +52,9 @@ export async function fetchSheetData<T>(gid: string, rowMapper: (headers: string
 
         // Default fetch behavior in Next.js App Router (if not specified) is 'force-cache' for static generation
         // Adding revalidate to ensure sheet updates are picked up periodically (ISR)
-        // Setting to 0 to ensure fresh data on every request (dynamic)
-        const response = await fetch(url, { next: { revalidate: 0 } });
+        // Setting to 60 caches each sheet fetch for 60 seconds: sheet edits show up within a minute
+        // while repeat visitors in that window are served from cache instead of re-hitting Google
+        const response = await fetch(url, { next: { revalidate: 60 } });
 
         if (!response.ok) {
             throw new Error(`Failed to fetch sheet with GID ${gid}: ${response.statusText}`);
@@ -72,8 +72,12 @@ export async function fetchSheetData<T>(gid: string, rowMapper: (headers: string
             .filter((item): item is T => item !== null);
 
     } catch (error) {
+        // Rethrow, do not swallow. server-data.ts has to tell an outage apart
+        // from a deliberately emptied tab: an outage lands in its catch and
+        // gets the offline snapshot, an empty tab returns [] and stays empty.
+        // server-data.ts, the only caller, catches.
         console.error(`Error fetching or parsing sheet with GID ${gid}:`, error);
-        return [];
+        throw error;
     }
 }
 
@@ -104,27 +108,22 @@ export interface SiteConfig {
     members_contacts?: string; // JSON string of contacts
     taxi_contacts?: string; // JSON string of taxi contacts
     unstop_url?: string;
+    stay_arrival?: string; // e.g. "12 November evening"; blank hides the sentence
+    stay_price_men?: string; // e.g. "₹1,000"; blank hides the tier
+    stay_price_women?: string;
+    stay_form_url?: string; // blank hides the Book Accommodation button
     [key: string]: string | undefined;
 }
 
 export async function fetchSiteConfig(): Promise<SiteConfig> {
-    interface ConfigRow {
-        key: string;
-        value: string;
-    }
-
-    const rows = await fetchSheetData<ConfigRow>(GIDS.CONFIG, (headers, row) => {
+    const rows = await fetchSheetData<[string, string]>(GIDS.CONFIG, (headers, row) => {
         // Use index 0 for key and index 1 for value to be robust against header naming changes
         const key = row[0];
-        const value = row[1];
         if (!key) return null;
-        return { key: key.trim(), value: value || '' };
+        return [key.trim(), row[1] || ''];
     });
 
-    return rows.reduce((acc, current) => {
-        acc[current.key] = current.value;
-        return acc;
-    }, {} as SiteConfig);
+    return Object.fromEntries(rows) as SiteConfig;
 }
 
 export const getDriveImage = (link: string | undefined): string => {

@@ -5,6 +5,19 @@ import { useInView } from 'react-intersection-observer';
 import { SiteConfig } from '@/lib/gsheet';
 
 const Stay = ({ config }: { config?: SiteConfig }) => {
+    // Prices come from the CONFIG tab; a blank price drops that tier. No
+    // defaults on purpose: the old literals (Feb 26th, 2026 prices, a 2026 form)
+    // are wrong for November 2026, so the four stay_* keys go into the sheet
+    // before the deploy, and the snapshot refresh before the freeze carries
+    // them into the outage path. Each accent is a COMPLETE class string so
+    // Tailwind's JIT still sees the literals.
+    const tiers = [
+        { label: 'Men', price: config?.stay_price_men, accentClass: 'w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-600 dark:text-blue-400' },
+        { label: 'Women', price: config?.stay_price_women, accentClass: 'w-8 h-8 rounded-full bg-pink-500/10 flex items-center justify-center text-pink-600 dark:text-pink-400' },
+    ].filter(tier => tier.price);
+    // https links only, like registration_link: a bare "forms.gle/abc" pasted into the sheet
+    // would resolve against nisadya.in and land on the 404 page.
+    const stayForm = /^https:\/\//i.test(config?.stay_form_url || '') ? config?.stay_form_url : '';
     const [ref, inView] = useInView({
         triggerOnce: true,
         threshold: 0.1,
@@ -47,32 +60,25 @@ const Stay = ({ config }: { config?: SiteConfig }) => {
 
                     <p className="text-muted-foreground text-sm sm:text-base leading-relaxed mb-8">
                         Limited on-campus accommodation at NIT Trichy is available on a first come, first served basis.
-                        Participants can arrive on <strong className="text-foreground">Feb 26th evening</strong>.
+                        {config?.stay_arrival && <> Participants can arrive on <strong className="text-foreground">{config.stay_arrival}</strong>.</>}
                     </p>
 
+                    {tiers.length > 0 && (<>
                     <div className="flex flex-wrap gap-x-12 gap-y-6 mb-8">
-                        <div>
-                            <div className="flex items-center gap-2 mb-2">
-                                <span className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-600 dark:text-blue-400">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-                                        <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" clipRule="evenodd" />
-                                    </svg>
-                                </span>
-                                <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">Men</p>
+                        {tiers.map((tier) => (
+                            <div key={tier.label}>
+                                <div className="flex items-center gap-2 mb-2">
+                                    <span className={tier.accentClass}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                                            <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" clipRule="evenodd" />
+                                        </svg>
+                                    </span>
+                                    <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">{tier.label}</p>
+                                </div>
+                                {/* One text child, so React emits no <!-- --> separator before the span. */}
+                                <p className="text-3xl font-black text-foreground">{`${tier.price} `}<span className="text-sm font-medium text-muted-foreground">/ 2 days</span></p>
                             </div>
-                            <p className="text-3xl font-black text-foreground">₹1,000 <span className="text-sm font-medium text-muted-foreground">/ 2 days</span></p>
-                        </div>
-                        <div>
-                            <div className="flex items-center gap-2 mb-2">
-                                <span className="w-8 h-8 rounded-full bg-pink-500/10 flex items-center justify-center text-pink-600 dark:text-pink-400">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-                                        <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" clipRule="evenodd" />
-                                    </svg>
-                                </span>
-                                <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">Women</p>
-                            </div>
-                            <p className="text-3xl font-black text-foreground">₹600 <span className="text-sm font-medium text-muted-foreground">/ 2 days</span></p>
-                        </div>
+                        ))}
                     </div>
 
                     {/* Policy — single paragraph, understated */}
@@ -80,13 +86,15 @@ const Stay = ({ config }: { config?: SiteConfig }) => {
                         The fee is fixed for a two-day duration and cannot be adjusted for single-day stays.
                         Full payment is required regardless of the length of stay.
                     </p>
+                    </>)}
 
                     {/* Book Accommodation CTA */}
+                    {stayForm && (
                     <a
-                        href="https://forms.gle/wNDYayAV5gJjuTKJ6"
+                        href={stayForm}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-white text-sm font-bold rounded-xl transition-all shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 mb-8"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-primary-solid hover:bg-primary-solid-dark text-white text-sm font-bold rounded-xl transition-[background-color,box-shadow,transform] shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 mb-8"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
                             <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
@@ -94,20 +102,21 @@ const Stay = ({ config }: { config?: SiteConfig }) => {
                         </svg>
                         Book Accommodation
                     </a>
+                    )}
 
                     {/* Contact — just a link */}
                     <div className="text-xs sm:text-sm text-muted-foreground">
                         <p className="mb-2">Questions? Reach out at:</p>
                         <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
                             <a
-                                href={`mailto:${config?.contact_email || 'fest@nisadya.com'}`}
+                                href={`mailto:${config?.contact_email || 'nisadya@nitt.edu'}`}
                                 className="flex items-center gap-2 text-primary font-semibold hover:underline"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
                                     <path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z" />
                                     <path d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z" />
                                 </svg>
-                                {config?.contact_email || 'fest@nisadya.com'}
+                                {config?.contact_email || 'nisadya@nitt.edu'}
                             </a>
 
                             {hospitalityContact && (

@@ -6,14 +6,8 @@ import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaf
 import L from 'leaflet';
 import { useTheme } from 'next-themes';
 
-// Fix default icon issue in React Leaflet
-// Delete the default icon URLs manually because webpack often doesn't bundling them correctly
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-    iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-});
+// No L.Icon.Default config here: the only <Marker> below always gets an
+// explicit icon={icon} from L.divIcon, so the default icon is never built.
 
 // Location Data for NIT Trichy
 const LOCATIONS = [
@@ -30,7 +24,7 @@ const LOCATIONS = [
 
 const CustomMarker = ({ loc }: { loc: any }) => {
     const markerRef = useRef<any>(null);
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const [isSticky, setIsSticky] = useState(false);
 
     // Generate Custom Icon
@@ -63,38 +57,15 @@ const CustomMarker = ({ loc }: { loc: any }) => {
         popupAnchor: [0, -12]
     });
 
-    const handleMouseOver = (e: any) => {
+    const cancelClose = () => {
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
-        e.target.openPopup();
     };
 
-    const handleMouseOut = (e: any) => {
+    // `close` stays a thunk so the target is resolved when the timer fires,
+    // which is what the four separate handlers used to do.
+    const scheduleClose = (close: () => void) => {
         if (!isSticky) {
-            timeoutRef.current = setTimeout(() => {
-                e.target.closePopup();
-            }, 300);
-        }
-    };
-
-    const handleClick = (e: any) => {
-        setIsSticky(true);
-        if (timeoutRef.current) clearTimeout(timeoutRef.current);
-        e.target.openPopup();
-    };
-
-    const handlePopupClose = () => {
-        setIsSticky(false);
-    };
-
-    const handlePopupMouseEnter = () => {
-        if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
-
-    const handlePopupMouseLeave = () => {
-        if (!isSticky) {
-            timeoutRef.current = setTimeout(() => {
-                markerRef.current?.closePopup();
-            }, 300);
+            timeoutRef.current = setTimeout(close, 300);
         }
     };
 
@@ -103,18 +74,23 @@ const CustomMarker = ({ loc }: { loc: any }) => {
             ref={markerRef}
             position={[loc.lat, loc.lng]}
             icon={icon}
+            // Accessible name for the role="button" Leaflet puts on every
+            // keyboard-enabled marker. `alt` is ignored here: leaflet-src.js
+            // 7907 only copies it onto an <img>, and this icon is a divIcon.
+            // `title` is copied onto any element (7903) and names it.
+            title={loc.name}
             eventHandlers={{
-                mouseover: handleMouseOver,
-                mouseout: handleMouseOut,
-                click: handleClick,
-                popupclose: handlePopupClose,
+                mouseover: (e) => { cancelClose(); e.target.openPopup(); },
+                mouseout: (e) => scheduleClose(() => e.target.closePopup()),
+                click: (e) => { setIsSticky(true); cancelClose(); e.target.openPopup(); },
+                popupclose: () => setIsSticky(false),
             }}
         >
             <Popup>
                 <div
                     className="p-1 min-w-[150px]"
-                    onMouseEnter={handlePopupMouseEnter}
-                    onMouseLeave={handlePopupMouseLeave}
+                    onMouseEnter={cancelClose}
+                    onMouseLeave={() => scheduleClose(() => markerRef.current?.closePopup())}
                 >
                     <span className="text-[10px] font-bold tracking-wider uppercase opacity-70" style={{ color: loc.color }}>
                         {loc.type}
@@ -143,7 +119,7 @@ const CustomMarker = ({ loc }: { loc: any }) => {
 
 // Component to handle map events
 const MapEventHandler = ({ onInteraction }: { onInteraction?: (active: boolean) => void }) => {
-    const map = useMapEvents({
+    useMapEvents({
         dragstart: () => onInteraction?.(true),
         dragend: () => onInteraction?.(false),
         zoomstart: () => onInteraction?.(true),

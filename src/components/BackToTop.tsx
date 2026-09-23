@@ -7,12 +7,28 @@ const BackToTop = () => {
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
+        // Throttle with requestAnimationFrame so we do at most one read per
+        // paint frame, and only re-render when visibility actually flips.
+        let rafId: number | null = null;
+        let lastVisible = false;
         const toggleVisibility = () => {
-            setIsVisible(window.pageYOffset > 300);
+            if (rafId !== null) return; // an update is already scheduled
+            rafId = window.requestAnimationFrame(() => {
+                rafId = null;
+                const visible = window.scrollY > 300; // layout read inside rAF
+                if (visible !== lastVisible) {
+                    lastVisible = visible;
+                    setIsVisible(visible);
+                }
+            });
         };
 
-        window.addEventListener('scroll', toggleVisibility);
-        return () => window.removeEventListener('scroll', toggleVisibility);
+        // passive tells the browser we never call preventDefault on scroll.
+        window.addEventListener('scroll', toggleVisibility, { passive: true });
+        return () => {
+            window.removeEventListener('scroll', toggleVisibility);
+            if (rafId !== null) window.cancelAnimationFrame(rafId);
+        };
     }, []);
 
     const scrollToTop = () => {

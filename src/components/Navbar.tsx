@@ -7,13 +7,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 import { SiteConfig, getDriveImage } from '@/lib/gsheet';
 
-import { GlobalSearch } from './GlobalSearch';
+import { GlobalSearch, SearchEvent } from './GlobalSearch';
 
-const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
+const SearchIcon = ({ className }: { className: string }) => (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    </svg>
+);
+
+const Navbar = ({ config: initialConfig, events }: { config?: SiteConfig; events?: SearchEvent[] }) => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [config] = useState<SiteConfig | null>(initialConfig || null);
+    const config: SiteConfig | null = initialConfig || null;
 
     // Lock body scroll when mobile menu is open
     useEffect(() => {
@@ -40,12 +46,29 @@ const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
 
     // ... scroll effect ...
     useEffect(() => {
+        // Throttle with requestAnimationFrame so we do at most one read per
+        // paint frame, and only re-render when the boolean actually flips.
+        let rafId: number | null = null;
+        let lastScrolled = false;
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 20);
+            if (rafId !== null) return; // an update is already scheduled
+            rafId = window.requestAnimationFrame(() => {
+                rafId = null;
+                const scrolled = window.scrollY > 20; // layout read inside rAF
+                if (scrolled !== lastScrolled) {
+                    lastScrolled = scrolled;
+                    setIsScrolled(scrolled);
+                }
+            });
         };
 
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        // passive tells the browser we never call preventDefault, so it can
+        // scroll without waiting on this handler.
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            if (rafId !== null) window.cancelAnimationFrame(rafId);
+        };
     }, []);
 
     const navLinks = [
@@ -53,7 +76,6 @@ const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
         { name: 'About', href: '#about' },
         { name: 'Events', href: '#events' },
         // { name: 'Schedule', href: '#schedule' },
-        { name: 'Instagram', href: '#instagram' },
         { name: 'Stay', href: '#stay' },
         { name: 'Location', href: '#location' },
     ];
@@ -69,12 +91,12 @@ const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
 
     return (
         <>
-            <GlobalSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+            <GlobalSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} events={events} />
             <motion.nav
                 initial={{ y: 0 }}
                 animate={{ y: 0 }}
                 transition={{ duration: 0.6 }}
-                className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-300 ${isScrolled
+                className={`fixed top-0 left-0 right-0 z-[1000] transition-[background-color,backdrop-filter,box-shadow,border-color] duration-300 ${isScrolled
                     ? 'glass'
                     : 'bg-transparent'
                     }`}
@@ -83,25 +105,13 @@ const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
                     <div className="flex items-center justify-between h-20 md:h-28 px-4">
                         {/* Logo */}
                         <div className="flex items-center gap-3 md:gap-4">
-                            {/* NLC Title Sponsor Logo */}
-                            <a href="https://www.nlcindia.in/" target="_blank" rel="noopener noreferrer" className="relative w-12 h-12 md:w-14 md:h-14 flex-shrink-0 dark:bg-white/95 dark:rounded-lg p-1 transition-colors">
-                                <div className="relative w-full h-full">
-                                    <Image
-                                        src="/NLCIL Logo CMYK_.png"
-                                        alt="NLC India Ltd - Title Sponsor"
-                                        fill
-                                        className="object-contain"
-                                        priority
-                                    />
-                                </div>
-                            </a>
-                            <div className="w-[1px] h-6 md:h-8 bg-foreground/20" />
                             <div className="relative w-12 h-12 md:w-16 md:h-16">
                                 <Image
-                                    src="/college_logo.svg"
+                                    src="/college_logo.png"
                                     alt="College Logo"
                                     fill
-                                    className="object-contain transition-all duration-300"
+                                    sizes="(max-width: 768px) 48px, 64px"
+                                    className="object-contain"
                                     priority
                                 />
                             </div>
@@ -112,7 +122,8 @@ const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
                                         src={config?.logo_url ? getDriveImage(config.logo_url) : "/fest_main_logo.png"}
                                         alt="Nisadya Logo"
                                         fill
-                                        className="object-contain invert dark:invert-0 transition-all duration-300"
+                                        sizes="(max-width: 768px) 112px, 160px"
+                                        className="object-contain invert dark:invert-0 transition-[filter] duration-300"
                                         priority
                                     />
                                 </div>
@@ -138,12 +149,10 @@ const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
                                     if (!isSearchOpen) setIsMobileMenuOpen(false);
                                     setIsSearchOpen(!isSearchOpen);
                                 }}
-                                className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-all text-foreground/80 hover:text-primary"
+                                className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-foreground/80 hover:text-primary"
                                 aria-label="Search"
                             >
-                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
+                                <SearchIcon className="w-5 h-5" />
                             </button>
 
                             <ThemeToggle />
@@ -161,13 +170,13 @@ const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
                             >
                                 <div className="w-6 h-5 flex flex-col justify-between">
                                     <span
-                                        className={`block h-0.5 w-full transition-all duration-300 bg-foreground ${isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}
+                                        className={`block h-0.5 w-full transition-transform duration-300 bg-foreground ${isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}
                                     />
                                     <span
-                                        className={`block h-0.5 w-full transition-all duration-300 bg-foreground ${isMobileMenuOpen ? 'opacity-0' : ''}`}
+                                        className={`block h-0.5 w-full transition-opacity duration-300 bg-foreground ${isMobileMenuOpen ? 'opacity-0' : ''}`}
                                     />
                                     <span
-                                        className={`block h-0.5 w-full transition-all duration-300 bg-foreground ${isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}
+                                        className={`block h-0.5 w-full transition-transform duration-300 bg-foreground ${isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}
                                     />
                                 </div>
                             </button>
@@ -222,9 +231,7 @@ const Navbar = ({ config: initialConfig }: { config?: SiteConfig }) => {
                                     className="text-3xl font-bold tracking-tight text-foreground/80 hover:text-primary transition-colors flex items-center justify-center gap-3 w-full"
                                 >
                                     Search
-                                    <svg className="w-8 h-8 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                    </svg>
+                                    <SearchIcon className="w-8 h-8 opacity-70" />
                                 </button>
                             </motion.div>
 
