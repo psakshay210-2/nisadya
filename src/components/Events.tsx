@@ -148,9 +148,11 @@ const Events = ({ initialEvents: events = NO_EVENTS }: { initialEvents?: EventDa
                                                 </div>
                                             )}
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60" />
-                                            <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-md border border-white/20 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
-                                                {event.startDate}
-                                            </div>
+                                            {event.startDate && (
+                                                <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-md border border-white/20 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                                                    {event.startDate}
+                                                </div>
+                                            )}
                                         </div>
                                         <div className="p-6">
                                             <h3 className="text-xl font-bold text-foreground dark:text-white mb-2 line-clamp-1 group-hover:text-primary transition-colors">
@@ -268,17 +270,19 @@ const Events = ({ initialEvents: events = NO_EVENTS }: { initialEvents?: EventDa
                                         >
                                             {events[selectedId].name}
                                         </motion.h3>
-                                        <motion.div
-                                            initial={{ opacity: 0 }}
-                                            animate={{ opacity: 1 }}
-                                            transition={{ delay: 0.3 }}
-                                            className="flex flex-wrap gap-3"
-                                        >
-                                            <span className="px-2 py-0.5 sm:px-3 sm:py-1 bg-primary/20 text-primary rounded-full text-xs sm:text-sm font-bold border border-primary/20">
-                                                {events[selectedId].startDate}
-                                                {events[selectedId].endDate && ` - ${events[selectedId].endDate}`}
-                                            </span>
-                                        </motion.div>
+                                        {events[selectedId].startDate && (
+                                            <motion.div
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                transition={{ delay: 0.3 }}
+                                                className="flex flex-wrap gap-3"
+                                            >
+                                                <span className="px-2 py-0.5 sm:px-3 sm:py-1 bg-primary/20 text-primary rounded-full text-xs sm:text-sm font-bold border border-primary/20">
+                                                    {events[selectedId].startDate}
+                                                    {events[selectedId].endDate && ` - ${events[selectedId].endDate}`}
+                                                </span>
+                                            </motion.div>
+                                        )}
                                     </div>
                                 </div>
 
@@ -299,30 +303,38 @@ const Events = ({ initialEvents: events = NO_EVENTS }: { initialEvents?: EventDa
                                             </p>
                                         </div>
 
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 bg-secondary/5 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-secondary/10">
-                                            <div>
-                                                <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Coordinator</div>
-                                                <div className="font-semibold text-foreground">{events[selectedId].coordinator}</div>
+                                        {(events[selectedId].coordinator || events[selectedId].contact) && (
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 bg-secondary/5 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-secondary/10">
+                                                {events[selectedId].coordinator && (
+                                                    <div>
+                                                        <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Coordinator</div>
+                                                        <div className="font-semibold text-foreground">{events[selectedId].coordinator}</div>
+                                                    </div>
+                                                )}
+                                                {events[selectedId].contact && (
+                                                    <div>
+                                                        <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Contact</div>
+                                                        <div className="font-semibold text-foreground">{events[selectedId].contact}</div>
+                                                    </div>
+                                                )}
                                             </div>
-                                            <div>
-                                                <div className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Contact</div>
-                                                <div className="font-semibold text-foreground">{events[selectedId].contact}</div>
-                                            </div>
-                                        </div>
+                                        )}
 
                                     </motion.div>
                                 </div>
 
-                                <div className="p-4 sm:p-6 border-t border-black/5 dark:border-white/10 bg-slate-100/50 dark:bg-[#020617]/50 backdrop-blur-sm sticky bottom-0 z-10">
-                                    <a
-                                        href={events[selectedId].unstopLink}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="block w-full bg-primary-solid hover:bg-primary-solid-dark text-white text-center font-bold py-3 sm:py-4 rounded-xl shadow-lg shadow-primary/25 transition-[background-color,transform] hover:-translate-y-1 active:scale-95 text-sm sm:text-base"
-                                    >
-                                        Register on Unstop
-                                    </a>
-                                </div>
+                                {/^https:\/\//i.test(events[selectedId].unstopLink) && (
+                                    <div className="p-4 sm:p-6 border-t border-black/5 dark:border-white/10 bg-slate-100/50 dark:bg-[#020617]/50 backdrop-blur-sm sticky bottom-0 z-10">
+                                        <a
+                                            href={events[selectedId].unstopLink}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="block w-full bg-primary-solid hover:bg-primary-solid-dark text-white text-center font-bold py-3 sm:py-4 rounded-xl shadow-lg shadow-primary/25 transition-[background-color,transform] hover:-translate-y-1 active:scale-95 text-sm sm:text-base"
+                                        >
+                                            Register on Unstop
+                                        </a>
+                                    </div>
+                                )}
                             </motion.div>
                         </div>
                     </>
